@@ -4,26 +4,26 @@ xrc log init xcmd
 
 xrc xcmd/_v0/initrc
 
-___xcmd_readlink_recursive(){
+___x_cmd_readlink_recursive(){
     if [ -L "${1:?Provide link}" ]; then
         local next_link
         next_link="$(readlink "${1}")" || return
         if [ "${next_link#/}" = "$next_link" ]; then
             next_link="$(dirname "${1}")/$next_link"
         fi
-        ___xcmd_readlink_recursive "$next_link"
+        ___x_cmd_readlink_recursive "$next_link"
     else
         [ ! -e "${1}" ] && return 1        # File Not Exists
         printf "%s" "$1"
     fi
 }
 
-___xcmd_list_resource(){
+___x_cmd_list_resource(){
     :
 }
 
 
-# Section : Unfinished ___xcmd_official_which
+# Section : Unfinished ___x_cmd_official_which
 
 # TODO: optimization. Consider sharing the big binary in a common folder.
 # But that will introduce risk.
@@ -32,7 +32,7 @@ ___xcmd_list_resource(){
 # 2. Global sharing folder.
 # Consider using the sha512 to calculate the file hash for this purpose.
 
-___xcmd_official_which(){
+___x_cmd_official_which(){
     X_CMD_SRC_PATH="$HOME/.x-cmd"
     local target="${1:-Provide target path}"
     local cache="$X_CMD_SRC_PATH/$target"
@@ -45,8 +45,8 @@ ___xcmd_official_which(){
         return 1
     fi
 
-    if CACHE="$cache" ___xcmd_curl_gitx "$target" <<A
-$(___xcmd_mirror)
+    if CACHE="$cache" ___x_cmd_curl_gitx "$target" <<A
+$(___x_cmd_mirror)
 A
     then
         :
@@ -72,21 +72,21 @@ A
     ___xrc_module_name "$@"
 }
 
-___xcmd_xrc_run()(
+___x_cmd_xrc_run()(
     ___xrc_run "$@"
 )
 
-___xcmd_run_with_engine(){
+___x_cmd_run_with_engine(){
     local engine="${1:?Please provide engine}";
     local filepath="${2:?Please provide filepath}";        shift 2
     case "$engine" in
-        x-bash)     ___xcmd_xrc_run "$filepath" "$@";;
+        x-bash)     ___x_cmd_xrc_run "$filepath" "$@";;
         7z)         xcmd 7z x "$filepath" "$@"      ;;
         *)          xcmd "$engine" "$filepath" "$@" ;;
     esac
 }
 
-___xcmd_get_engine_by_file_header(){
+___x_cmd_get_engine_by_file_header(){
     local filepath="${1:?Please provide filepath}"; shift
     case "$(head -n1 "$filepath")" in
         *python*)       printf "%s" python          ;;
@@ -105,15 +105,15 @@ ___xcmd_get_engine_by_file_header(){
     esac
 }
 
-___xcmd_run_by_file_header(){
+___x_cmd_run_by_file_header(){
     local filepath="${1:?filepath}"; shift
     local engine
-    if engine="$(___xcmd_get_engine_by_file_header "$filepath")"; then
-        ___xcmd_run_with_engine "$engine" "$filepath" "$@"
+    if engine="$(___x_cmd_get_engine_by_file_header "$filepath")"; then
+        ___x_cmd_run_with_engine "$engine" "$filepath" "$@"
     fi
 }
 
-___xcmd_get_engine_by_file_ext(){
+___x_cmd_get_engine_by_file_ext(){
     local filepath="${1:?filepath}"; shift
     local ext="${filepath##*.}"
     case "$ext" in
@@ -136,25 +136,25 @@ ___xcmd_get_engine_by_file_ext(){
     esac
 }
 
-___xcmd_run_by_file_ext(){
+___x_cmd_run_by_file_ext(){
     local filepath="${1:?filepath}"; shift
     local engine
-    if engine="$(___xcmd_get_engine_by_file_ext "$filepath")"; then
-        ___xcmd_run_with_engine "$engine" "$filepath" "$@"
+    if engine="$(___x_cmd_get_engine_by_file_ext "$filepath")"; then
+        ___x_cmd_run_with_engine "$engine" "$filepath" "$@"
     fi
 }
 
-___xcmd_get_engine_by_file(){
+___x_cmd_get_engine_by_file(){
     local filepath="${1:?filepath}"
-    ___xcmd_get_engine_by_file_ext "$filepath" || ___xcmd_get_engine_by_file_header "$filepath"
+    ___x_cmd_get_engine_by_file_ext "$filepath" || ___x_cmd_get_engine_by_file_header "$filepath"
 }
 
-___xcmd_run_by_file(){
+___x_cmd_run_by_file(){
     local filepath="${1:?filepath}"; shift
 
     if [ -L "$filepath" ]; then
-        filepath="$(___xcmd_readlink_recursive "$filepath")"
-        filepath="$(___xcmd_abspath "$filepath")"
+        filepath="$(___x_cmd_readlink_recursive "$filepath")"
+        filepath="$(___x_cmd_abspath "$filepath")"
     fi
 
     if [ -x "$filepath" ]; then
@@ -163,10 +163,10 @@ ___xcmd_run_by_file(){
     fi
 
     local engine
-    if engine="$(___xcmd_get_engine_by_file "$filepath")"; then
-        ___xcmd_run_with_engine "$engine" "$filepath" "$@"
+    if engine="$(___x_cmd_get_engine_by_file "$filepath")"; then
+        ___x_cmd_run_with_engine "$engine" "$filepath" "$@"
     else
-        ___xcmd_run_with_engine x-bash "$filepath" "$@"
+        ___x_cmd_run_with_engine x-bash "$filepath" "$@"
     fi
 }
 
@@ -174,7 +174,7 @@ ___xcmd_run_by_file(){
 
 # Section : utils
 
-___xcmd_abspath(){
+___x_cmd_abspath(){
     local target_path="${1:-Please provide path}"
     # $(dirname "$filepath")/
     if [ "${target_path#/}" = "${target_path}" ]; then
@@ -188,12 +188,12 @@ ___xcmd_abspath(){
 
 # Section : Find And Execute at .x-cmd folder
 
-___xcmd_exe_workspace(){
+___x_cmd_exe_workspace(){
     local filepath="${1:?filepath}"
     if [ -L "$filepath" ]; then
         local target_path
-        target_path="$(___xcmd_readlink_recursive "$filepath")"
-        target_path="$(___xcmd_abspath "$target_path")"
+        target_path="$(___x_cmd_readlink_recursive "$filepath")"
+        target_path="$(___x_cmd_abspath "$target_path")"
     fi
 
     # TODO: notice. Filepath should be colorized and emphasized.
@@ -223,12 +223,12 @@ A
         local code=$?
         # Bad interpreter
         if [ $code != 126 ] && [ $code != 127 ]; then
-            ___xcmd_run_by_file_ext "$filepath" "$@"
+            ___x_cmd_run_by_file_ext "$filepath" "$@"
             return
         fi
     fi
 
-    ___xcmd_run_by_file "$filepath" "$@"
+    ___x_cmd_run_by_file "$filepath" "$@"
     if [ $? = 126 ]; then
         cat >&2 <<A
 Cannot find out how to execute the file: "$filepath". Please specify the execution engine. For more information, consult 'x help'
@@ -256,28 +256,28 @@ xrc static-build
 #     "_${name}_bin" "$@"
 # }
 
-___xcmd_jq(){
-    static_build_init jq jq ___xcmd_jq && ___xcmd_jq          "$@"
+___x_cmd_jq(){
+    static_build_init jq jq ___x_cmd_jq && ___x_cmd_jq          "$@"
 }
 
-___xcmd_bw(){
-    static_build_init bandwhich bandwhich ___xcmd_bw && ___xcmd_bw          "$@"
+___x_cmd_bw(){
+    static_build_init bandwhich bandwhich ___x_cmd_bw && ___x_cmd_bw          "$@"
 }
 
-___xcmd_exa(){
-    static_build_init exa exa ___xcmd_exa && ___xcmd_exa      "$@"
+___x_cmd_exa(){
+    static_build_init exa exa ___x_cmd_exa && ___x_cmd_exa      "$@"
 }
 
-___xcmd_dust(){
-    static_build_init dust dust ___xcmd_dust && ___xcmd_dust  "$@"
+___x_cmd_dust(){
+    static_build_init dust dust ___x_cmd_dust && ___x_cmd_dust  "$@"
 }
 
-___xcmd_procs(){
-    static_build_init procs procs ___xcmd_procs && ___xcmd_procs  "$@"
+___x_cmd_procs(){
+    static_build_init procs procs ___x_cmd_procs && ___x_cmd_procs  "$@"
 }
 
-___xcmd_bat(){
-    static_build_init bat bat ___xcmd_bat && ___xcmd_bat      "$@"
+___x_cmd_bat(){
+    static_build_init bat bat ___x_cmd_bat && ___x_cmd_bat      "$@"
 }
 
 # EndSection
@@ -299,7 +299,7 @@ xrc xcmd/_v0/python
 # EndSection
 
 # Section : xaas
-___xcmd_notify(){
+___x_cmd_notify(){
     local msg="${1:?Provide msg}"
     local title="${2:-""}"
 
@@ -320,11 +320,11 @@ ___xcmd_notify(){
 
 # Section : install
 
-___xcmd_install(){
+___x_cmd_install(){
     local subcmd="${1}";    shift
 
     if [ -z "$subcmd" ]; then
-        ___xcmd_install help
+        ___x_cmd_install help
         return
     fi
 
@@ -340,22 +340,22 @@ SUBCOMMANDS:
     get         get software installation command
 A
         ;;
-        ls)             ___xcmd_install_ls "$@" ;;
-        get)            ___xcmd_install_get "$@" ;;
-        *)              ___xcmd_install_run "$subcmd" "$@" ;;
+        ls)             ___x_cmd_install_ls "$@" ;;
+        get)            ___x_cmd_install_get "$@" ;;
+        *)              ___x_cmd_install_run "$subcmd" "$@" ;;
     esac
 }
 
-___xcmd_install_run(){
+___x_cmd_install_run(){
     local target
-    target="$(___xcmd_install_get "${1:?Provide target}")"
+    target="$(___x_cmd_install_get "${1:?Provide target}")"
     printf "Executing command:\n> \e[32;1m%s\e[0m\n\n" "$target" >&2
     eval "$target"
 }
 
-___xcmd_install_ls(){
+___x_cmd_install_ls(){
     local CACHE="$___X_CMD_XRC_PATH/tmp/install/index.yml"
-    ___xcmd_curl_gitx "x-cmd" "install/index.yml"
+    ___x_cmd_curl_gitx "x-cmd" "install/index.yml"
     awk '
 $0!~/^#/{
     if ($0~/^[\ ]+/) {
@@ -372,9 +372,9 @@ $0!~/^#/{
 
 }
 
-___xcmd_install_get(){
+___x_cmd_install_get(){
     local CACHE="$___X_CMD_XRC_PATH/tmp/install/index.yml"
-    ___xcmd_curl_gitx "x-cmd" "install/index.yml"
+    ___x_cmd_curl_gitx "x-cmd" "install/index.yml"
     awk -v target="${1:-Provide target}" '
 $0!~/^#/{
     if ($0~/^[\ ]+/) {
@@ -398,7 +398,7 @@ $0!~/^#/{
 
 # Section : xcmd main function
 
-___xcmd_var(){
+___x_cmd_var(){
     local _______variable_name="${1%=}"
     if [ "$#" -eq 1 ]; then
         eval printf "%s" "\"\$$_______variable_name\""
@@ -411,7 +411,7 @@ ___xcmd_var(){
     eval "$_______variable_name=\"\$result\""
 }
 
-___xcmd_shell_exec(){
+___x_cmd_shell_exec(){
     local shell="${1:?Provide shell}"
     shift
     if [ -x "/bin/$shell" ]; then
@@ -423,14 +423,14 @@ ___xcmd_shell_exec(){
     fi
 }
 
-___xcmd_ls(){
+___x_cmd_ls(){
     case "$1" in
         @*|*@*/*)
-            ___xcmd_file_ls "$@"
+            ___x_cmd_file_ls "$@"
             return
             ;;
     esac
-    ___xcmd_exa        "$@"
+    ___x_cmd_exa        "$@"
 }
 
 
@@ -438,36 +438,36 @@ ___xcmd_ls(){
 # file share
 # file ls
 
-___xcmd_hub(){
+___x_cmd_hub(){
     local subcmd=$1;    shift
     case "$subcmd" in
-        ls)             ___xcmd_file_ls "$@" ;;
-        upload)         ___xcmd_file_upload "$@" ;;
-        share)          ___xcmd_file_share "$@" ;;
-        public)         ___xcmd_file_share "$@" ;;
-        private)        ___xcmd_file_private "$@" ;;
+        ls)             ___x_cmd_file_ls "$@" ;;
+        upload)         ___x_cmd_file_upload "$@" ;;
+        share)          ___x_cmd_file_share "$@" ;;
+        public)         ___x_cmd_file_share "$@" ;;
+        private)        ___x_cmd_file_private "$@" ;;
     esac
 }
 
 xcmd(){
     local subcmd=$1;    shift 2>/dev/null
     case "$subcmd" in
-        login)                                  ___xcmd_login "$@" ;;
-        register)                               ___xcmd_register "$@" ;;
-        token)                                  ___xcmd_token "$@" ;;
-        hub)                                    ___xcmd_hub "$@" ;;
+        login)                                  ___x_cmd_login "$@" ;;
+        register)                               ___x_cmd_register "$@" ;;
+        token)                                  ___x_cmd_token "$@" ;;
+        hub)                                    ___x_cmd_hub "$@" ;;
 
         initrc)                                 ( xrc xcmd/_v0/initrc && ___x_cmd_initrc "$@"; ) ;;
         log)                                    ( xrc xcmd/_v0/log && ___x_cmd_log "$@"; ) ;;
 
         rc|src)                                 xrc "$@" ;; # SRC_LOADER=bash eval "$(_xrc_print_code "$@")" ;;
-        *=)                                     ___xcmd_var "$subcmd" "$@" ;;
+        *=)                                     ___x_cmd_var "$subcmd" "$@" ;;
 
-        i|install)                                ___xcmd_install "$@" ;;
+        i|install)                                ___x_cmd_install "$@" ;;
 
         upgrade)    shift;  eval "$(curl https://get.x-cmd.com/script)" ;;
         clear)      shift;
-                    if ! grep "___xcmd_http_get()" "$___X_CMD_XRC_PATH/../boot" >/dev/null 2>&1; then
+                    if ! grep "___x_cmd_http_get()" "$___X_CMD_XRC_PATH/../boot" >/dev/null 2>&1; then
                         xrc_log debug "'$___X_CMD_XRC_PATH/../boot' NOT found. Please manually clear cache folder: $___X_CMD_XRC_PATH"
                         return 1
                     fi
@@ -479,22 +479,22 @@ xcmd(){
 
         z)                                      (   xrc zuz && zuz z "$@"   ) ;;
         uz)                                     (   xrc zuz && zuz uz "$@"  ) ;;
-        notify)                                 ___xcmd_notify "$@"  ;;
+        notify)                                 ___x_cmd_notify "$@"  ;;
 
         ubu|alp|deb|cen|bus)                    (   xrc xdk && xdk "$subcmd" "$@" ) ;;
         docker|dk|xdk)                          (   xrc xdk && xdk "$@" )   ;;
-        sh|bash|zsh|fish|ksh|dash|ash)          ___xcmd_shell_exec "$subcmd" "$@" ;;
+        sh|bash|zsh|fish|ksh|dash|ash)          ___x_cmd_shell_exec "$subcmd" "$@" ;;
 
         jar)                                    java -jar "$@" ;;
         java)                                   java "$@" ;;
 
-        pip|pip3)                               ___xcmd_pip3 "$@" ;;
-        python|py|python3|py3)                  ___xcmd_python3 "$@" ;;
+        pip|pip3)                               ___x_cmd_pip3 "$@" ;;
+        python|py|python3|py3)                  ___x_cmd_python3 "$@" ;;
 
         nvm)                                    xrc nvm/v0;     nvm "$@" ;;
-        javascript|js|node)                     ___xcmd_node "$@" ;;
-        npm)                                    ___xcmd_npm "$@" ;;
-        npx)                                    ___xcmd_npx "$@" ;;
+        javascript|js|node)                     ___x_cmd_node "$@" ;;
+        npm)                                    ___x_cmd_npm "$@" ;;
+        npx)                                    ___x_cmd_npx "$@" ;;
         ts)
             local arg
             local argstr
@@ -505,30 +505,30 @@ xcmd(){
                 esac
             done
             local script
-            # script="$(___xcmd_official_which "$1")"
+            # script="$(___x_cmd_official_which "$1")"
             script="$1"
             shift
             x npx @typeshell/exec "$argstr" "$script" "$@"
             ;;
-        ruby|rb)                                ruby "$(___xcmd_official_which "$2")" "$@"      ;;
+        ruby|rb)                                ruby "$(___x_cmd_official_which "$2")" "$@"      ;;
         lua)            ;;
 
         7zr)                                    ( xrc p7zr/v0   &&  p7zr "$@" )     ;;
         7z)                                     ( xrc p7z/v0    &&  p7z "$@" )      ;;
-        ls)                                     ___xcmd_ls         "$@"             ;;
-        ll)                                     ___xcmd_exa  -l    "$@"             ;;
-        ps)                                     ___xcmd_procs      "$@"             ;;
-        du)                                     ___xcmd_dust       "$@"             ;;
-        cat)                                    ___xcmd_bat        "$@"             ;;
-        bw)                                     ___xcmd_bw         "$@"             ;;
-        jq)                                     ___xcmd_jq         "$@"             ;;
+        ls)                                     ___x_cmd_ls         "$@"             ;;
+        ll)                                     ___x_cmd_exa  -l    "$@"             ;;
+        ps)                                     ___x_cmd_procs      "$@"             ;;
+        du)                                     ___x_cmd_dust       "$@"             ;;
+        cat)                                    ___x_cmd_bat        "$@"             ;;
+        bw)                                     ___x_cmd_bw         "$@"             ;;
+        jq)                                     ___x_cmd_jq         "$@"             ;;
 
-        run)                                    ___xcmd_run_by_file "$@"            ;;
-        search_path)                            ___xcmd_search_path "$@"            ;;
+        run)                                    ___x_cmd_run_by_file "$@"            ;;
+        search_path)                            ___x_cmd_search_path "$@"            ;;
         which|w)
             local p
             for p in "$@"; do
-                if ! p=$(___xcmd_which_one "$p"); then
+                if ! p=$(___x_cmd_which_one "$p"); then
                     printf "%s\n" "Fail to find path for $p" >&2
                     return
                 else
@@ -536,11 +536,11 @@ xcmd(){
                 fi
             done
             ;;
-        _x_cmd_advise_json)     ___xcmd_x_cmd_advise_json "$@" ;;
+        _x_cmd_advise_json)     ___x_cmd_x_cmd_advise_json "$@" ;;
         *)
             local p
-            if p="$(___xcmd_which_one "$subcmd" 2>/dev/null)"; then
-                ___xcmd_run_by_file "$p" "$@" 2>/dev/null
+            if p="$(___x_cmd_which_one "$subcmd" 2>/dev/null)"; then
+                ___x_cmd_run_by_file "$p" "$@" 2>/dev/null
                 return
             fi
 
@@ -551,7 +551,7 @@ xcmd(){
 # EndSection
 
 
-___xcmd_x_cmd_advise_json(){
+___x_cmd_x_cmd_advise_json(){
     cat <<A
 {
     "hub": {
@@ -609,7 +609,7 @@ ___xcmd_x_cmd_advise_json(){
         "get": "x install ls",
         "#1": "x install ls"
     },
-    "#1": "___xcmd_list_resource",
+    "#1": "___x_cmd_list_resource",
     "#n": "___advise_get_result '' 1"
 }
 A

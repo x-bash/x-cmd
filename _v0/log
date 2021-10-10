@@ -3,7 +3,7 @@
 # Section: log
 XRC_LOG_COLOR=1
 XRC_LOG_TIMESTAMP=      # "+%H:%M:%S"      # Enable Timestamp.
-___xcmd_logger(){
+___x_cmd_logger(){
     local logger="${O:-DEFAULT}"
     local IFS=
     local level="${1:?Please provide logger level}"
@@ -77,7 +77,7 @@ A
             shift;
             for i in "$@"; do
                 var="$(echo "XRC_LOG_LEVEL_${i}" | tr "[:lower:]" "[:upper:]")"
-                eval "${i}_log(){     O=$i FLAG_NAME=$var    ___xcmd_logger \"\$@\";   }"
+                eval "${i}_log(){     O=$i FLAG_NAME=$var    ___x_cmd_logger \"\$@\";   }"
             done
             return 0 ;;
         timestamp)

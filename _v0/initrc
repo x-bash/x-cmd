@@ -1,6 +1,6 @@
 # shellcheck shell=sh
 
-___xcmd_initrc_setup(){
+___x_cmd_initrc_setup(){
     if [ "$BASH_VERSION" ]; then        CAN="$HOME/.bashrc"
        [ "$(uname)" = "Darwin" ]  &&    CAN="$CAN $HOME/.bash_profile"
     elif [ "$ZSH_VERSION" ]; then       CAN="$HOME/.zshrc"
@@ -10,10 +10,10 @@ ___xcmd_initrc_setup(){
 }
 
 
-# ___xcmd_initrc(){
+# ___x_cmd_initrc(){
 #     local subcmd="${1:?Provide}"
 #     case "$subcmd" in
-#         setup)     ___xcmd_initrc_setup ;;
+#         setup)     ___x_cmd_initrc_setup ;;
 #     esac
 # }
 
