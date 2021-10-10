@@ -1,8 +1,6 @@
 # shellcheck shell=sh disable=SC3043
 
-xrc log init xcmd
-
-xrc xcmd/_v0/initrc
+xrc x-cmd/_v0/initrc
 
 ___x_cmd_readlink_recursive(){
     if [ -L "${1:?Provide link}" ]; then
@@ -81,8 +79,8 @@ ___x_cmd_run_with_engine(){
     local filepath="${2:?Please provide filepath}";        shift 2
     case "$engine" in
         x-bash)     ___x_cmd_xrc_run "$filepath" "$@";;
-        7z)         xcmd 7z x "$filepath" "$@"      ;;
-        *)          xcmd "$engine" "$filepath" "$@" ;;
+        7z)         ___x_cmd_main 7z x "$filepath" "$@"      ;;
+        *)          ___x_cmd_main "$engine" "$filepath" "$@" ;;
     esac
 }
 
@@ -208,7 +206,7 @@ ___x_cmd_exe_workspace(){
             case $action in
                 n|no|nein|ne)  cat >&2 <<A
 => You could run the file by yourself:
-\033[32m    xcmd \"$filepath\" \033[;0m
+\033[32m    x \"$filepath\" \033[;0m
 A
                     return 1
                     ;;
@@ -283,8 +281,8 @@ ___x_cmd_bat(){
 # EndSection
 
 # Section : Runtime
-xrc xcmd/_v0/node
-xrc xcmd/_v0/python
+xrc x-cmd/_v0/node
+xrc x-cmd/_v0/python
 # . _v0/node
 # . _v0/python
 
@@ -292,7 +290,7 @@ xrc xcmd/_v0/python
 
 # Section : engine management
 
-# node: node v12 and above, xcmd using v16
+# node: node v12 and above, x using v16
 # python: v3.6 and above, python using v14
 
 
@@ -396,7 +394,7 @@ $0!~/^#/{
 
 # EndSection
 
-# Section : xcmd main function
+# Section : x main function
 
 ___x_cmd_var(){
     local _______variable_name="${1%=}"
@@ -449,7 +447,7 @@ ___x_cmd_hub(){
     esac
 }
 
-xcmd(){
+___x_cmd_main(){
     local subcmd=$1;    shift 2>/dev/null
     case "$subcmd" in
         login)                                  ___x_cmd_login "$@" ;;
@@ -457,8 +455,8 @@ xcmd(){
         token)                                  ___x_cmd_token "$@" ;;
         hub)                                    ___x_cmd_hub "$@" ;;
 
-        initrc)                                 ( xrc xcmd/_v0/initrc && ___x_cmd_initrc "$@"; ) ;;
-        log)                                    ( xrc xcmd/_v0/log && ___x_cmd_log "$@"; ) ;;
+        initrc)                                 ( xrc x-cmd/_v0/initrc && ___x_cmd_initrc "$@"; ) ;;
+        log)                                    ( xrc x-cmd/_v0/log && ___x_cmd_log "$@"; ) ;;
 
         rc|src)                                 xrc "$@" ;; # SRC_LOADER=bash eval "$(_xrc_print_code "$@")" ;;
         *=)                                     ___x_cmd_var "$subcmd" "$@" ;;
@@ -617,7 +615,7 @@ A
 }
 
 x(){
-    xcmd "$@"
+    ___x_cmd_main "$@"
 }
 
 if [ -z "$XRC_NO_ADVISE" ] && [ -n "${BASH_VERSION}${ZSH_VERSION}" ] && [ "${-#*i}" != "$-" ]; then
