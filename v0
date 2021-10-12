@@ -333,21 +333,6 @@ ___x_cmd_ls(){
 }
 
 
-# file upload
-# file share
-# file ls
-
-___x_cmd_hub(){
-    local subcmd=$1;    shift
-    case "$subcmd" in
-        ls)             ___x_cmd_file_ls "$@" ;;
-        upload)         ___x_cmd_file_upload "$@" ;;
-        share)          ___x_cmd_file_share "$@" ;;
-        public)         ___x_cmd_file_share "$@" ;;
-        private)        ___x_cmd_file_private "$@" ;;
-    esac
-}
-
 ___x_cmd_main(){
     local subcmd=$1;    shift 2>/dev/null
     case "$subcmd" in
