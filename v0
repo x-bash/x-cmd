@@ -461,7 +461,7 @@ ___x_cmd_main(){
         rc|src)                                 xrc "$@" ;; # SRC_LOADER=bash eval "$(_xrc_print_code "$@")" ;;
         *=)                                     ___x_cmd_var "$subcmd" "$@" ;;
 
-        i|install)                                ___x_cmd_install "$@" ;;
+        i|install)                              ___x_cmd_install "$@" ;;
 
         upgrade)    shift;  eval "$(curl https://get.x-cmd.com/script)" ;;
         clear)      shift;
