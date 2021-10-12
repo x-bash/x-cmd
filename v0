@@ -60,14 +60,18 @@ ___xrc_run(){
     local ___xrc_run_filepath="${1:?filepath}";        shift
     xrc "$___xrc_run_filepath"
     local ___xrc_module_name="${___xrc_run_filepath##*/}"
-    if [ "$___xrc_module_name" = "$___xrc_module_name" ]; then
-        cat <<A
+
+    if command -v "___x_cmd_${___xrc_module_name}"; then
+        "___x_cmd_${___xrc_module_name}" "$@"
+    elif command -v "${___xrc_module_name}"; then
+        "${___xrc_module_name}" "$@"
+    else
+        cat 2>/dev/null <<A
 File not containing function: $___xrc_module_name
 Exit without execute: $___xrc_module_name "$@"
 A
         return 1
     fi
-    ___xrc_module_name "$@"
 }
 
 ___x_cmd_xrc_run()(
@@ -237,15 +241,8 @@ A
 
 # EndSection
 
-
 # Section : utilties in static-build
 xrc static-build
-
-# _x_xrc_run()(
-#     local name=$1;  shift
-#     xrc "$name"
-#     $name "$@"
-# )
 
 # _x_xrc_static_run(){
 #     local name=$1;  shift
@@ -280,43 +277,23 @@ ___x_cmd_bat(){
 
 # EndSection
 
-# Section : Runtime
+# Section : Runtime, future using xenv module
 xrc x-cmd/_v0/node
 xrc x-cmd/_v0/python
 # . _v0/node
 # . _v0/python
 
-# EndSection
-
-# Section : engine management
-
 # node: node v12 and above, x using v16
 # python: v3.6 and above, python using v14
-
 
 # EndSection
 
 # Section : xaas
-___x_cmd_notify(){
-    local msg="${1:?Provide msg}"
-    local title="${2:-""}"
-
-    # Mac
-    osascript -e "display notification \"$msg\" with title \"$title\""
-
-    # Linux
-
-    # Windows
-
-    # x-cmd service
-}
 
 # queue
 # cron
 
 # EndSection
-
-
 
 # Section : x main function
 
@@ -374,10 +351,10 @@ ___x_cmd_hub(){
 ___x_cmd_main(){
     local subcmd=$1;    shift 2>/dev/null
     case "$subcmd" in
-        login)                                  ___x_cmd_login "$@" ;;
-        register)                               ___x_cmd_register "$@" ;;
-        token)                                  ___x_cmd_token "$@" ;;
-        hub)                                    ___x_cmd_hub "$@" ;;
+        login)                                  ( xrc hub/v0 && ___x_cmd_hub login "$@" ) ;;
+        register)                               ( xrc hub/v0 && ___x_cmd_hub register "$@" ) ;;
+        token)                                  ( xrc hub/v0 && ___x_cmd_hub token "$@" ) ;;
+        hub)                                    ( xrc hub/v0 && ___x_cmd_hub "$@" ) ;;
 
         initrc)                                 ( xrc x-cmd/_v0/initrc && ___x_cmd_initrc "$@"; ) ;;
         log)                                    ( xrc x-cmd/_v0/log && ___x_cmd_log "$@"; ) ;;
@@ -385,7 +362,7 @@ ___x_cmd_main(){
         rc|src)                                 xrc "$@" ;; # SRC_LOADER=bash eval "$(_xrc_print_code "$@")" ;;
         *=)                                     ___x_cmd_var "$subcmd" "$@" ;;
 
-        i|install)                              ( xrc install/v0 && ___x_cmd_install "$@" ) ;;
+        i|install)                              xrc install/v0 && ___x_cmd_install "$@" ;;
 
         upgrade)    shift;  eval "$(curl https://get.x-cmd.com/script)" ;;
         clear)      shift;
@@ -401,7 +378,6 @@ ___x_cmd_main(){
 
         z)                                      (   xrc zuz && zuz z "$@"   ) ;;
         uz)                                     (   xrc zuz && zuz uz "$@"  ) ;;
-        notify)                                 ___x_cmd_notify "$@"  ;;
 
         ubu|alp|deb|cen|bus)                    (   xrc xdk && xdk "$subcmd" "$@" ) ;;
         docker|dk|xdk)                          (   xrc xdk && xdk "$@" )   ;;
