@@ -351,6 +351,8 @@ ___x_cmd_hub(){
 ___x_cmd_main(){
     local subcmd=$1;    shift 2>/dev/null
     case "$subcmd" in
+        *=)                                     ___x_cmd_var "$subcmd" "$@" ;;
+
         login)                                  ( xrc hub/v0 && ___x_cmd_hub login "$@" ) ;;
         register)                               ( xrc hub/v0 && ___x_cmd_hub register "$@" ) ;;
         token)                                  ( xrc hub/v0 && ___x_cmd_hub token "$@" ) ;;
@@ -360,7 +362,6 @@ ___x_cmd_main(){
         log)                                    ( xrc x-cmd/_v0/log && ___x_cmd_log "$@"; ) ;;
 
         rc|src)                                 xrc "$@" ;; # SRC_LOADER=bash eval "$(_xrc_print_code "$@")" ;;
-        *=)                                     ___x_cmd_var "$subcmd" "$@" ;;
 
         i|install)                              xrc install/v0 && ___x_cmd_install "$@" ;;
 
