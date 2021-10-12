@@ -369,8 +369,7 @@ ___x_cmd_main(){
                         return 1
                     fi
                     rm -rf "$___X_CMD_ROOT" ;;
-        reinstall)
-                    xrc clear
+        reinstall)  xrc clear
                     RELOAD=1 xrc upgrade
                     ;;
 
