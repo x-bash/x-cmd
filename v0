@@ -353,7 +353,7 @@ ___x_cmd_main(){
     case "$subcmd" in
         *=)                                     ___x_cmd_var "$subcmd" "$@" ;;
         i|install)                              xrc install/v0 && ___x_cmd_install "$@" ;;
-        rc|src)                                 xrc "$@" ;; # SRC_LOADER=bash eval "$(_xrc_print_code "$@")" ;;
+        # rc|src)                                 xrc "$@" ;; # SRC_LOADER=bash eval "$(_xrc_print_code "$@")" ;;
 
         login)                                  ( xrc hub/v0 && ___x_cmd_hub login "$@" ) ;;
         register)                               ( xrc hub/v0 && ___x_cmd_hub register "$@" ) ;;
