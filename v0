@@ -448,7 +448,6 @@ ___x_cmd_main(){
 
 # EndSection
 
-
 ___x_cmd_x_cmd_advise_json(){
     cat <<A
 {
