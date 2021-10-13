@@ -336,6 +336,7 @@ ___x_cmd_ls(){
 ___x_cmd_main(){
     local subcmd=$1;    shift 2>/dev/null
     case "$subcmd" in
+        boot)                                   ( xrc x-cmd/_v0/boot && ___x_cmd_boot "$@"; ) ;;
         *=)                                     ___x_cmd_var "$subcmd" "$@" ;;
         i|install)                              xrc install/v0 && ___x_cmd_install "$@" ;;
 
@@ -344,7 +345,6 @@ ___x_cmd_main(){
         token)                                  ( xrc hub/v0 && ___x_cmd_hub token "$@" ) ;;
         hub)                                    ( xrc hub/v0 && ___x_cmd_hub "$@" ) ;;
 
-        initrc)                                 ( xrc x-cmd/_v0/initrc && ___x_cmd_initrc "$@"; ) ;;
         log)                                    ( xrc x-cmd/_v0/log && ___x_cmd_log "$@"; ) ;;
 
         upgrade)    eval "$(curl https://get.x-cmd.com/script)" ;;
