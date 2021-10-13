@@ -1,4 +1,4 @@
-# shellcheck shell=sh
+# shellcheck shell=sh disable=SC3043
 
 # Section: initrc, consider external module.
 ___x_cmd_boot(){
