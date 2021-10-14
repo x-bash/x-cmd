@@ -408,10 +408,13 @@ ___x_cmd_main(){
                     done
                     ;;
         _x_cmd_advise_json)                     ___x_cmd_x_cmd_advise_json "$@" ;;
-        *)          local p
+        *)
+                    local p
                     if p="$(___x_cmd_which_one "$subcmd" 2>/dev/null)"; then
-                        ___x_cmd_run_by_file "$p" "$@" 2>/dev/null
+                        ___x_cmd_run_by_file "$p" "$@" # 2>/dev/null
                         return
+                    else
+                        printf "%s" "Error" >&2
                     fi
                     printf "%s" "$p"
     esac
