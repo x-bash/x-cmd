@@ -310,9 +310,11 @@ ___x_cmd_shell_exec(){
     local shell="${1:?Provide shell}"
     shift
     if [ -x "/bin/$shell" ]; then
-        "/bin/$shell" $X_CMD_SRC_PATH/boot && . "$@"
+        # "/bin/$shell" $X_CMD_SRC_PATH/boot && . "$@"
+        "/bin/$shell" "$@"
     elif [ -x "/usr/bin/$shell" ]; then
-        "/usr/bin/$shell" $X_CMD_SRC_PATH/boot && . "$@"
+        # "/usr/bin/$shell" $X_CMD_SRC_PATH/boot && . "$@"
+        "/usr/bin/$shell" "$@"
     else
         command "$shell" "$@"
     fi
