@@ -332,6 +332,7 @@ ___x_cmd_ls(){
 ___x_cmd_main(){
     local subcmd=$1;    shift 2>/dev/null
     case "$subcmd" in
+        ""|help)                                printf "%s" "Show help" ;;
         boot)                                   ( xrc x-cmd/_v0/boot && ___x_cmd_boot "$@"; ) ;;
         *=)                                     ___x_cmd_var "$subcmd" "$@" ;;
         i|install)                              xrc install/v0 && ___x_cmd_install "$@" ;;
@@ -410,7 +411,7 @@ ___x_cmd_main(){
         _x_cmd_advise_json)                     ___x_cmd_x_cmd_advise_json "$@" ;;
         *)
                     local p
-                    if p="$(___x_cmd_which_one "$subcmd" 2>/dev/null)"; then
+                    if p="$(___x_cmd_which_one "$subcmd")"; then
                         ___x_cmd_run_by_file "$p" "$@" # 2>/dev/null
                         return
                     else
