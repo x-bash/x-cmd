@@ -43,10 +43,13 @@ A
             )
             ;;
         mod)    shift
+
+                local ___X_CMD_ROOT_MOD="$___X_CMD_ROOT/.mod"
                 case "$1" in
+                    path)       printf "%s" "$___X_CMD_ROOT_MOD" ;;
                     add|+)      shift
                                 (
-                                    s="$(cat "$___X_CMD_ROOT/mod")"
+                                    s="$(cat "$___X_CMD_ROOT_MOD")"
                                     for mod in "$@"; do
                                         if [ "$s" != "${s#|$mod|}" ]; then
                                             printf "%s\n" "$s"
@@ -55,19 +58,19 @@ A
                                 ) ;;
                     del|-)      shift
                                 (
-                                    s="$(cat "$___X_CMD_ROOT/mod")"
+                                    s="$(cat "$___X_CMD_ROOT_MOD")"
                                     d="$s"
                                     for mod in "$@"; do
                                         d="${d#*|$mod|
 *}"
                                     done
                                     if [ "$d" != "$s" ]; then
-                                        printf "%s" "$s" > "$___X_CMD_ROOT/mod"
+                                        printf "%s" "$s" > "$___X_CMD_ROOT_MOD"
                                     fi
                                 )
                                 ;;
-                    ls|*)       cat "$___X_CMD_ROOT/mod" ;;
-                    load)       eval xrc "$(tr '\n' ' ' <"$___X_CMD_ROOT/mod" | tr -d '|')"
+                    load)       eval xrc "$(tr '\n' ' ' <"$___X_CMD_ROOT_MOD" | tr -d '|')" ;;
+                    ls|*)       cat "$___X_CMD_ROOT_MOD" ;;
                 esac
                 ;;
         # which)  printf "%s\n" "$X_CMD_SRC_PATH/.init.rc"    ;;
