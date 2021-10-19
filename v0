@@ -20,6 +20,7 @@ ___x_cmd_list_resource(){
     :
 }
 
+alias "abc[debug]"=echo
 
 # Section : Unfinished ___x_cmd_official_which
 
@@ -454,6 +455,8 @@ ___x_cmd_main(){
         register)                               ___x_cmd_register "$@" ;;
         token)                                  ___x_cmd_token "$@" ;;
         hub)                                    ___x_cmd_hub "$@" ;;
+
+        dbg)                                    ( xrc x-cmd/_v0/dbg && ___x_cmd_dbg "$@" ) ;;
 
         initrc)                                 ( xrc x-cmd/_v0/initrc && ___x_cmd_initrc "$@"; ) ;;
         log)                                    ( xrc x-cmd/_v0/log && ___x_cmd_log "$@"; ) ;;
