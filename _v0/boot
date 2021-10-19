@@ -17,6 +17,7 @@ else
     printf "%s\n  %s" 'xrc/latest not found. You can reinstall using:' 'eval "$(curl https://get.x-cmd.com/all)"'
     return 1
 fi
+
 [ -f "$___X_CMD_ROOT/.boot/mod" ] && x boot mod load
 A
             (
@@ -27,7 +28,7 @@ A
                 else                                CAN="$HOME/.shinit"
                 fi
 
-                X_STR="[ -f \"\$HOME/.x-cmd/.boot/boot\" ]. \"\$HOME/.x-cmd/.boot/boot\""
+                X_STR="[ -f \"\$HOME/.x-cmd/.boot/boot\" ] && . \"\$HOME/.x-cmd/.boot\""
                 IFS=" "
                 for i in $CAN; do
                     if grep -F "$X_STR" "$i" >/dev/null; then
@@ -41,7 +42,7 @@ A
             ;;
         mod)    shift
 
-                local ___X_CMD_ROOT_MOD="$___X_CMD_ROOT/.mod"
+                local ___X_CMD_ROOT_MOD="$___X_CMD_ROOT/.boot.mod"
                 case "$1" in
                     path)       printf "%s" "$___X_CMD_ROOT_MOD" ;;
                     add|+)      shift
