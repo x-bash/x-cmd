@@ -11,13 +11,10 @@ ___x_cmd_boot(){
 
 if command -v xrc >dev/null 2>&1; then
     return 0
-elif [ -f "$HOME/.x-cmd/.tgz/core.tgz" ]; then
-    ___X_CMD_CORE_TGZ="$___X_CMD_ROOT/.tgz/core.tgz"
-    eval "$(tar Oxf "$___X_CMD_CORE_TGZ" xrc/latest)"
 elif [ -f "$HOME/.x-cmd/xrc/latest" ]; then
     . "$HOME/.x-cmd/xrc/latest"
 else
-    printf "%s\n  %s" 'core.tgz or xrc/latest not found. You can reinstall using:' 'eval "$(curl https://get.x-cmd.com/exp)"'
+    printf "%s\n  %s" 'xrc/latest not found. You can reinstall using:' 'eval "$(curl https://get.x-cmd.com/all)"'
     return 1
 fi
 [ -f "$___X_CMD_ROOT/.boot/mod" ] && x boot mod load
