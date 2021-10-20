@@ -28,7 +28,7 @@ A
                 else                                CAN="$HOME/.shinit"
                 fi
 
-                X_STR="[ -f \"\$HOME/.x-cmd/.boot/boot\" ] && . \"\$HOME/.x-cmd/.boot\""
+                X_STR="[ -f \"\$HOME/.x-cmd/.boot/boot\" ] && . \"\$HOME/.x-cmd/.boot/boot\""
                 IFS=" "
                 for i in $CAN; do
                     if grep -F "$X_STR" "$i" >/dev/null; then
@@ -41,8 +41,7 @@ A
             )
             ;;
         mod)    shift
-
-                local ___X_CMD_ROOT_MOD="$___X_CMD_ROOT/.boot.mod"
+                local ___X_CMD_ROOT_MOD="$___X_CMD_ROOT/.boot/mod"
                 case "$1" in
                     path)       printf "%s" "$___X_CMD_ROOT_MOD" ;;
                     add|+)      shift
@@ -52,7 +51,7 @@ A
                                         if [ "$s" != "${s#|$mod|}" ]; then
                                             printf "%s\n" "$s"
                                         fi
-                                    done >> "$X_CMD_SRC_PATH/.init.rc"
+                                    done >> "$___X_CMD_ROOT_MOD"
                                 ) ;;
                     del|-)      shift
                                 (
@@ -68,11 +67,10 @@ A
                                 )
                                 ;;
                     load)       eval xrc "$(tr '\n' ' ' <"$___X_CMD_ROOT_MOD" | tr -d '|')" ;;
-                    ls|*)       cat "$___X_CMD_ROOT_MOD" ;;
+                    which)      printf "%s\n" "$___X_CMD_ROOT_MOD"    ;;
+                    cat|ls|*)       cat "$___X_CMD_ROOT_MOD" 2>/dev/null ;;
                 esac
                 ;;
-        # which)  printf "%s\n" "$X_CMD_SRC_PATH/.init.rc"    ;;
-        # cat|*)  cat "$X_CMD_SRC_PATH/.init.rc" 2>/dev/null  ;;
     esac
 }
 
