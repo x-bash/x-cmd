@@ -353,8 +353,8 @@ ___x_cmd_main(){
         log)                                    xrc x-cmd/_v0/log && ___x_cmd_log "$@" ;;
 
         upgrade)    eval "$(curl https://get.x-cmd.com/all)" ;;
-        clear)      if ! grep "___x_cmd_http_get()" "$___X_CMD_ROOT/xrc/v0" >/dev/null 2>&1; then
-                        xrc_log debug "'$___X_CMD_ROOT/xrc/v0' NOT found. Please manually clear cache folder: $___X_CMD_ROOT"
+        clear)      if ! grep "___x_cmd_http_get()" "$___X_CMD_ROOT/xrc/latest" >/dev/null 2>&1; then
+                        xrc_log debug "'$___X_CMD_ROOT/xrc/latest' NOT found. Please manually clear cache folder: $___X_CMD_ROOT"
                         return 1
                     fi
                     rm -rf "$___X_CMD_ROOT" ;;
