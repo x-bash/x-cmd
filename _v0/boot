@@ -44,7 +44,7 @@ A
                 done
             )
             ;;
-        mod)    shift
+        mod)
                 local ___X_CMD_ROOT_MOD="$___X_CMD_ROOT/.boot/mod"
                 case "$1" in
                     path)       printf "%s" "$___X_CMD_ROOT_MOD" ;;
@@ -72,7 +72,7 @@ A
                                 ;;
                     load)       eval xrc "$(tr '\n' ' ' <"$___X_CMD_ROOT_MOD" | tr -d '|')" ;;
                     which)      printf "%s\n" "$___X_CMD_ROOT_MOD"    ;;
-                    cat|ls|*)       cat "$___X_CMD_ROOT_MOD" 2>/dev/null ;;
+                    cat|ls|*)   cat "$___X_CMD_ROOT_MOD" 2>/dev/null ;;
                 esac
                 ;;
     esac
