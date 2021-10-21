@@ -77,17 +77,19 @@ $mod
 "
                                     d="$s"
                                     for mod in "$@"; do
-                                        d1="${d#*
+                                        d2="${d#*
 $mod
 }"
-                                        d2="${d%
+                                        [ "$d2" = "$d" ] && continue
+                                        d1="${d%
 $mod
-}"
+*}"
                                         d="$d1
 $d2"
                                     done
-                                    if [ "$d" = "$s" ]; then
-                                        printf "%s" "$s" > "$___X_CMD_ROOT_MOD"
+
+                                    if [ "$d" != "$s" ]; then
+                                        printf "%s" "$d" > "$___X_CMD_ROOT_MOD"
                                     fi
                                 )
                                 ;;
