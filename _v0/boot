@@ -2,7 +2,7 @@
 
 # Section: initrc, consider external module.
 ___x_cmd_boot(){
-    local subcmd="$1"
+    local subcmd="$1";  shift
     if ! mkdir -p "$HOME/.x-cmd/.boot"; then
         printf "boot abort for mkdir fails: %s\n" "$HOME/.x-cmd/.boot" >/dev/stderr
         return 1
@@ -45,27 +45,48 @@ A
             )
             ;;
         mod)
+                subcmd="$1"; shift
                 local ___X_CMD_ROOT_MOD="$___X_CMD_ROOT/.boot/mod"
-                case "$1" in
+                case "$subcmd" in
                     path)       printf "%s" "$___X_CMD_ROOT_MOD" ;;
-                    add|+)      shift
+                    add|+)
+
                                 (
-                                    s="$(cat "$___X_CMD_ROOT_MOD")"
-                                    for mod in "$@"; do
-                                        if [ "$s" != "${s#|$mod|}" ]; then
-                                            printf "%s\n" "$s"
+                                    s="$(cat "$___X_CMD_ROOT_MOD" 2>/dev/null)"
+                                    {
+                                        if [ "$s" = "" ]; then
+                                            s="$(printf "%s\n" "# Do NOT modifiy this file manually for it is auto generated.")"
+                                            printf "%s\n" "# Do NOT modifiy this file manually for it is auto generated."
                                         fi
-                                    done >> "$___X_CMD_ROOT_MOD"
+                                        # Intentionally, because "$()" will trim the last \n
+                                        s="$s
+"
+                                        for mod in "$@"; do
+                                            if [ "$s" = "${s#*
+$mod
+}" ]; then
+                                                printf "%s\n" "$mod"
+                                            fi
+                                        done
+                                    } >> "$___X_CMD_ROOT_MOD"
                                 ) ;;
-                    del|-)      shift
+                    del|-)
                                 (
-                                    s="$(cat "$___X_CMD_ROOT_MOD")"
+                                    s="$(cat "$___X_CMD_ROOT_MOD" 2>/dev/null)"
+                                    s="$s
+"
                                     d="$s"
                                     for mod in "$@"; do
-                                        d="${d#*|$mod|
-*}"
+                                        d1="${d#*
+$mod
+}"
+                                        d2="${d%
+$mod
+}"
+                                        d="$d1
+$d2"
                                     done
-                                    if [ "$d" != "$s" ]; then
+                                    if [ "$d" = "$s" ]; then
                                         printf "%s" "$s" > "$___X_CMD_ROOT_MOD"
                                     fi
                                 )
