@@ -227,6 +227,7 @@ A
         fi
     fi
 
+     # workspace
     ___X_CMD_WSROOT="$filepath"
     ___X_CMD_WSROOT="$(dirname "$___X_CMD_WSROOT")"
     ___X_CMD_WSROOT="$(cd "$___X_CMD_WSROOT" && pwd)/"
@@ -351,6 +352,35 @@ ___x_cmd_workspace_root(){
     return 1
 }
 
+___x_cmd_main_otherwise(){
+    local subcmd="$1"; shift
+
+    # static build
+    # update the static-build files
+    local p
+    if p="$(___x_cmd_which_one "$subcmd")"; then
+        if [ "$___X_CMD_UNTRUSTED_RESOURCE" -eq 2 ]; then
+            ___x_cmd_exe_workspace "$@"
+        else
+            ___x_cmd_run_by_file "$p" "$@" # 2>/dev/null
+        fi
+        return
+    else
+        printf "%s" "Error" >&2
+    fi
+    printf "%s" "$p"
+}
+
+___x_cmd_ws(){
+    local RESOURCE_NAME="$1"; shift
+    if TGT="$(___x_cmd_search_path . ".x-cmd/$RESOURCE_NAME")"; then
+        ___x_cmd_exe_workspace "$TGT/.x-cmd/$RESOURCE_NAME" "$@"
+        return
+    else
+        printf "Workspace Resource Not found: %s" "$RESOURCE_NAME" >&2
+        return 1
+    fi
+}
 
 ___x_cmd_main(){
     local subcmd=$1;    shift 2>/dev/null
@@ -439,27 +469,10 @@ ___x_cmd_main(){
                                                 done
                                                 ;;
         _x_cmd_advise_json)                     ___x_cmd_x_cmd_advise_json "$@" ;;
+        ws)                                     ___x_cmd_ws "$@" ;;
         wsroot)                                 ___x_cmd_workspace_root "$@" ;;
-        *)
-                                                # static build
+        *)                                      ___x_cmd_main_otherwise "$subcmd" "$@" ;;
 
-                                                local p
-                                                if p="$(___x_cmd_which_one "$subcmd")"; then
-                                                    if [ "${p#$___X_CMD_ROOT}" = "$p" ]; then
-                                                        # workspace
-                                                        ___X_CMD_WSROOT="$filepath"
-                                                        ___X_CMD_WSROOT="$(dirname "$___X_CMD_WSROOT")"
-                                                        ___X_CMD_WSROOT="$(cd "$___X_CMD_WSROOT" && pwd)/"
-                                                        ___X_CMD_WSROOT="${___X_CMD_WSROOT%/.x-cmd/*}"
-                                                        export ___X_CMD_WSROOT
-                                                    fi
-                                                    export ___X_CMD_ROOT
-                                                    ___x_cmd_run_by_file "$p" "$@" # 2>/dev/null
-                                                    return
-                                                else
-                                                    printf "%s" "Error" >&2
-                                                fi
-                                                printf "%s" "$p"
     esac
 }
 
