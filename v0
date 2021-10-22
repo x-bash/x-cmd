@@ -336,6 +336,21 @@ ___x_cmd_ls(){
     ___x_cmd_exa        "$@"
 }
 
+___x_cmd_workspace_root(){
+    local cur="${1:-.}"
+
+    cur="$(cd "$cur" 1>/dev/null 2>&1 && pwd)"
+
+    while [ ! "$cur" = "" ]; do
+        if [ -d "$cur/.x-cmd" ]; then
+            printf "%s" "$cur"
+            return 0
+        fi
+        cur=${cur%/*}
+    done
+    return 1
+}
+
 
 ___x_cmd_main(){
     local subcmd=$1;    shift 2>/dev/null
@@ -343,7 +358,7 @@ ___x_cmd_main(){
         ""|help)                                printf "%s\n" "Show help" >&2; return 1 ;;
         boot)                                   ( xrc x-cmd/_v0/boot && ___x_cmd_boot "$@"; ) ;;
         *=)                                     ___x_cmd_var "$subcmd" "$@" ;;
-        i|install)                              xrc install/v0 && ___x_cmd_install "$@" ;;
+        install)                              xrc install/v0 && ___x_cmd_install "$@" ;;
 
         config)     ;;
         man)        ;;
@@ -424,17 +439,10 @@ ___x_cmd_main(){
                     done
                     ;;
         _x_cmd_advise_json)                     ___x_cmd_x_cmd_advise_json "$@" ;;
+        wsroot)                                 ___x_cmd_workspace_root "$@" ;;
         *)
                     local p
                     if p="$(___x_cmd_which_one "$subcmd")"; then
-                        if [ "${p#$___X_CMD_ROOT}" = "$p" ]; then
-                            # workspace
-                            ___X_CMD_WSROOT="$filepath"
-                            ___X_CMD_WSROOT="$(dirname "$___X_CMD_WSROOT")"
-                            ___X_CMD_WSROOT="$(cd "$___X_CMD_WSROOT" && pwd)/"
-                            ___X_CMD_WSROOT="${___X_CMD_WSROOT%/.x-cmd/*}"
-                            export ___X_CMD_WSROOT
-                        fi
                         ___x_cmd_run_by_file "$p" "$@" # 2>/dev/null
                         return
                     else
@@ -449,11 +457,7 @@ ___x_cmd_main(){
 ___x_cmd_x_cmd_advise_json(){
     cat <<A
 {
-    "update|u": {},
-    "upgrade": {},
-    "reinstall": {},
-
-    "initrc": {
+    "boot": {
         "cat": null
         "which|w": null,
         "mod": {
@@ -462,6 +466,27 @@ ___x_cmd_x_cmd_advise_json(){
             "ls": null
         }
     },
+
+    "install": {
+        "ls": null,
+        "get": "x install ls",
+        "#1": "x install ls"
+    },
+
+    "config": {
+
+    },
+
+    "man": {},
+    "adviser": {},
+    "proxy": {},
+    "theme": {},
+    "env": {},
+
+    "login": {},
+    "register": {},
+    "token": {},
+    "hub": {},
 
     "log": {
         "init": {},
@@ -472,27 +497,41 @@ ___x_cmd_x_cmd_advise_json(){
         "#n": "___x_cmd_log_completer"
     },
 
+    "upgrade": {},
+    "clear": {},
+    "reinstall": {},
+
     "z": null,
     "uz": null,
+
     "ubu|alp|deb|cen|bus": null,
     "docker|dk|xdk": null,
-    "nvm": null,
+    "sh|bash|zsh|fish|ksh|dash|ash": {},
+    "jar": {},
+    "java": {},
+
     "pip|pip3": null,
     "python|py|python3|py3": null,
+
+    "nvm": null,
     "javascript|js|node": null,
     "npm":  null,
+    "npx":  null,
+
     "ts": null,
     "ruby|rb": null,
     "lua": null,
-    "ruby|rb": null,
+
     "jq": null,
     "ls|ll": null,
     "ps|procs": null,
-    "install": {
-        "ls": null,
-        "get": "x install ls",
-        "#1": "x install ls"
-    },
+
+
+    "run": {},
+    "search_path": {},
+    "which": {},
+    "wsroot": {},
+
     "#1": "___x_cmd_list_resource",
     "#n": "___advise_get_result '' 1"
 }
