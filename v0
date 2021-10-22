@@ -358,7 +358,7 @@ ___x_cmd_main(){
         ""|help)                                printf "%s\n" "Show help" >&2; return 1 ;;
         boot)                                   ( xrc x-cmd/_v0/boot && ___x_cmd_boot "$@"; ) ;;
         *=)                                     ___x_cmd_var "$subcmd" "$@" ;;
-        install)                              xrc install/v0 && ___x_cmd_install "$@" ;;
+        install)                                xrc install/v0 && ___x_cmd_install "$@" ;;
 
         config)     ;;
         man)        ;;
