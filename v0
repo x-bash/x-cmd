@@ -399,20 +399,20 @@ ___x_cmd_main(){
         javascript|js|node)                     xrc x-cmd/_v0/node && ___x_cmd_node "$@" ;;
         npm)                                    xrc x-cmd/_v0/node && ___x_cmd_npm "$@" ;;
         npx)                                    xrc x-cmd/_v0/node && ___x_cmd_npx "$@" ;;
-        ts)         local arg
-                    local argstr
-                    while [ $# -ge 0 ]; do
-                        case "$arg" in
-                            -*)     argstr="$argstr $arg"   ;;
-                            *)      break
-                        esac
-                    done
-                    local script
-                    # script="$(___x_cmd_official_which "$1")"
-                    script="$1"
-                    shift
-                    x npx @typeshell/exec "$argstr" "$script" "$@"
-                    ;;
+        ts)                                     local arg
+                                                local argstr
+                                                while [ $# -ge 0 ]; do
+                                                    case "$arg" in
+                                                        -*)     argstr="$argstr $arg"   ;;
+                                                        *)      break
+                                                    esac
+                                                done
+                                                local script
+                                                # script="$(___x_cmd_official_which "$1")"
+                                                script="$1"
+                                                shift
+                                                x npx @typeshell/exec "$argstr" "$script" "$@"
+                                                ;;
         ruby|rb)                                ruby "$(___x_cmd_official_which "$2")" "$@"      ;;
         lua)            ;;
 
@@ -441,6 +441,8 @@ ___x_cmd_main(){
         _x_cmd_advise_json)                     ___x_cmd_x_cmd_advise_json "$@" ;;
         wsroot)                                 ___x_cmd_workspace_root "$@" ;;
         *)
+                                                # static build
+
                                                 local p
                                                 if p="$(___x_cmd_which_one "$subcmd")"; then
                                                     if [ "${p#$___X_CMD_ROOT}" = "$p" ]; then
