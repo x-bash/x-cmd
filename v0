@@ -359,8 +359,8 @@ ___x_cmd_main_otherwise(){
     # update the static-build files
     local p
     if p="$(___x_cmd_which_one "$subcmd")"; then
-        if [ "$___X_CMD_UNTRUSTED_RESOURCE" -eq 2 ]; then
-            ___x_cmd_exe_workspace "$@"
+        if [ "$___X_CMD_UNTRUSTED_RESOURCE" = "workspace" ]; then
+            ___x_cmd_exe_workspace "$p" "$@"
         else
             ___x_cmd_run_by_file "$p" "$@" # 2>/dev/null
         fi
