@@ -390,11 +390,10 @@ ___x_cmd_main(){
         *=)                                     ___x_cmd_var "$subcmd" "$@" ;;
         install)                                xrc install/v0 && ___x_cmd_install "$@" ;;
 
-        config)     ;;
         man)        ;;
         adviser)    ;;
         proxy)      ;;
-        theme)      ;;
+        theme)                                  xrc theme/latest && ___x_cmd_theme_control "$@" ;;
         env)        ;;
 
         login)                                  ( xrc hub/v0 && ___x_cmd_hub login "$@" ) ;;
