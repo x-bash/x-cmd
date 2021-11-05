@@ -386,6 +386,7 @@ ___x_cmd_main(){
     local subcmd=$1;    shift 2>/dev/null
     case "$subcmd" in
         ""|help)                                printf "%s\n" "Show help" >&2; return 1 ;;
+        # boot)                                   ( xrc x-cmd/_v0/boot && ___x_cmd_boot "$@"; ) ;;
         boot)                                   ( xrc x-cmd/_v0/boot && ___x_cmd_boot "$@"; ) ;;
         *=)                                     ___x_cmd_var "$subcmd" "$@" ;;
         install)                                xrc install/v0 && ___x_cmd_install "$@" ;;
