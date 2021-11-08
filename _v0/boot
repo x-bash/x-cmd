@@ -24,6 +24,7 @@ fi
 
 [ -f "$HOME/.x-cmd/.boot/mod" ] && x boot mod load
 [ -f "$HOME/.x-cmd/.boot/rc" ] && . "$HOME/.x-cmd/.boot/rc"
+:
 A
             (
                 if [ "$BASH_VERSION" ]; then        CAN="$HOME/.bashrc"
