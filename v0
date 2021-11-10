@@ -307,6 +307,30 @@ ___x_cmd_bat(){
 
 # EndSection
 
+# Section : multiple
+
+___x_cmd_eval_concurrent_single(){
+    local s="$(eval "$1")"
+    cat
+    printf "%s\n" "$s"
+}
+
+___x_cmd_eval_concurrent(){
+    case "$#" in
+        0)      return 0 ;;
+        1)      eval "$1" ;;
+        2)      eval "$1" | ___x_cmd_eval_concurrent_single "$2" ;;
+        3)      eval "$1" | ___x_cmd_eval_concurrent_single "$2" | ___x_cmd_eval_concurrent_single "$3" ;;
+        *)
+                s='eval "$1"'
+                local i
+                for i in $(seq 2 $#); do
+                    s="$s | ___x_cmd_eval_concurrent_single \"\$$i\""
+                done
+                eval "$s"
+    esac
+}
+
 # Section : xaas
 
 # queue
@@ -402,8 +426,10 @@ ___x_cmd_main(){
     local subcmd=$1;    shift 2>/dev/null
     case "$subcmd" in
         ""|help)                                printf "%s\n" "Show help" >&2; return 1 ;;
+        # boot)                                   ( xrc x-cmd/_v0/boot && ___x_cmd_boot "$@"; ) ;;
         boot)                                   ( xrc x-cmd/_v0/boot && ___x_cmd_boot "$@"; ) ;;
         *=)                                     ___x_cmd_var "$subcmd" "$@" ;;
+        con)                                    ___x_cmd_eval_concurrent "$@" ;;
         install)                                xrc install/v0 && ___x_cmd_install "$@" ;;
 
         man)        ;;
@@ -420,7 +446,7 @@ ___x_cmd_main(){
 
         log)                                    xrc x-cmd/_v0/log && ___x_cmd_log "$@" ;;
 
-        upgrade)                                eval "$(curl https://get.x-cmd.com/all)" ;;
+        upgrade)                                eval "$(curl https://get.x-cmd.com)" ;;
         clear)                                  if ! grep "___x_cmd_http_get()" "$___X_CMD_ROOT/xrc/latest" >/dev/null 2>&1; then
                                                     ___xrc_log debug "'$___X_CMD_ROOT/xrc/latest' NOT found. Please manually clear cache folder: $___X_CMD_ROOT"
                                                     return 1
@@ -512,8 +538,10 @@ ___x_cmd_x_cmd_advise_json(){
 
     "install": {
         "ls": null,
-        "get": "x install ls",
-        "#1": "x install ls"
+        "get": "x install name",
+        "update": null,
+        "run": "x install name",
+        "#1": "x install name"
     },
 
     "config": {
@@ -521,6 +549,7 @@ ___x_cmd_x_cmd_advise_json(){
     },
 
     "man": {},
+    "tldr": {},
     "adviser": {},
     "theme": {},
     "env": {},
