@@ -524,9 +524,9 @@ ___x_cmd_x_cmd_advise_json(){
     "man": {},
     "tldr": {
         "update": null,
-        "ls": "___tldr_lsname",
-        "lang": "___tldr_lang",
-        "cat": "___tldr_lsname"
+        "ls": "xrc tldr/v0 && ___tldr_lsname",
+        "lang": "xrc tldr/v0 && ___tldr_lang",
+        "cat": "xrc tldr/v0 && ___tldr_lsname"
     },
     "advise": {
         "ls": null,
