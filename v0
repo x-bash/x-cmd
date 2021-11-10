@@ -271,6 +271,10 @@ ___x_cmd_nping(){
     xrc static-build && static_build_init nmap nping ___x_cmd_nping && ___x_cmd_nping  "$@"
 }
 
+___x_cmd_traceroute(){
+    xrc static-build && static_build_init nmap traceroute ___x_cmd_traceroute && ___x_cmd_traceroute  "$@"
+}
+
 ___x_cmd_bw(){
     xrc static-build && static_build_init bandwhich bandwhich ___x_cmd_bw && ___x_cmd_bw          "$@"
 }
@@ -470,7 +474,7 @@ ___x_cmd_main(){
         nmap)                                   ___x_cmd_nmap       "$@"             ;;
         ncat)                                   ___x_cmd_ncat       "$@"             ;;
         nping)                                  ___x_cmd_nping      "$@"             ;;
-
+        traceroute)                             ___x_cmd_traceroute "$@"             ;;
         run)                                    ___x_cmd_run_by_file "$@"            ;;
         search_path)                            ___x_cmd_search_path "$@"            ;;
         which|w)                                local p
@@ -567,7 +571,7 @@ ___x_cmd_x_cmd_advise_json(){
     "nmap":null,
     "ncat":null,
     "nping":null,
-
+    "traceroute":null,
 
     "run": {},
     "search_path": {},
