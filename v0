@@ -534,8 +534,10 @@ ___x_cmd_x_cmd_advise_json(){
 
     "install": {
         "ls": null,
-        "get": "x install ls",
-        "#1": "x install ls"
+        "get": "x install name",
+        "update": null,
+        "run": "x install name",
+        "#1": "x install name"
     },
 
     "config": {
