@@ -303,6 +303,30 @@ ___x_cmd_bat(){
 
 # EndSection
 
+# Section : multiple
+
+___x_cmd_eval_concurrent_single(){
+    local s="$(eval "$1")"
+    cat
+    printf "%s\n" "$s"
+}
+
+___x_cmd_eval_concurrent(){
+    case "$#" in
+        0)      return 0 ;;
+        1)      eval "$1" ;;
+        2)      eval "$1" | ___x_cmd_eval_concurrent_single "$2" ;;
+        3)      eval "$1" | ___x_cmd_eval_concurrent_single "$2" | ___x_cmd_eval_concurrent_single "$3" ;;
+        *)
+                s='eval "$1"'
+                local i
+                for i in $(seq 2 $#); do
+                    s="$s | ___x_cmd_eval_concurrent_single \"\$$i\""
+                done
+                eval "$s"
+    esac
+}
+
 # Section : xaas
 
 # queue
@@ -401,6 +425,7 @@ ___x_cmd_main(){
         # boot)                                   ( xrc x-cmd/_v0/boot && ___x_cmd_boot "$@"; ) ;;
         boot)                                   ( xrc x-cmd/_v0/boot && ___x_cmd_boot "$@"; ) ;;
         *=)                                     ___x_cmd_var "$subcmd" "$@" ;;
+        con)                                    ___x_cmd_eval_concurrent "$@" ;;
         install)                                xrc install/v0 && ___x_cmd_install "$@" ;;
 
         man)        ;;
