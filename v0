@@ -259,6 +259,10 @@ ___x_cmd_jq(){
     xrc static-build && static_build_init jq jq ___x_cmd_jq && ___x_cmd_jq          "$@"
 }
 
+___x_cmd_yq(){
+    xrc static-build && static_build_init yq yq ___x_cmd_yq && ___x_cmd_yq          "$@"
+}
+
 ___x_cmd_nmap(){
     xrc static-build && static_build_init nmap nmap ___x_cmd_nmap && ___x_cmd_nmap  "$@"
 }
@@ -497,6 +501,7 @@ ___x_cmd_main(){
         cat)                                    ___x_cmd_bat        "$@"             ;;
         bw)                                     ___x_cmd_bw         "$@"             ;;
         jq)                                     ___x_cmd_jq         "$@"             ;;
+        yq)                                     ___x_cmd_yq         "$@"             ;;
         nmap)                                   ___x_cmd_nmap       "$@"             ;;
         ncat)                                   ___x_cmd_ncat       "$@"             ;;
         nping)                                  ___x_cmd_nping      "$@"             ;;
@@ -594,6 +599,7 @@ ___x_cmd_x_cmd_advise_json(){
     "lua": null,
 
     "jq": null,
+    "yq": null,
     "ls|ll": null,
     "ps|procs": null,
 
