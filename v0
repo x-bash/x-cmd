@@ -438,7 +438,7 @@ ___x_cmd_main(){
 
         man)        ;;
         tldr)                                   xrc tldr/v0 && tldr "$@" ;;
-        adviser)    ;;
+        advise)                                 xrc advise/v0 && advise "$@" ;;
         proxy)                                  xrc proxy/latest && proxy "$@" ;;
         theme)                                  xrc theme/latest && ___x_cmd_theme_control "$@" ;;
         env)        ;;
@@ -461,8 +461,8 @@ ___x_cmd_main(){
         z)                                      (   xrc zuz && zuz z "$@"   ) ;;
         uz)                                     (   xrc zuz && zuz uz "$@"  ) ;;
 
-        ubu|alp|deb|cen|bus)                    (   xrc xdk && xdk "$subcmd" "$@" ) ;;
-        docker|dk|xdk)                          (   xrc xdk && xdk "$@" )   ;;
+        ubu|alp|deb|cen|bus)                    (   xrc xdk/v0 && xdk "$subcmd" "$@" ) ;;
+        docker|dk|xdk)                          (   xrc xdk/v0 && xdk "$@" )   ;;
         sh|bash|zsh|fish|ksh|dash|ash)          ___x_cmd_shell_exec "$subcmd" "$@" ;;
 
         jar)                                    java -jar "$@" ;;
@@ -532,7 +532,7 @@ ___x_cmd_x_cmd_advise_json(){
     cat <<A
 {
     "boot": {
-        "cat": null
+        "cat": null,
         "which|w": null,
         "mod": {
             "add|+": null,
@@ -550,19 +550,56 @@ ___x_cmd_x_cmd_advise_json(){
     },
 
     "config": {
-
+        "tab":null,
+        "ssh":null,
+        "sshd":null
     },
 
     "man": {},
-    "tldr": {},
-    "adviser": {},
-    "theme": {},
+    "tldr": {
+        "update": null,
+        "ls": "xrc tldr/v0 && ___tldr_lsname",
+        "lang": "xrc tldr/v0 && ___tldr_lang",
+        "cat": "xrc tldr/v0 && ___tldr_lsname"
+    },
+    "advise": {
+        "ls": null,
+        "rm": null,
+        "which|cat|init|new": "ls ${TMPDIR%/}/.x-cmd/advise_auto_json/",
+        "man": {
+            "ls": null,
+            "update": null,
+            "rm": null,
+            "which": "x advise man ls",
+            "load": null
+        },
+        "del":null,
+        "obj-new":null,
+        "obj-del": null
+    },
+    "theme": {
+        "ls":null,
+        "use":null,
+        "try":null,
+        "rollback":null
+    },
     "env": {},
 
     "login": {},
     "register": {},
     "token": {},
-    "hub": {},
+    "hub": {
+        "file": {
+            "ls": null,
+            "which": "x hub file ls",
+            "upload": "x hub file ls",
+            "share": "x hub file ls",
+            "private": "x hub file ls",
+        },
+        "login": null,
+        "register": null,
+        "token": null
+    },
 
     "log": {
         "init": {},
@@ -580,17 +617,45 @@ ___x_cmd_x_cmd_advise_json(){
     "z": null,
     "uz": null,
 
-    "ubu|alp|deb|cen|bus": null,
-    "docker|dk|xdk": null,
-    "sh|bash|zsh|fish|ksh|dash|ash": {},
-    "jar": {},
-    "java": {},
+    "ubu|alp|deb|cen|bus": {
+        "alias": {},
+        "run":  {
+            "centos": {},
+            "ubuntu": {},
+            "alpine": {},
+            "busybox": {}
+        },
+        "exec": {},
+        "empower": {},
+        "centos": {},
+        "ubuntu": {},
+        "alpine": {},
+        "busybox": {}
+    },
+    "docker|dk|xdk": {
+        "alias": {},
+        "run":  {
+            "centos": {},
+            "ubuntu": {},
+            "alpine": {},
+            "busybox": {}
+        },
+        "exec": {},
+        "empower": {},
+        "centos": {},
+        "ubuntu": {},
+        "alpine": {},
+        "busybox": {}
+    },
+    "sh|bash|zsh|fish|ksh|dash|ash": "___advise_ls",
+    "jar": "___advise_ls",
+    "java": "___advise_ls",
 
-    "pip|pip3": null,
-    "python|py|python3|py3": null,
+    "pip|pip3": "___advise_ls",
+    "python|py|python3|py3": "___advise_ls",
 
     "nvm": null,
-    "javascript|js|node": null,
+    "javascript|js|node": "___advise_ls",
     "npm":  null,
     "npx":  null,
 
