@@ -503,7 +503,13 @@ ___x_cmd_main(){
         ps)                                     ___x_cmd_procs      "$@"             ;;
         du)                                     ___x_cmd_dust       "$@"             ;;
         sqlite3)                                ___x_cmd_sqlite3    "$@"             ;;
-        cat)                                    ___x_cmd_bat        "$@"             ;;
+        cat)
+                                                if [ "$#" -ne 0 ]; then
+                                                    ___x_cmd_bat "$@"
+                                                else
+                                                    ___x_cmd_bat "--help"
+                                                fi
+                                                ;;
         bw)                                     ___x_cmd_bw         "$@"             ;;
         jq)                                     ___x_cmd_jq         "$@"             ;;
         yq)                                     ___x_cmd_yq         "$@"             ;;
