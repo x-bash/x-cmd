@@ -15,7 +15,7 @@ ___x_cmd_readlink_recursive(){
 }
 
 ___x_cmd_list_resource(){
-    printf "%s" "proxy"
+    printf "%s" "proxy tldr"
 }
 
 # Section : Unfinished ___x_cmd_official_which
@@ -559,7 +559,6 @@ ___x_cmd_x_cmd_advise_json(){
         "run": "x install name",
         "#1": "x install name"
     },
-
     "config": {
         "tab":null,
         "ssh":null,
@@ -567,15 +566,9 @@ ___x_cmd_x_cmd_advise_json(){
     },
 
     "man": {},
-    "tldr": {
-        "update": null,
-        "ls": "xrc tldr/v0 && ___tldr_lsname",
-        "lang": "xrc tldr/v0 && ___tldr_lang",
-        "cat": "xrc tldr/v0 && ___tldr_lsname"
-    },
     "advise": {
         "ls": null,
-        "rm": null,
+        "rm": "x advise ls",
         "which|cat|init|new": "ls ${TMPDIR%/}/.x-cmd/advise_auto_json/",
         "man": {
             "ls": null,
@@ -589,10 +582,11 @@ ___x_cmd_x_cmd_advise_json(){
         "obj-del": null
     },
     "theme": {
-        "ls":null,
-        "use":null,
-        "try":null,
-        "rollback":null
+        "ls": null,
+        "use": "xrc theme/latest && ___x_cmd_theme_control_ls",
+        "try": "xrc theme/latest && ___x_cmd_theme_control_ls",
+        "rollback": null,
+        "unset": null
     },
     "env": {},
 
