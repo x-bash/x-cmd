@@ -15,7 +15,7 @@ ___x_cmd_readlink_recursive(){
 }
 
 ___x_cmd_list_resource(){
-    printf "%s" "proxy tldr"
+    printf "%s" "proxy tldr cowsay"
 }
 
 # Section : Unfinished ___x_cmd_official_which
@@ -366,10 +366,10 @@ ___x_cmd_shell_exec(){
     shift
     if [ -x "/bin/$shell" ]; then
         # "/bin/$shell" $X_CMD_SRC_PATH/boot && . "$@"
-        "/bin/$shell" "$@"
+        "/bin/$shell" -c ". $___X_CMD_ROOT/xrc/latest && $@"
     elif [ -x "/usr/bin/$shell" ]; then
         # "/usr/bin/$shell" $X_CMD_SRC_PATH/boot && . "$@"
-        "/usr/bin/$shell" "$@"
+        "/usr/bin/$shell" -c ". $___X_CMD_ROOT/xrc/latest && $@"
     else
         command "$shell" "$@"
     fi
@@ -496,7 +496,7 @@ ___x_cmd_main(){
         ruby|rb)                                ruby "$(___x_cmd_official_which "$2")" "$@"      ;;
         lua)            ;;
 
-        7zr)                                    ( xrc p7zr/v0   &&  p7zr "$@" )     ;;
+        p7zr|7zr)                               ( xrc p7zr/v0   &&  p7zr "$@" )     ;;
         7z)                                     ( xrc p7z/v0    &&  p7z "$@" )      ;;
         ls)                                     ___x_cmd_ls         "$@"             ;;
         ll)                                     ___x_cmd_exa  -l    "$@"             ;;
@@ -532,6 +532,7 @@ ___x_cmd_main(){
         _x_cmd_advise_json)                     ___x_cmd_x_cmd_advise_json "$@" ;;
         ws)                                     ___x_cmd_ws "$@" ;;
         wsroot)                                 ___x_cmd_workspace_root "$@" ;;
+        cowsay)                                 xrc cowsay/latest && cowsay "$@" ;;
         *)                                      ___x_cmd_main_otherwise "$subcmd" "$@" ;;
 
     esac
@@ -614,7 +615,7 @@ ___x_cmd_x_cmd_advise_json(){
         },
         "#n": "___x_cmd_log_completer"
     },
-
+    "zqk": null,
     "upgrade": {},
     "clear": {},
     "reinstall": {},
@@ -667,6 +668,8 @@ ___x_cmd_x_cmd_advise_json(){
     "ts": null,
     "ruby|rb": null,
     "lua": null,
+    "p7zr|7zr": null,
+    "7z": null,
 
     "jq": null,
     "yq": null,
