@@ -615,7 +615,6 @@ ___x_cmd_x_cmd_advise_json(){
         },
         "#n": "___x_cmd_log_completer"
     },
-    "zqk": null,
     "upgrade": {},
     "clear": {},
     "reinstall": {},
