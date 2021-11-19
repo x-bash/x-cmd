@@ -349,11 +349,9 @@ ___x_cmd_eval_concurrent(){
     done
     # eval "$cmd"
 
-    local ___X_CMD_EVAL_CON_SEPERATOR
-    ___X_CMD_EVAL_CON_SEPERATOR="
-"
-    ___X_CMD_EVAL_CON_SEPERATOR="$(printf "\001")"
-    echo "$cmd"
+    local ___X_CMD_EVAL_CON_SEPERATOR="${___X_CMD_EVAL_CON_SEPERATOR:-
+}"
+    eval "$cmd"
 }
 
 ___x_cmd_eval_concurrent_var(){
