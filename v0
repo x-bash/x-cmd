@@ -315,7 +315,7 @@ ___x_cmd_bat(){
 
 # EndSection
 
-# Section : multiple
+# Section : run in concurrent
 
 # ___X_CMD_EVAL_CON_SEPERATOR="$(printf "\001")"
 ___X_CMD_EVAL_CON_SEPERATOR="
@@ -408,6 +408,7 @@ A
 
 }
 
+# EndSection
 
 # Section : xaas
 
