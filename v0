@@ -318,12 +318,15 @@ ___x_cmd_bat(){
 # Section : run in concurrent
 
 # ___X_CMD_EVAL_CON_SEPERATOR="$(printf "\001")"
-___X_CMD_EVAL_CON_SEPERATOR="
-"
+___X_CMD_EVAL_CON_SEPERATOR=""
 
 ___x_cmd_eval_concurrent_single_head(){
     eval "$1"
     printf "%s" "${___X_CMD_EVAL_CON_SEPERATOR}"
+}
+
+___x_cmd_eval_concurrent_single_head_without_end(){
+    printf "%s%s" "$(eval "$1")" "${___X_CMD_EVAL_CON_SEPERATOR}"
 }
 
 ___x_cmd_eval_concurrent_single_tail(){
@@ -334,7 +337,15 @@ ___x_cmd_eval_concurrent_single_tail(){
     printf "%s" "${s%$sep}"
 }
 
-___x_cmd_eval_concurrent(){
+___x_cmd_eval_concurrent_single_tail_without_end(){
+    local s
+    s="$(eval "$1")"
+    cat
+    printf "%s" "${s%$sep}"
+}
+
+___x_cmd_eval_concurrent_join(){
+
     if [ $# -le 1 ]; then
         eval "$@"
         return
@@ -342,19 +353,19 @@ ___x_cmd_eval_concurrent(){
 
     local cmd
     local result
-    cmd='___x_cmd_eval_concurrent_single_head "$1"'
+    cmd='___x_cmd_eval_concurrent_single_head_without_end "$1"'
     local i
     for i in $(seq 2 $#); do
-        cmd="$cmd | ___x_cmd_eval_concurrent_single_tail \"\$$i\""
+        cmd="$cmd | ___x_cmd_eval_concurrent_single_tail_without_end \"\$$i\""
     done
     # eval "$cmd"
 
-    local ___X_CMD_EVAL_CON_SEPERATOR="${___X_CMD_EVAL_CON_SEPERATOR:-
+    local ___X_CMD_EVAL_CON_SEPERATOR="${sep:-
 }"
     eval "$cmd"
 }
 
-___x_cmd_eval_concurrent_var(){
+___x_cmd_eval_concurrent_assign(){
     [ $# -le 1 ] && return 1
 
     local cmd
@@ -365,6 +376,21 @@ ___x_cmd_eval_concurrent_var(){
     while [ $i -le $# ]; do
         local varname_eq="$(eval printf "%s" \""\$$((i-1))"\")"
         case "$varname_eq" in
+            *:=)
+                eval "${varname_eq}"
+                if [ -z "$var_namelist" ]; then
+                    var_namelist="${varname_eq%:=}"
+                else
+                    var_namelist="$var_namelist
+${varname_eq%=}"
+                fi
+
+                if [ "$i" -eq 2 ]; then
+                    cmd='___x_cmd_eval_concurrent_single_head "$2"'
+                else
+                    cmd="$cmd | ___x_cmd_eval_concurrent_single_tail \"\$$i\""
+                fi
+                ;;
             *=)
                 eval "${varname_eq}"
                 if [ -z "$var_namelist" ]; then
@@ -373,17 +399,19 @@ ___x_cmd_eval_concurrent_var(){
                     var_namelist="$var_namelist
 ${varname_eq%=}"
                 fi
+
+                if [ "$i" -eq 2 ]; then
+                    cmd='___x_cmd_eval_concurrent_single_head_without_end "$2"'
+                else
+                    cmd="$cmd | ___x_cmd_eval_concurrent_single_tail_without_end \"\$$i\""
+                fi
                 ;;
             *)
                 printf "%s\n" "Expect to be *= but get $varname_eq" >&2
                 return 1
         esac
 
-        if [ "$i" -eq 2 ]; then
-            cmd='___x_cmd_eval_concurrent_single_head "$2"'
-        else
-            cmd="$cmd | ___x_cmd_eval_concurrent_single_tail \"\$$i\""
-        fi
+
 
         i=$((i+2))
     done
@@ -418,7 +446,7 @@ A
 # Section : x main function
 
 ___x_cmd_varset(){
-    local _______variable_name="${1%=}"
+    local _______variable_name="${1}"
     if [ "$#" -eq 1 ]; then
         eval printf "%s" "\"\$$_______variable_name\""
         return
@@ -436,7 +464,7 @@ ___x_cmd_varset(){
 }
 
 ___x_cmd_varset_without_end(){
-    local _______variable_name="${1%=}"
+    local _______variable_name="${1}"
     if [ "$#" -eq 1 ]; then
         eval printf "%s" "\"\$$_______variable_name\""
         return
@@ -524,11 +552,11 @@ ___x_cmd_main(){
         # boot)                                   ( xrc x-cmd/_v0/boot && ___x_cmd_boot "$@"; ) ;;
         boot)                                   ( xrc x-cmd/_v0/boot && ___x_cmd_boot "$@"; ) ;;
 
-        con)                                    ___x_cmd_eval_concurrent "$@" ;;
-        =con)                                   ___x_cmd_eval_concurrent_var "$@" ;;
+        mapjoin)                                ___x_cmd_eval_concurrent_join "$@" ;;
+        map=)                                    ___x_cmd_eval_concurrent_assign "$@" ;;
 
-        *=)                                     ___x_cmd_varset "$subcmd" "$@" ;;
-        *=%)                                    ___x_cmd_varset_without_end "${subcmd%\%}" "$@" ;;
+        *:=)                                    ___x_cmd_varset "${subcmd%:=}" "$@" ;;
+        *=)                                     ___x_cmd_varset_without_end "${subcmd%=}" "$@" ;;
 
         install)                                xrc install/v0 && ___x_cmd_install "$@" ;;
 
