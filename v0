@@ -345,6 +345,8 @@ ___x_cmd_eval_concurrent_single_tail_without_end(){
     printf "%s%s" "${s}" "${___X_CMD_EVAL_CON_SEPERATOR}"
 }
 
+# time x mapjoin "sleep 1s; echo 1" "sleep 1s; echo 2" "sleep 1s; echo 3"
+# time sep=, x mapjoin "sleep 1s; echo 1" "sleep 1s; echo 2" "sleep 1s; echo 3"
 ___x_cmd_eval_concurrent_join(){
 
     if [ $# -le 1 ]; then
@@ -370,6 +372,8 @@ ___x_cmd_eval_concurrent_join(){
     eval "$cmd"
 }
 
+# time x map= a= "sleep 1s; echo 1" b= "sleep 1s; echo 2" c= "sleep 1s; echo 3"
+# time x map= a= "sleep 1s; echo 1" b:= "sleep 1s; echo 2" c= "sleep 1s; echo 3"
 ___x_cmd_eval_concurrent_assign(){
     [ $# -le 1 ] && return 1
 
@@ -382,12 +386,12 @@ ___x_cmd_eval_concurrent_assign(){
         local varname_eq="$(eval printf "%s" \""\$$((i-1))"\")"
         case "$varname_eq" in
             *:=)
-                eval "${varname_eq}"
+                eval "${varname_eq%:=}=s"
                 if [ -z "$var_namelist" ]; then
                     var_namelist="${varname_eq%:=}"
                 else
                     var_namelist="$var_namelist
-${varname_eq%=}"
+${varname_eq%:=}"
                 fi
 
                 if [ "$i" -eq 2 ]; then
@@ -422,8 +426,6 @@ ${varname_eq%=}"
     local ___X_CMD_EVAL_CON_SEPERATOR
     ___X_CMD_EVAL_CON_SEPERATOR="$(printf "\001")"
 
-    echo "$cmd"
-
     result="$( eval "$cmd"; printf "$___X_CMD_EVAL_CON_SEPERATOR" )"
     local varname
     local item
@@ -438,8 +440,6 @@ $var_namelist
 A
 
 }
-
-___x_cmd_eval_concurrent_single_head_without_end "sleep 1s; echo 1" | ___x_cmd_eval_concurrent_single_tail_without_end "sleep 1s; echo 2" | ___x_cmd_eval_concurrent_single_tail_without_end "sleep 1s; echo 3"
 
 # EndSection
 
