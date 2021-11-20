@@ -331,7 +331,8 @@ ___x_cmd_eval_concurrent_single_head_without_end(){
 
 ___x_cmd_eval_concurrent_single_tail(){
     local s
-    local sep="$(printf "\001")"
+    local sep
+    sep="$(printf "\001")"
     s="$(eval "$1"; printf "%s" "${___X_CMD_EVAL_CON_SEPERATOR}$sep")"
     cat
     printf "%s" "${s%$sep}"
@@ -341,7 +342,7 @@ ___x_cmd_eval_concurrent_single_tail_without_end(){
     local s
     s="$(eval "$1")"
     cat
-    printf "%s" "${s%$sep}"
+    printf "%s%s" "${s}" "${___X_CMD_EVAL_CON_SEPERATOR}"
 }
 
 ___x_cmd_eval_concurrent_join(){
@@ -356,7 +357,11 @@ ___x_cmd_eval_concurrent_join(){
     cmd='___x_cmd_eval_concurrent_single_head_without_end "$1"'
     local i
     for i in $(seq 2 $#); do
-        cmd="$cmd | ___x_cmd_eval_concurrent_single_tail_without_end \"\$$i\""
+        if [ "$i" -eq $# ]; then
+            cmd="$cmd | ___X_CMD_EVAL_CON_SEPERATOR= ___x_cmd_eval_concurrent_single_tail_without_end \"\$$i\""
+        else
+            cmd="$cmd | ___x_cmd_eval_concurrent_single_tail_without_end \"\$$i\""
+        fi
     done
     # eval "$cmd"
 
@@ -411,13 +416,13 @@ ${varname_eq%=}"
                 return 1
         esac
 
-
-
         i=$((i+2))
     done
 
     local ___X_CMD_EVAL_CON_SEPERATOR
     ___X_CMD_EVAL_CON_SEPERATOR="$(printf "\001")"
+
+    echo "$cmd"
 
     result="$( eval "$cmd"; printf "$___X_CMD_EVAL_CON_SEPERATOR" )"
     local varname
@@ -433,6 +438,8 @@ $var_namelist
 A
 
 }
+
+___x_cmd_eval_concurrent_single_head_without_end "sleep 1s; echo 1" | ___x_cmd_eval_concurrent_single_tail_without_end "sleep 1s; echo 2" | ___x_cmd_eval_concurrent_single_tail_without_end "sleep 1s; echo 3"
 
 # EndSection
 
