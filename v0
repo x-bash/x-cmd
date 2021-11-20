@@ -345,8 +345,8 @@ ___x_cmd_eval_concurrent_single_tail_without_end(){
     printf "%s%s" "${s}" "${___X_CMD_EVAL_CON_SEPERATOR}"
 }
 
-# time x mapjoin "sleep 1s; echo 1" "sleep 1s; echo 2" "sleep 1s; echo 3"
-# time sep=, x mapjoin "sleep 1s; echo 1" "sleep 1s; echo 2" "sleep 1s; echo 3"
+# time x conjoin "sleep 1s; echo 1" "sleep 1s; echo 2" "sleep 1s; echo 3"
+# time sep=, x conjoin "sleep 1s; echo 1" "sleep 1s; echo 2" "sleep 1s; echo 3"
 ___x_cmd_eval_concurrent_join(){
 
     if [ $# -le 1 ]; then
@@ -372,8 +372,8 @@ ___x_cmd_eval_concurrent_join(){
     eval "$cmd"
 }
 
-# time x map= a= "sleep 1s; echo 1" b= "sleep 1s; echo 2" c= "sleep 1s; echo 3"
-# time x map= a= "sleep 1s; echo 1" b:= "sleep 1s; echo 2" c= "sleep 1s; echo 3"
+# time x con a= "sleep 1s; echo 1" b= "sleep 1s; echo 2" c= "sleep 1s; echo 3"
+# time x con a= "sleep 1s; echo 1" b:= "sleep 1s; echo 2" c= "sleep 1s; echo 3"
 ___x_cmd_eval_concurrent_assign(){
     [ $# -le 1 ] && return 1
 
@@ -559,8 +559,8 @@ ___x_cmd_main(){
         # boot)                                   ( xrc x-cmd/_v0/boot && ___x_cmd_boot "$@"; ) ;;
         boot)                                   ( xrc x-cmd/_v0/boot && ___x_cmd_boot "$@"; ) ;;
 
-        mapjoin)                                ___x_cmd_eval_concurrent_join "$@" ;;
-        map=)                                   ___x_cmd_eval_concurrent_assign "$@" ;;
+        conjoin)                                ___x_cmd_eval_concurrent_join "$@" ;;
+        con)                                   ___x_cmd_eval_concurrent_assign "$@" ;;
 
         *:=)                                    ___x_cmd_varset "${subcmd%:=}" "$@" ;;
         *=)                                     ___x_cmd_varset_without_end "${subcmd%=}" "$@" ;;
