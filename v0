@@ -560,7 +560,7 @@ ___x_cmd_main(){
         boot)                                   ( xrc x-cmd/_v0/boot && ___x_cmd_boot "$@"; ) ;;
 
         mapjoin)                                ___x_cmd_eval_concurrent_join "$@" ;;
-        map=)                                    ___x_cmd_eval_concurrent_assign "$@" ;;
+        map=)                                   ___x_cmd_eval_concurrent_assign "$@" ;;
 
         *:=)                                    ___x_cmd_varset "${subcmd%:=}" "$@" ;;
         *=)                                     ___x_cmd_varset_without_end "${subcmd%=}" "$@" ;;
