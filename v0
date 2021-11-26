@@ -71,11 +71,15 @@ A
     fi
 }
 
+___x_cmd_xrc_run()(
+    ___xrc_run "$@"
+)
+
 ___x_cmd_run_with_engine(){
     local engine="${1:?Please provide engine}";
     local filepath="${2:?Please provide filepath}";        shift 2
     case "$engine" in
-        x-bash)     ___xrc_run "$filepath" "$@"              ;;
+        x-bash)     ___x_cmd_xrc_run "$filepath" "$@";;
         7z)         ___x_cmd_main 7z x "$filepath" "$@"      ;;
         *)          ___x_cmd_main "$engine" "$filepath" "$@" ;;
     esac
