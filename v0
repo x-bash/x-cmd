@@ -812,7 +812,7 @@ ___x_cmd_x_cmd_advise_json(){
     "wsroot": {},
 
     "#1": "___x_cmd_list_resource",
-    "#n": "___advise_get_result '' 1"
+    "#n": "___advise_get_result 1"
 }
 A
     return 126
