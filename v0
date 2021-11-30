@@ -638,7 +638,13 @@ ___x_cmd_main(){
                                                 fi
                                                 ;;
         bw)                                     ___x_cmd_bw         "$@"             ;;
-        jq)                                     ___x_cmd_jq         "$@"             ;;
+        jq)                                     
+                                                if [ "$#" -ne 0 ]; then
+                                                    ___x_cmd_jq "$@"
+                                                else
+                                                    ___x_cmd_jq "--help"
+                                                fi
+                                                ;;
         yq)                                     ___x_cmd_yq         "$@"             ;;
         nmap)                                   ___x_cmd_nmap       "$@"             ;;
         ncat)                                   ___x_cmd_ncat       "$@"             ;;
