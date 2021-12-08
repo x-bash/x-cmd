@@ -571,7 +571,7 @@ ___x_cmd_main(){
 
         install)                                xrc install/v0 && ___x_cmd_install "$@" ;;
 
-        cd)                                     ___x_cmd_cd ;;
+        cd)                                     ___x_cmd_cd "$@";;
 
         man)        ;;
         tldr)                                   xrc tldr/v0 && tldr "$@" ;;
