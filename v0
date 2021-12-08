@@ -15,7 +15,8 @@ ___x_cmd_readlink_recursive(){
 }
 
 ___x_cmd_list_resource(){
-    printf "%s" "proxy tldr"
+    printf "%s" "proxy
+tldr"
 }
 
 # Section : Unfinished ___x_cmd_official_which
@@ -809,8 +810,8 @@ ___x_cmd_x_cmd_advise_json(){
 
     "jq": null,
     "yq": null,
-    "ls|ll": null,
-    "ps|procs": null,
+    "ls|ll|cat|du|cd": "___advise_ls",
+    "ps|procs": null
 
     "nmap":null,
     "ncat":null,
