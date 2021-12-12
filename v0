@@ -679,6 +679,7 @@ ___x_cmd_main(){
 
 # EndSection
 
+# Section : advise.json
 ___x_cmd_x_cmd_advise_json(){
     cat <<A
 {
@@ -830,6 +831,7 @@ ___x_cmd_x_cmd_advise_json(){
 A
     return 126
 }
+# EndSection
 
 x(){
     ___x_cmd_main "$@"
