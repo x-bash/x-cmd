@@ -264,6 +264,22 @@ ___x_cmd_yq(){
     xrc static-build && static_build_init yq yq ___x_cmd_yq && ___x_cmd_yq          "$@"
 }
 
+___x_cmd_curl(){
+    xrc static-build && static_build_init curl curl ___x_cmd_curl && ___x_cmd_curl  "$@"
+}
+
+___x_cmd_openssl(){
+    xrc static-build && static_build_init openssl openssl ___x_cmd_openssl && ___x_cmd_openssl          "$@"
+}
+
+___x_cmd_tmux(){
+    xrc static-build && static_build_init tmux tmux ___x_cmd_tmux && ___x_cmd_tmux          "$@"
+}
+
+___x_cmd_git(){
+    xrc static-build && static_build_init git git ___x_cmd_git && ___x_cmd_git          "$@"
+}
+
 ___x_cmd_nmap(){
     xrc static-build && static_build_init nmap nmap ___x_cmd_nmap && ___x_cmd_nmap  "$@"
 }
@@ -653,6 +669,10 @@ ___x_cmd_main(){
                                                 fi
                                                 ;;
         yq)                                     ___x_cmd_yq         "$@"             ;;
+        curl)                                   ___x_cmd_curl       "$@"             ;;
+        openssl|ssl)                            ___x_cmd_openssl    "$@"             ;;
+        tmux)                                   ___x_cmd_tmux       "$@"             ;;
+        git)                                    ___x_cmd_git        "$@"             ;;
         nmap)                                   ___x_cmd_nmap       "$@"             ;;
         ncat)                                   ___x_cmd_ncat       "$@"             ;;
         nping)                                  ___x_cmd_nping      "$@"             ;;
