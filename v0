@@ -15,7 +15,8 @@ ___x_cmd_readlink_recursive(){
 }
 
 ___x_cmd_list_resource(){
-    printf "%s" "proxy tldr"
+    printf "%s" "proxy
+tldr"
 }
 
 # Section : Unfinished ___x_cmd_official_which
@@ -261,6 +262,22 @@ ___x_cmd_jq(){
 
 ___x_cmd_yq(){
     xrc static-build && static_build_init yq yq ___x_cmd_yq && ___x_cmd_yq          "$@"
+}
+
+___x_cmd_curl(){
+    xrc static-build && static_build_init curl curl ___x_cmd_curl && ___x_cmd_curl  "$@"
+}
+
+___x_cmd_openssl(){
+    xrc static-build && static_build_init openssl openssl ___x_cmd_openssl && ___x_cmd_openssl          "$@"
+}
+
+___x_cmd_tmux(){
+    xrc static-build && static_build_init tmux tmux ___x_cmd_tmux && ___x_cmd_tmux          "$@"
+}
+
+___x_cmd_git(){
+    xrc static-build && static_build_init git git ___x_cmd_git && ___x_cmd_git          "$@"
 }
 
 ___x_cmd_nmap(){
@@ -572,7 +589,7 @@ ___x_cmd_main(){
 
         install)                                xrc install/v0 && ___x_cmd_install "$@" ;;
 
-        cd)                                     ___x_cmd_cd ;;
+        cd)                                     ___x_cmd_cd "$@";;
 
         man)        ;;
         tldr)                                   xrc tldr/v0 && tldr "$@" ;;
@@ -653,6 +670,10 @@ ___x_cmd_main(){
                                                 fi
                                                 ;;
         yq)                                     ___x_cmd_yq         "$@"             ;;
+        curl)                                   ___x_cmd_curl       "$@"             ;;
+        openssl|ssl)                            ___x_cmd_openssl    "$@"             ;;
+        tmux)                                   ___x_cmd_tmux       "$@"             ;;
+        git)                                    ___x_cmd_git        "$@"             ;;
         nmap)                                   ___x_cmd_nmap       "$@"             ;;
         ncat)                                   ___x_cmd_ncat       "$@"             ;;
         nping)                                  ___x_cmd_nping      "$@"             ;;
@@ -679,6 +700,7 @@ ___x_cmd_main(){
 
 # EndSection
 
+# Section : advise.json
 ___x_cmd_x_cmd_advise_json(){
     cat <<A
 {
@@ -810,8 +832,8 @@ ___x_cmd_x_cmd_advise_json(){
 
     "jq": null,
     "yq": null,
-    "ls|ll": null,
-    "ps|procs": null,
+    "ls|ll|cat|du|cd": "___advise_ls",
+    "ps|procs": null
 
     "nmap":null,
     "ncat":null,
@@ -830,6 +852,7 @@ ___x_cmd_x_cmd_advise_json(){
 A
     return 126
 }
+# EndSection
 
 x(){
     ___x_cmd_main "$@"
