@@ -832,7 +832,8 @@ ___x_cmd_x_cmd_advise_json(){
 
     "jq": null,
     "yq": null,
-    "ls|ll|cat|du|cd": "___advise_ls",
+    "cat|du": "___advise_ls",
+    "ls|ll|cd": "___advise_lsd",
     "ps|procs": null
 
     "nmap":null,
