@@ -700,6 +700,7 @@ ___x_cmd_main(){
                                                 ;;
         _x_cmd_advise_json)                     ___x_cmd_x_cmd_advise_json "$@" ;;
         ws)                                     ___x_cmd_ws "$@" ;;
+        wsroot)                                 ___x_cmd_workspace_root "$@" ;;
         cowsay)                                 xrc cowsay/v0 && cowsay "$@" ;;
         *)                                      ___x_cmd_main_otherwise "$subcmd" "$@" ;;
 
