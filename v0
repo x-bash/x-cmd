@@ -16,7 +16,8 @@ ___x_cmd_readlink_recursive(){
 
 ___x_cmd_list_resource(){
     printf "%s" "proxy
-tldr"
+tldr
+advise"
 }
 
 # Section : Unfinished ___x_cmd_official_which
@@ -741,33 +742,6 @@ ___x_cmd_x_cmd_advise_json(){
       "sshd": null
   },
   "man": { },
-  "advise": {
-      "ls": "--- Show all available advise json obj",
-      "rm": {
-          "#1": "ls /tmp/.x-cmd/advise_auto_json/",
-          "#desc": "Remove one obj, if no obj is given, remove all obj"
-      },
-      "which": {
-          "#1": "ls /tmp/.x-cmd/advise_auto_json/",
-          "#desc": "Show the path of the obj"
-      },
-      "cat": {
-          "#n": "ls /tmp/.x-cmd/advise_auto_json/",
-          "#desc": "Show the content of the obj"
-      },
-      "init|new": "--- Create a new obj",
-      "man": {
-          "ls": null,
-          "update": null,
-          "rm": "x advise man ls",
-          "which": "x advise man ls",
-          "load": "x advise man ls",
-          "#desc": "Manager for x-cmd/advise"
-      },
-      "del": null,
-      "obj-new": null,
-      "obj-del": null
-  },
   "theme": {
       "ls": "--- list all theme",
       "use": {
@@ -855,7 +829,7 @@ ___x_cmd_x_cmd_advise_json(){
   "jq": null,
   "yq": null,
   "cat|du": "___advise_ls",
-  "ls|ll|cd": "___advise_lsd",
+  "ls|ll|cd": "___advise_ls",
   "ps|procs": null,
   "nmap": null,
   "ncat": null,
