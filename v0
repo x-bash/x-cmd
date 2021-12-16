@@ -777,7 +777,7 @@ ___x_cmd_x_cmd_advise_json(){
           "on": { },
           "off": { }
       },
-      "#n": "___x_cmd_log_completer"
+      "#n": "xrc x-cmd/_v0/log && ___x_cmd_log_completer"
   },
   "upgrade": { },
   "clear": { },
