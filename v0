@@ -745,11 +745,11 @@ ___x_cmd_x_cmd_advise_json(){
   "theme": {
       "ls": "--- list all theme",
       "use": {
-        "#1": "xrc theme/latest && ___x_cmd_theme_control_ls",
+        "#1": "awk '{ print \$2; }' <\$___X_CMD_ROOT/.tmp/theme/index.yml",
         "#desc": "use theme when starting the shell"
       },
       "try": {
-        "#1": "xrc theme/latest && ___x_cmd_theme_control_ls",
+        "#1": "awk '{ print \$2; }' <\$___X_CMD_ROOT/.tmp/theme/index.yml",
         "#desc": "try theme"
       },
       "rollback": "--- use last theme",
