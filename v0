@@ -605,7 +605,6 @@ ___x_cmd_main(){
         tldr)                                   xrc tldr/v0 && tldr "$@" ;;
         advise)                                 xrc advise/v0 && advise "$@" ;;
         proxy)                                  xrc proxy/latest && proxy "$@" ;;
-        theme)                                  xrc theme/latest && ___x_cmd_theme_control "$@" ;;
         env)        ;;
 
         login)                                  ( xrc hub/v0 && ___x_cmd_hub login "$@" ) ;;
