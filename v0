@@ -176,7 +176,7 @@ ___x_cmd_run_by_file(){
     if engine="$(___x_cmd_get_engine_by_file "$filepath")"; then
         ___x_cmd_run_with_engine "$engine" "$filepath" "$@"
     else
-        ___x_cmd_run_with_engine xsh "$filepath" "$@"
+        ___x_cmd_run_with_engine xrc "$filepath" "$@"
     fi
 }
 
