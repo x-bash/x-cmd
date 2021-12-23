@@ -16,6 +16,8 @@ ___x_cmd_readlink_recursive(){
 
 ___x_cmd_list_resource(){
     printf "%s" "proxy
+cowsay
+theme
 tldr
 advise"
 }
@@ -746,19 +748,6 @@ ___x_cmd_x_cmd_advise_json(){
       "sshd": null
   },
   "man": { },
-  "theme": {
-      "ls": "--- list all theme",
-      "use": {
-        "#1": "awk '{ print \$2; }' <\$___X_CMD_ROOT/.tmp/theme/index.yml",
-        "#desc": "use theme when starting the shell"
-      },
-      "try": {
-        "#1": "awk '{ print \$2; }' <\$___X_CMD_ROOT/.tmp/theme/index.yml",
-        "#desc": "try theme"
-      },
-      "rollback": "--- use last theme",
-      "unset": "--- unset last theme"
-  },
   "env": { },
   "login": { },
   "register": { },
