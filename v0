@@ -554,6 +554,14 @@ ___x_cmd_workspace_root(){
 ___x_cmd_main_otherwise(){
     local subcmd="$1"; shift
 
+    local getalias="${___X_CMD_ALIAS_SET#*$___X_CMD_ALIAS_SEP$subcmd
+}"
+    if [ "$getalias" != "$___X_CMD_ALIAS_SET" ]; then
+        getalias="${getalias%%$___X_CMD_ALIAS_SEP*}"
+        eval "$getalias" "$@"
+        return
+    fi
+
     # static build
     # update the static-build files
     local p
@@ -586,15 +594,42 @@ ___x_cmd_cd(){
     xrc x_fs/v0 && ___x_cmd_cd "$@"
 }
 
+___X_CMD_ALIAS_SEP="$(printf "\001")"
+___X_CMD_ALIAS_SET="${___X_CMD_ALIAS_SEP}"
+
 ___x_cmd_main(){
+    local IFS=" "
+
     local subcmd=$1;    shift 2>/dev/null
     case "$subcmd" in
         ""|help)                                printf "%s\n" "Show help" >&2; return 1 ;;
-        # boot)                                   ( xrc x-cmd/_v0/boot && ___x_cmd_boot "$@"; ) ;;
+
+        alias)
+            if [ -z "$1" ]; then
+                printf "%s" "$___X_CMD_ALIAS_SET" | tr "$___X_CMD_ALIAS_SEP\n" "\n="
+                return
+            fi
+
+            local name="$1";  shift
+            ___X_CMD_ALIAS_SET="${___X_CMD_ALIAS_SET}$name
+$*${___X_CMD_ALIAS_SEP}"
+            ;;
+
+        unalias)
+            local name="$1";  shift
+            local a="${___X_CMD_ALIAS_SET%%${___X_CMD_ALIAS_SEP}$name*}"
+            if [ "$a" != "$___X_CMD_ALIAS_SET" ]; then
+                ___X_CMD_ALIAS_SET="${___X_CMD_ALIAS_SET#*${___X_CMD_ALIAS_SEP}$name
+*${___X_CMD_ALIAS_SEP}}"
+                ___X_CMD_ALIAS_SET="$a${___X_CMD_ALIAS_SEP}${___X_CMD_ALIAS_SET}"
+                return
+            fi
+            ;;
+
         boot)                                   ( xrc x-cmd/_v0/boot && ___x_cmd_boot "$@"; ) ;;
 
         conjoin)                                ___x_cmd_eval_concurrent_join "$@" ;;
-        con)                                   ___x_cmd_eval_concurrent_assign "$@" ;;
+        con)                                    ___x_cmd_eval_concurrent_assign "$@" ;;
 
         *:=)                                    ___x_cmd_varset "${subcmd%:=}" "$@" ;;
         *=)                                     ___x_cmd_varset_without_end "${subcmd%=}" "$@" ;;
