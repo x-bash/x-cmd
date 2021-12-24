@@ -479,6 +479,73 @@ A
 
 # EndSection
 
+# Section : alias
+
+# Maybe using
+___X_CMD_ALIAS_SEP="$(printf "\001")"
+___X_CMD_ALIAS_SET="${___X_CMD_ALIAS_SET:-${___X_CMD_ALIAS_SEP}}"
+
+___x_cmd_alias(){
+    case "$#" in
+        0)      ___x_cmd_alias_ls ;;
+        1)      ___x_cmd_alias_get "$1" ;;
+        *)      ___x_cmd_alias_set "$@"
+    esac
+}
+
+___x_cmd_alias_ls(){
+    printf "%s" "${___X_CMD_ALIAS_SET#${___X_CMD_ALIAS_SEP}}" | tr "$___X_CMD_ALIAS_SEP\n" "\n="
+}
+
+___x_cmd_alias_get(){
+    local name="$1"; shift
+    local getalias="${___X_CMD_ALIAS_SET#*$___X_CMD_ALIAS_SEP$name
+}"
+    if [ "$getalias" = "$___X_CMD_ALIAS_SET" ]; then
+        return 1
+    else
+        getalias="${getalias%%$___X_CMD_ALIAS_SEP*}"
+        echo "$getalias"
+    fi
+}
+
+___x_cmd_alias_set(){
+    local name="$1";  shift
+    ___X_CMD_ALIAS_SET="${___X_CMD_ALIAS_SET}$name
+$*${___X_CMD_ALIAS_SEP}"
+}
+
+___x_cmd_alias_clear(){
+    ___X_CMD_ALIAS_SET="${___X_CMD_ALIAS_SEP}"
+}
+
+___x_cmd_alias_unset(){
+    local name="$1";  shift
+
+    local a="${___X_CMD_ALIAS_SET%%${___X_CMD_ALIAS_SEP}$name*}"
+    if [ "$a" = "$___X_CMD_ALIAS_SET" ]; then
+        return 1
+    fi
+
+    ___X_CMD_ALIAS_SET="${___X_CMD_ALIAS_SET#*${___X_CMD_ALIAS_SEP}$name
+*${___X_CMD_ALIAS_SEP}}"
+    ___X_CMD_ALIAS_SET="$a${___X_CMD_ALIAS_SEP}${___X_CMD_ALIAS_SET}"
+}
+
+___x_cmd_alias_exec(){
+    local name="$1"; shift
+    local getalias="${___X_CMD_ALIAS_SET#*$___X_CMD_ALIAS_SEP$name
+}"
+    if [ "$getalias" = "$___X_CMD_ALIAS_SET" ]; then
+        return 1
+    else
+        getalias="${getalias%%$___X_CMD_ALIAS_SEP*}"
+        eval "$getalias" "$@"
+    fi
+}
+
+# EndSection
+
 # Section : x main function
 
 ___x_cmd_varset(){
@@ -552,15 +619,9 @@ ___x_cmd_workspace_root(){
 }
 
 ___x_cmd_main_otherwise(){
-    local subcmd="$1"; shift
+    local subcmd="$1";  shift
 
-    local getalias="${___X_CMD_ALIAS_SET#*$___X_CMD_ALIAS_SEP$subcmd
-}"
-    if [ "$getalias" != "$___X_CMD_ALIAS_SET" ]; then
-        getalias="${getalias%%$___X_CMD_ALIAS_SEP*}"
-        eval "$getalias" "$@"
-        return
-    fi
+    ___x_cmd_alias_exec "$@" && return
 
     # static build
     # update the static-build files
@@ -594,8 +655,6 @@ ___x_cmd_cd(){
     xrc x_fs/v0 && ___x_cmd_cd "$@"
 }
 
-___X_CMD_ALIAS_SEP="$(printf "\001")"
-___X_CMD_ALIAS_SET="${___X_CMD_ALIAS_SEP}"
 
 ___x_cmd_main(){
     local IFS=" "
@@ -604,27 +663,8 @@ ___x_cmd_main(){
     case "$subcmd" in
         ""|help)                                printf "%s\n" "Show help" >&2; return 1 ;;
 
-        alias)
-            if [ -z "$1" ]; then
-                printf "%s" "$___X_CMD_ALIAS_SET" | tr "$___X_CMD_ALIAS_SEP\n" "\n="
-                return
-            fi
-
-            local name="$1";  shift
-            ___X_CMD_ALIAS_SET="${___X_CMD_ALIAS_SET}$name
-$*${___X_CMD_ALIAS_SEP}"
-            ;;
-
-        unalias)
-            local name="$1";  shift
-            local a="${___X_CMD_ALIAS_SET%%${___X_CMD_ALIAS_SEP}$name*}"
-            if [ "$a" != "$___X_CMD_ALIAS_SET" ]; then
-                ___X_CMD_ALIAS_SET="${___X_CMD_ALIAS_SET#*${___X_CMD_ALIAS_SEP}$name
-*${___X_CMD_ALIAS_SEP}}"
-                ___X_CMD_ALIAS_SET="$a${___X_CMD_ALIAS_SEP}${___X_CMD_ALIAS_SET}"
-                return
-            fi
-            ;;
+        alias)                                  ___x_cmd_alias "$@" ;;
+        unalias)                                ___x_cmd_alias_unset "$@" ;;
 
         boot)                                   ( xrc x-cmd/_v0/boot && ___x_cmd_boot "$@"; ) ;;
 
