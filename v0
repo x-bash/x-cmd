@@ -491,6 +491,10 @@ ___x_cmd_alias(){
     esac
 }
 
+___x_cmd_unalias(){
+    ___x_cmd_alias_unset "$@"
+}
+
 ___x_cmd_alias_init(){
     local obj="$1"
     eval "___X_CMD_ALIAS_SET_${obj}=\"\${___X_CMD_ALIAS_SET_${obj}:-\${___X_CMD_ALIAS_SEP}}\""
@@ -686,8 +690,8 @@ ___x_cmd_main(){
     case "$subcmd" in
         ""|help)                                printf "%s\n" "Show help" >&2; return 1 ;;
 
-        alias)                                  ___x_cmd_alias ___x_cmd "$@" ;;
-        unalias)                                ___x_cmd_alias_unset ___x_cmd "$@" ;;
+        alias)                                  ___x_cmd_alias      ___x_cmd "$@"   ;;
+        unalias)                                ___x_cmd_unalias    ___x_cmd "$@"   ;;
 
         boot)                                   ( xrc x-cmd/_v0/boot && ___x_cmd_boot "$@"; ) ;;
 
