@@ -486,15 +486,15 @@ ___X_CMD_ALIAS_ITEM_SEP="$(printf "\002")"
 
 ___x_cmd_alias(){
     case "$#" in
-        1)      ___x_cmd_alias_ls   "$@"        ;;
+        1)      ___x_cmd_alias_ls   "$@" ;;
         2)
                 if [ "${2#*=}" = "$2" ]; then
-                    ___x_cmd_alias_info  "$@"
+                    ___x_cmd_alias_print    "$@"
                 else
-                    ___x_cmd_alias_set  "$@"
+                    ___x_cmd_alias_set      "$@"
                 fi
                 ;;
-        *)      ___x_cmd_alias_set      "$@"        ;;
+        *)      ___x_cmd_alias_set          "$@" ;;
     esac
 }
 
@@ -512,7 +512,12 @@ ___x_cmd_alias_ls(){
     local DATA
     eval "DATA=\"\${___X_CMD_ALIAS_SET_${obj}}\""
 
-    printf "%s" "${DATA#${___X_CMD_ALIAS_SEP}}" | tr "$___X_CMD_ALIAS_SEP\n" "\n="
+    # printf "%s" "${DATA#${___X_CMD_ALIAS_SEP}}" | tr "${___X_CMD_ALIAS_SEP}${___X_CMD_ALIAS_ITEM_SEP}" "\n\t"
+    printf "%s" "${DATA#${___X_CMD_ALIAS_SEP}}" | awk -v RS="${___X_CMD_ALIAS_SEP}" -v FS="${___X_CMD_ALIAS_ITEM_SEP}" '
+{
+    print "  \033[31m" $1 "\033[0m=\033[32m" $2 "\t\t\033[34m" $3
+}
+'
 }
 
 ___x_cmd_alias_echo(){
@@ -588,8 +593,17 @@ ___x_cmd_alias_info(){
 
     ___X_CMD_ALIAS_EXEC_EXIST=1
     item="${item%%${___X_CMD_ALIAS_SEP}*}"
-    local code="${item%%${___X_CMD_ALIAS_ITEM_SEP}*}"
-    local desc="${item#*${___X_CMD_ALIAS_ITEM_SEP}}"
+    code="${item%%${___X_CMD_ALIAS_ITEM_SEP}*}"
+    desc="${item#*${___X_CMD_ALIAS_ITEM_SEP}}"
+}
+
+___x_cmd_alias_print(){
+    local obj="$1"
+    local name="$2"
+    local code
+    local desc
+
+    ___x_cmd_alias_info "$@"
     printf "%s    %s       %s\n" "$name" "$code" "$desc"
 }
 
