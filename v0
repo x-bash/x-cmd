@@ -483,14 +483,18 @@ A
 
 # Maybe using
 ___X_CMD_ALIAS_SEP="$(printf "\001")"
-___X_CMD_ALIAS_SET="${___X_CMD_ALIAS_SET:-${___X_CMD_ALIAS_SEP}}"
 
 ___x_cmd_alias(){
     case "$#" in
-        1)      ___x_cmd_alias_ls   ___x_cmd    ;;
+        1)      ___x_cmd_alias_ls   "$@"        ;;
         2)      ___x_cmd_alias_get  "$@"        ;;
         *)      ___x_cmd_alias_set  "$@"        ;;
     esac
+}
+
+___x_cmd_alias_init(){
+    local obj="$1"
+    eval "___X_CMD_ALIAS_SET_${obj}=\"\${___X_CMD_ALIAS_SET_${obj}:-\${___X_CMD_ALIAS_SEP}}\""
 }
 
 ___x_cmd_alias_ls(){
@@ -673,6 +677,8 @@ ___x_cmd_cd(){
     xrc x_fs/v0 && ___x_cmd_cd "$@"
 }
 
+
+___x_cmd_alias_init ___x_cmd
 
 ___x_cmd_main(){
     local IFS=" "
