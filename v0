@@ -505,7 +505,7 @@ ___x_cmd_alias_get(){
         return 1
     else
         getalias="${getalias%%$___X_CMD_ALIAS_SEP*}"
-        echo "$getalias"
+        printf "%s" "$getalias"
     fi
 }
 
