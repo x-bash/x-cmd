@@ -511,6 +511,9 @@ ___x_cmd_alias_get(){
 
 ___x_cmd_alias_set(){
     local name="$1";  shift
+
+    ___x_cmd_alias_unset "$name"
+
     ___X_CMD_ALIAS_SET="${___X_CMD_ALIAS_SET}$name
 $*${___X_CMD_ALIAS_SEP}"
 }
@@ -536,9 +539,11 @@ ___x_cmd_alias_exec(){
     local name="$1"; shift
     local getalias="${___X_CMD_ALIAS_SET#*$___X_CMD_ALIAS_SEP$name
 }"
+    ___X_CMD_ALIAS_EXEC_EXIST=
     if [ "$getalias" = "$___X_CMD_ALIAS_SET" ]; then
-        return 1
+        return
     else
+        ___X_CMD_ALIAS_EXEC_EXIST=1
         getalias="${getalias%%$___X_CMD_ALIAS_SEP*}"
         eval "$getalias" "$@"
     fi
@@ -621,7 +626,11 @@ ___x_cmd_workspace_root(){
 ___x_cmd_main_otherwise(){
     local subcmd="$1";  shift
 
-    ___x_cmd_alias_exec "$@" && return
+    ___x_cmd_alias_exec "$subcmd" "$@"
+    local code=$?
+    if [ -n "$___X_CMD_ALIAS_EXEC_EXIST" ]; then
+        return $?
+    fi
 
     # static build
     # update the static-build files
