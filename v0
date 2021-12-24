@@ -482,12 +482,19 @@ A
 # Section : alias
 
 ___X_CMD_ALIAS_SEP="$(printf "\001")"
+___X_CMD_ALIAS_ITEM_SEP="$(printf "\002")"
 
 ___x_cmd_alias(){
     case "$#" in
         1)      ___x_cmd_alias_ls   "$@"        ;;
-        2)      ___x_cmd_alias_get  "$@"        ;;
-        *)      ___x_cmd_alias_set  "$@"        ;;
+        2)
+                if [ "${2#*=}" = "$2" ]; then
+                    ___x_cmd_alias_info  "$@"
+                else
+                    ___x_cmd_alias_set  "$@"
+                fi
+                ;;
+        *)      ___x_cmd_alias_set      "$@"        ;;
     esac
 }
 
@@ -513,18 +520,24 @@ ___x_cmd_alias_echo(){
     printf "%s" "$*"
 }
 
-___x_cmd_alias_get(){
-    ___X_CMD_ALIAS_EXEC_EVAL=___x_cmd_alias_echo ___x_cmd_alias_exec "$@"
-}
 
 ___x_cmd_alias_set(){
-    local obj="$1";     local name="$2";    shift 2
+    local obj="$1";     local name="$2";
+
+
+    local code="${name#*=}"
+    if [ "$code" = "$name" ]; then
+        printf "CANNOT set alias for %s" "$*" >&2
+        return 1
+    fi
+
+    name="${name%%=*}"
+    # Put these things into the
+    local desc="$3"
 
     ___x_cmd_alias_unset "$obj" "$name"
 
-    eval "___X_CMD_ALIAS_SET_${obj}=\"\${___X_CMD_ALIAS_SET_${obj}}$name"'
-$*${___X_CMD_ALIAS_SEP}"'
-
+    eval "___X_CMD_ALIAS_SET_${obj}=\"\${___X_CMD_ALIAS_SET_${obj}}"'${name}${___X_CMD_ALIAS_ITEM_SEP}${code}${___X_CMD_ALIAS_ITEM_SEP}${desc}${___X_CMD_ALIAS_SEP}"'
 }
 
 ___x_cmd_alias_clear(){
@@ -537,13 +550,12 @@ ___x_cmd_alias_unset(){
     local DATA
     eval "DATA=\"\${___X_CMD_ALIAS_SET_${obj}}\""
 
-    local a="${DATA%%${___X_CMD_ALIAS_SEP}$name*}"
+    local a="${DATA%%${___X_CMD_ALIAS_SEP}${name}${___X_CMD_ALIAS_ITEM_SEP}*}"
     if [ "$a" = "$DATA" ]; then
         return 1
     fi
 
-    DATA="${DATA#*${___X_CMD_ALIAS_SEP}$name
-*${___X_CMD_ALIAS_SEP}}"
+    DATA="${DATA#*${___X_CMD_ALIAS_SEP}${name}${___X_CMD_ALIAS_ITEM_SEP}*${___X_CMD_ALIAS_SEP}}"
     DATA="$a${___X_CMD_ALIAS_SEP}${DATA}"
 
     eval "___X_CMD_ALIAS_SET_${obj}=\"$DATA\""
@@ -553,16 +565,32 @@ ___x_cmd_alias_exec(){
     local obj="$1";     local name="$2";    shift 2
     local DATA
     eval "DATA=\"\${___X_CMD_ALIAS_SET_${obj}}\""
-    local getalias="${DATA#*$___X_CMD_ALIAS_SEP$name
-}"
+    local code="${DATA#*$___X_CMD_ALIAS_SEP${name}${___X_CMD_ALIAS_ITEM_SEP}}"
     ___X_CMD_ALIAS_EXEC_EXIST=
-    if [ "$getalias" = "$DATA" ]; then
+    if [ "$code" = "$DATA" ]; then
         return
     fi
 
     ___X_CMD_ALIAS_EXEC_EXIST=1
-    getalias="${getalias%%$___X_CMD_ALIAS_SEP*}"
-    ${___X_CMD_ALIAS_EXEC_EVAL:-eval} "$getalias" "$@"
+    code="${code%%${___X_CMD_ALIAS_ITEM_SEP}*${___X_CMD_ALIAS_SEP}*}"
+    eval "$code" "$@"
+}
+
+___x_cmd_alias_info(){
+    local obj="$1";     local name="$2";    shift 2
+    local DATA
+    eval "DATA=\"\${___X_CMD_ALIAS_SET_${obj}}\""
+    local item="${DATA#*$___X_CMD_ALIAS_SEP${name}${___X_CMD_ALIAS_ITEM_SEP}}"
+    ___X_CMD_ALIAS_EXEC_EXIST=
+    if [ "$item" = "$DATA" ]; then
+        return
+    fi
+
+    ___X_CMD_ALIAS_EXEC_EXIST=1
+    item="${item%%${___X_CMD_ALIAS_SEP}*}"
+    local code="${item%%${___X_CMD_ALIAS_ITEM_SEP}*}"
+    local desc="${item#*${___X_CMD_ALIAS_ITEM_SEP}}"
+    printf "%s    %s       %s\n" "$name" "$code" "$desc"
 }
 
 # EndSection
