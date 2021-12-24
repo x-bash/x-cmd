@@ -481,7 +481,6 @@ A
 
 # Section : alias
 
-# Maybe using
 ___X_CMD_ALIAS_SEP="$(printf "\001")"
 
 ___x_cmd_alias(){
