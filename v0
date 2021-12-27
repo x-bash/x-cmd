@@ -746,7 +746,7 @@ ___x_cmd_ws(){
         ___x_cmd_exe_workspace "$TGT/.x-cmd/latest" "$RESOURCE_NAME" "$@"
         return
     else
-        printf "Workspace Resource Not found: %s" "$RESOURCE_NAME" >&2
+        printf "Workspace Resource Not found: %s\n" "$RESOURCE_NAME" >&2
         return 1
     fi
 }
