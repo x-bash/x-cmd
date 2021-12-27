@@ -1,0 +1,9 @@
+
+
+___x_cmd_list_all_modules(){
+    local file="$(x wsroot)/modules.all"
+    [ -f "$file" ] || return
+    cat "$file"
+}
+
+
