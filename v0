@@ -738,6 +738,18 @@ ___x_cmd_main_otherwise(){
 }
 
 ___x_cmd_ws(){
+    local TGT
+
+    if [ -z "$1" ]; then
+        if TGT="$(___x_cmd_search_path . ".x-cmd/latest")"; then
+            ___x_cmd_exe_workspace "$TGT/.x-cmd/latest"
+            return
+        else
+            printf "%s\n" "Cannot find .x-cmd/latest" >&2
+            return 1
+        fi
+    fi
+
     local RESOURCE_NAME="$1"; shift
     if TGT="$(___x_cmd_search_path . ".x-cmd/$RESOURCE_NAME")"; then
         ___x_cmd_exe_workspace "$TGT/.x-cmd/$RESOURCE_NAME" "$@"
@@ -1026,8 +1038,6 @@ A
 x(){
     ___x_cmd_main "$@"
 }
-
-alias xws="x ws"
 
 if [ -z "$XRC_NO_ADVISE" ] && [ -n "${BASH_VERSION}${ZSH_VERSION}" ] && [ "${-#*i}" != "$-" ]; then
     # if you use xrc that you must have advise
