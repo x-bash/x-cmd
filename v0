@@ -200,7 +200,7 @@ ___x_cmd_exe_workspace(){
         while true; do
             printf "%s" \
 "=> Running file: $filepath ?
-=> Enter or press y to continue, n to abort. default is y: "
+=> Enter or press y to continue, n to abort. default is y: " >&2
 
             read -r action
             case $action in
@@ -1023,6 +1023,8 @@ A
 x(){
     ___x_cmd_main "$@"
 }
+
+alias xdev="x dev"
 
 if [ -z "$XRC_NO_ADVISE" ] && [ -n "${BASH_VERSION}${ZSH_VERSION}" ] && [ "${-#*i}" != "$-" ]; then
     # if you use xrc that you must have advise
