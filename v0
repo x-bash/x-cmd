@@ -771,10 +771,10 @@ ___x_cmd_main(){
         *:=)                                    ___x_cmd_varset "${subcmd%:=}" "$@" ;;
         *=)                                     ___x_cmd_varset_without_end "${subcmd%=}" "$@" ;;
 
+        args)                                   ___x_cmd_args "$@"      ;;
         arg1)                                   ___x_cmd_args 1 "$@"    ;;
         arg2)                                   ___x_cmd_args 2 "$@"    ;;
         arg3)                                   ___x_cmd_args 3 "$@"    ;;
-        args)                                   ___x_cmd_args "$@"      ;;
 
         install)                                xrc install/v0 && ___x_cmd_install "$@" ;;
 
