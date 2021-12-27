@@ -189,9 +189,11 @@ ___x_cmd_abspath(){
 ___x_cmd_exe_workspace(){
     local filepath="${1:?filepath}"
     if [ -L "$filepath" ]; then
-        local target_path
-        target_path="$(___x_cmd_readlink_recursive "$filepath")"
-        target_path="$(___x_cmd_abspath "$target_path")"
+        # local target_path
+        # target_path="$(___x_cmd_readlink_recursive "$filepath")"
+        # target_path="$(___x_cmd_abspath "$target_path")"
+        filepath="$(___x_cmd_readlink_recursive "$filepath")"
+        filepath="$(___x_cmd_abspath "$filepath")"
     fi
 
     # TODO: notice. Filepath should be colorized and emphasized.
@@ -740,6 +742,9 @@ ___x_cmd_ws(){
     if TGT="$(___x_cmd_search_path . ".x-cmd/$RESOURCE_NAME")"; then
         ___x_cmd_exe_workspace "$TGT/.x-cmd/$RESOURCE_NAME" "$@"
         return
+    elif TGT="$(___x_cmd_search_path . ".x-cmd/latest")"; then
+        ___x_cmd_exe_workspace "$TGT/.x-cmd/latest" "$RESOURCE_NAME" "$@"
+        return
     else
         printf "Workspace Resource Not found: %s" "$RESOURCE_NAME" >&2
         return 1
@@ -883,7 +888,7 @@ ___x_cmd_main(){
                                                 done
                                                 ;;
         _x_cmd_advise_json)                     ___x_cmd_x_cmd_advise_json "$@" ;;
-        ws)                                     ___x_cmd_ws "$@" ;;
+        ws)                                     X_DISABLE_WORKSPACE_EXECUTION_CONFIRMATION=1 ___x_cmd_ws "$@" ;;
         wsroot)                                 ___x_cmd_workspace_root "$@" ;;
         cowsay)                                 xrc cowsay/v0 && cowsay "$@" ;;
         *)                                      ___x_cmd_main_otherwise "$subcmd" "$@" ;;
@@ -1022,7 +1027,7 @@ x(){
     ___x_cmd_main "$@"
 }
 
-alias xdev="x dev"
+alias xws="x ws"
 
 if [ -z "$XRC_NO_ADVISE" ] && [ -n "${BASH_VERSION}${ZSH_VERSION}" ] && [ "${-#*i}" != "$-" ]; then
     # if you use xrc that you must have advise
