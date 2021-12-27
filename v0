@@ -630,77 +630,43 @@ ___x_cmd_varset_without_end(){
 
 ___x_cmd_arg_line(){
     awk -v every="${1:-1}" '
+
+function printcode( len ){
+    count = 0
+    code=""
+    for (j=1; j<=len; ++j) {
+        e = result[j]
+        gsub("\"", "\\\"", e)
+        code = code " " "\"" e "\""
+    }
+    print code
+}
+
 {
     arrl = split($0, arr, /[ \t]+/)
     for (i=1; i<=arrl; ++i) {
         count ++
         result[ count ] = arr[i]
         if (count == every) {
-            count = 0
-
-            code=""
-            for (j=1; j<=every; ++j) {
-                e = result[j]
-                gsub("\"", "\\\"", e)
-                code = code " " "\"" e "\""
-            }
-            print code
+            printcode( every )
         }
     }
+}
+
+END {
+    if (count > 0) printcode( count )
 }
 '
 
 }
 
-___x_cmd_arg1(){
-    local IFS=" "
-    local line
-    ___x_cmd_arg_line 1 | while read -r line; do
-        eval \"\$@\" "$line"
-    done
-}
-
-___x_cmd_arg2(){
-    local IFS=" "
-    local a1; local a2
-    ___x_cmd_arg_line 2 | while read -r a1 && read -r a2; do
-        "$@" "$a1" "$a2"
-    done
-}
-
-___x_cmd_arg3(){
-    local IFS=" "
-    local a1; local a2; local a3
-    ___x_cmd_arg_line 3 | while read -r a1 && read -r a2 && read -r a3; do
-        eval \"\$@\" "$a1" "$a2" "$a3"
-    done
-}
-
-___x_cmd_argn(){
+___x_cmd_args(){
     local n="$1"; shift
     local IFS=" "
 
-    ___x_cmd_arg_line "$n" | eval "$(
-        s=""
-        t=""
-        IFS="
-"
-        for i in $(seq 1 "$n"); do
-            printf "local a%s\n" "$i"
-            if [ "$s" = "" ]; then
-                s="$s read -r a$i"
-            else
-                s="$s && read -r a$i"
-            fi
-
-            t="$t \"\$a$i\""
-        done
-        s="while $s; do"
-        printf "%s\n" "$s"
-        printf "    %s %s\n" ' "$@" ' "$t"
-        printf "done"
-
-    )"
+    ___x_cmd_arg_line "$n" | while read -r line; do
+        eval \"\$@\" "$line"
+    done
 }
 
 
@@ -805,9 +771,10 @@ ___x_cmd_main(){
         *:=)                                    ___x_cmd_varset "${subcmd%:=}" "$@" ;;
         *=)                                     ___x_cmd_varset_without_end "${subcmd%=}" "$@" ;;
 
-        arg1)                                   ___x_cmd_arg1 "$@"  ;;
-        argn)                                   ___x_cmd_argn "$@"  ;;
-        args)                                   ___x_cmd_args "$@"  ;;
+        arg1)                                   ___x_cmd_args 1 "$@"    ;;
+        arg2)                                   ___x_cmd_args 2 "$@"    ;;
+        arg3)                                   ___x_cmd_args 3 "$@"    ;;
+        args)                                   ___x_cmd_args "$@"      ;;
 
         install)                                xrc install/v0 && ___x_cmd_install "$@" ;;
 
