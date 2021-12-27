@@ -562,9 +562,9 @@ ___x_cmd_alias_exec(){
         return
     fi
 
-    ___X_CMD_ALIAS_EXEC_EXIST=1
     code="${code%%${___X_CMD_ALIAS_ITEM_SEP}*${___X_CMD_ALIAS_SEP}*}"
     eval "$code" "$@"
+    ___X_CMD_ALIAS_EXEC_EXIST=1
 }
 
 ___x_cmd_alias_info(){
@@ -762,6 +762,8 @@ ___x_cmd_main(){
 
         alias)                                  ___x_cmd_alias      ___x_cmd "$@"   ;;
         unalias)                                ___x_cmd_unalias    ___x_cmd "$@"   ;;
+
+        dev)                                    xrc dev && ___x_cmd_dev "$@" ;;
 
         boot)                                   ( xrc x-cmd/_v0/boot && ___x_cmd_boot "$@"; ) ;;
 
