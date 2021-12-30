@@ -64,11 +64,11 @@ ___xrc_run(){
 }
 
 ___x_cmd_xrc_run(){
-    ___X_CMD_ENABLE_AUTO_RUN=1 ___xrc_run "$@"
+    ___xrc_run "$@"
 }
 
 ___x_cmd_xsh_run()(
-    ___X_CMD_ENABLE_AUTO_RUN=1 ___xrc_run "$@"
+    ___xrc_run "$@"
 )
 
 ___x_cmd_run_with_engine(){
