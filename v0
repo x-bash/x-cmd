@@ -1,5 +1,8 @@
 # shellcheck shell=sh disable=SC3043
 
+# author:       Li Junhao           l@x-cmd.com
+# maintainer:   Li Junhao
+
 ___x_cmd_list_resource(){
     printf "%s" "proxy
 cowsay
