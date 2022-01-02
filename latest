@@ -600,7 +600,9 @@ ___x_cmd_alias_print(){
 
     if ___x_cmd_alias_info "$@"; then
         printf "%s    %s       %s\n" "$name" "$code" "$desc"
+        return
     fi
+    return 1s
 }
 
 # EndSection
