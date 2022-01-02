@@ -48,7 +48,11 @@ A
 
 ___xrc_run(){
     local ___xrc_run_filepath="${1:?filepath}";        shift
-    ___X_CMD_ENABLE_AUTO_RUN=1 ___x_cmd_source "$___xrc_run_filepath" "$@"
+    ___X_CMD_ENABLE_AUTO_RUN=
+    ___x_cmd_source "$___xrc_run_filepath" "$@"
+    if [ -n "$___X_CMD_ENABLE_AUTO_RUN" ]; then
+        "$___X_CMD_ENABLE_AUTO_RUN" "$@"
+    fi
 
     # local ___xrc_module_name="${___xrc_run_filepath##*/}"
 
@@ -579,7 +583,7 @@ ___x_cmd_alias_info(){
     local item="${DATA#*$___X_CMD_ALIAS_SEP${name}${___X_CMD_ALIAS_ITEM_SEP}}"
     ___X_CMD_ALIAS_EXEC_EXIST=
     if [ "$item" = "$DATA" ]; then
-        return
+        return 1
     fi
 
     ___X_CMD_ALIAS_EXEC_EXIST=1
@@ -594,8 +598,9 @@ ___x_cmd_alias_print(){
     local code
     local desc
 
-    ___x_cmd_alias_info "$@"
-    printf "%s    %s       %s\n" "$name" "$code" "$desc"
+    if ___x_cmd_alias_info "$@"; then
+        printf "%s    %s       %s\n" "$name" "$code" "$desc"
+    fi
 }
 
 # EndSection
