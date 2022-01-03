@@ -83,7 +83,7 @@ ___x_cmd_source_run(){
 }
 
 ___x_cmd_xsh_run()(
-    ___x_cmd_x_source_run "$@"
+    ___x_cmd_source_run "$@"
 )
 
 ___x_cmd_run_with_engine(){
@@ -838,9 +838,7 @@ ___x_cmd_main(){
         cd)                                     ___x_cmd_cd "$@";;
 
         man)        ;;
-        tldr)                                   xrc tldr/v0 && tldr "$@" ;;
         advise)                                 xrc advise/v0 && advise "$@" ;;
-        proxy)                                  xrc proxy/latest && proxy "$@" ;;
         env)        ;;
 
         login)                                  ( xrc hub/v0 && ___x_cmd_hub login "$@" ) ;;
@@ -939,7 +937,6 @@ ___x_cmd_main(){
                                                     fi
                                                 done
                                                 ;;
-        dev)                                    xrc dev/latest && ___x_cmd_dev "$@" ;;
         _x_cmd_advise_json)                     ___x_cmd_x_cmd_advise_json "$@" ;;
         wsroot)                                 ___x_cmd_workspace_root "$@" ;;
         ws)                                     ___x_cmd_ws "$@" ;;
