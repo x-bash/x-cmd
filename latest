@@ -48,10 +48,12 @@ A
 
 ___xrc_run(){
     local ___xrc_run_filepath="${1:?filepath}";        shift
-    ___X_CMD_ENABLE_AUTO_RUN=
-    ___x_cmd_source "$___xrc_run_filepath" "$@"
-    if [ -n "$___X_CMD_ENABLE_AUTO_RUN" ]; then
-        "$___X_CMD_ENABLE_AUTO_RUN" "$@"
+
+    local tgt
+    tgt="$(___x_cmd_xrc_source_file_main "$___xrc_run_filepath")"
+
+    if [ -n "$tgt" ]; then
+        "$tgt" "$@"
     fi
 
     # local ___xrc_module_name="${___xrc_run_filepath##*/}"
@@ -735,11 +737,13 @@ ___x_cmd_main_otherwise(){
     local p
     if ___x_cmd_which_one "$subcmd"; then
         p="$___X_CMD_WHICH_ONE_RESULT"
-        if [ "$___X_CMD_UNTRUSTED_RESOURCE" = "workspace" ]; then
-            ___x_cmd_exe_workspace "$p" "$@"
-        else
-            ___x_cmd_run_by_file "$p" "$@" # 2>/dev/null
-        fi
+        case "$___X_CMD_UNTRUSTED_RESOURCE" in
+            workspace)      ___x_cmd_exe_workspace "$p" "$@" ;;
+            local)          ___x_cmd_run_by_file "$p" "$@" ;;
+            hub)            ___x_cmd_run_by_file "$p" "$@" ;;
+            official)
+                ___x_cmd_run_by_file "$p" "$@" ;;
+        esac
         return
     else
         printf "%s" "Error" >&2
