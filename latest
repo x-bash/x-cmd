@@ -838,7 +838,7 @@ ___x_cmd_main(){
         cd)                                     ___x_cmd_cd "$@";;
 
         man)        ;;
-        advise)                                 xrc advise/v0 && advise "$@" ;;
+        advise)                                 xrc advise/latest && advise "$@" ;;
         env)        ;;
 
         login)                                  ( xrc hub/v0 && ___x_cmd_hub login "$@" ) ;;
@@ -1077,9 +1077,9 @@ x(){
     ___x_cmd_main "$@"
 }
 
-if [ -z "$XRC_NO_ADVISE" ] && [ -n "${BASH_VERSION}${ZSH_VERSION}" ] && [ "${-#*i}" != "$-" ]; then
+if ___x_cmd_is_suitable_advise_env; then
     # if you use xrc that you must have advise
-    # xrc advise/v0
+    # xrc advise/latest
     advise x
 fi
 
