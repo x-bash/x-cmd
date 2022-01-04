@@ -841,10 +841,7 @@ ___x_cmd_main(){
         advise)                                 xrc advise/latest && advise "$@" ;;
         env)        ;;
 
-        login)                                  ( xrc hub/latest && ___x_cmd_hub login "$@" ) ;;
-        register)                               ( xrc hub/latest && ___x_cmd_hub register "$@" ) ;;
-        token)                                  ( xrc hub/latest && ___x_cmd_hub token "$@" ) ;;
-        hub)                                    ( xrc hub/latest && ___x_cmd_hub "$@" ) ;;
+        login)                                  xrc hub/latest && ___x_cmd_hub login "$@" ;;
 
         log)                                    xrc x-cmd/_v0/log && ___x_cmd_log "$@" ;;
 
