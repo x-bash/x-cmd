@@ -617,7 +617,7 @@ ___x_cmd_alias_print(){
 
 # EndSection
 
-# Section : x main function
+# Section: varset
 
 ___x_cmd_varset(){
     local _______variable_name="${1}"
@@ -649,6 +649,10 @@ ___x_cmd_varset_without_end(){
     result="$("$@")"
     eval "$_______variable_name=\"\$result\""
 }
+
+# EndSection
+
+# Section: args
 
 ___x_cmd_arg_line(){
 
@@ -764,6 +768,9 @@ ___x_cmd_margs(){
     )"
 }
 
+# EndSection
+
+# Section : x main function
 
 ___x_cmd_shell_exec(){
     local shell="${1:?Provide shell}"
