@@ -651,7 +651,29 @@ ___x_cmd_varset_without_end(){
 }
 
 ___x_cmd_arg_line(){
-    awk -v every="${1:-1}" '
+
+    local every="$1"; shift
+    local IFS
+    IFS="$(printf "\001")"
+    local NW
+    NW="$(printf "\002")"
+
+    {
+        printf "%s" "$*" | tr "\n" "$NW"
+        # printf "Hi: %s\n" "$*" | tr "\n" "$NW" >&2
+        printf "\n"
+        cat
+    } | awk -v every="$every" '
+
+NR==1{
+    argl = split($0, argv, "\001")
+    for (i=1; i<=argl; ++i) {
+        gsub("\002", "\n", argv[i])
+        gsub("\"", "\\\"", argv[i])
+        argv[i] = "\"" argv[i] "\""
+        argstr = argstr " " argv[i]
+    }
+}
 
 function printcode( len ){
     count = 0
@@ -661,10 +683,10 @@ function printcode( len ){
         gsub("\"", "\\\"", e)
         code = code " " "\"" e "\""
     }
-    print code
+    print argstr " " code
 }
 
-{
+NR>1{
     arrl = split($0, arr, /[ \t]+/)
     for (i=1; i<=arrl; ++i) {
         count ++
@@ -686,8 +708,8 @@ ___x_cmd_args(){
     local n="$1"; shift
     local IFS=" "
 
-    ___x_cmd_arg_line "$n" | while read -r line; do
-        eval \"\$@\" "$line"
+    ___x_cmd_arg_line "$n" "$@" | while read -r line; do
+        eval "$line"
     done
 }
 
@@ -696,8 +718,8 @@ ___x_cmd_margs(){
     local IFS=" "
 
     eval "$(
-    ___x_cmd_arg_line "$n" | while read -r line; do
-        echo \"\$@\" "$line"
+    ___x_cmd_arg_line "$n" "$@" | while read -r line; do
+        printf "%s" "$line"
     done
     )"
 }
@@ -844,7 +866,7 @@ ___x_cmd_main(){
         margs)                                  ___x_cmd_margs "$@"     ;;
         marg1)                                  ___x_cmd_margs 1 "$@"     ;;
 
-        install)                                xrc install/v0 && ___x_cmd_install "$@" ;;
+        install)                                xrc install/latest && ___x_cmd_install "$@" ;;
 
         cd)                                     ___x_cmd_cd "$@";;
 
