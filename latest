@@ -660,7 +660,6 @@ ___x_cmd_arg_line(){
 
     {
         printf "%s" "$*" | tr "\n" "$NW"
-        # printf "Hi: %s\n" "$*" | tr "\n" "$NW" >&2
         printf "\n"
         cat
     } | awk -v every="$every" '
@@ -673,6 +672,7 @@ NR==1{
         argv[i] = "\"" argv[i] "\""
         argstr = argstr " " argv[i]
     }
+    print argstr
 }
 
 function printcode( len ){
@@ -683,7 +683,7 @@ function printcode( len ){
         gsub("\"", "\\\"", e)
         code = code " " "\"" e "\""
     }
-    print argstr " " code
+    print code
 }
 
 NR>1{
@@ -704,18 +704,48 @@ END {
 
 }
 
+___x_cmd_args_funeach(){
+    local ___x_cmd_args_funeach_code="$1"; shift
+    if [ -z "$APPEND_ARG" ]; then
+        eval "$___x_cmd_args_funeach_code"
+    else
+        local ___x_cmd_args_funeach_code="$1"; shift
+        eval "$___x_cmd_args_funeach_code" \"\$@\"
+    fi
+}
+
 ___x_cmd_args(){
     local n="$1"; shift
     local IFS=" "
 
+    local APPEND_ARG=1
+    if [ "$1" = - ]; then
+        APPEND_ARG=
+        shift
+    fi
+
+    local code=""
     ___x_cmd_arg_line "$n" "$@" | while read -r line; do
-        eval "$line"
+        # echo "$line"
+        if [ -z "$code" ]; then
+            code="$line"
+            # echo "code: $code"
+            continue
+        fi
+        # echo ------
+        echo ___x_cmd_args_funeach "$code" "$line"
+        # echo ------
     done
 }
 
 ___x_cmd_margs(){
     local n="$1"; shift
     local IFS=" "
+
+    local APPEND_ARG=1
+    if [ "$1" = - ]; then
+        APPEND_ARG=
+    fi
 
     eval "$(
     ___x_cmd_arg_line "$n" "$@" | while read -r line; do
