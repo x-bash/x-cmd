@@ -691,6 +691,17 @@ ___x_cmd_args(){
     done
 }
 
+___x_cmd_margs(){
+    local n="$1"; shift
+    local IFS=" "
+
+    eval "$(
+    ___x_cmd_arg_line "$n" | while read -r line; do
+        echo \"\$@\" "$line"
+    done
+    )"
+}
+
 
 ___x_cmd_shell_exec(){
     local shell="${1:?Provide shell}"
@@ -830,8 +841,8 @@ ___x_cmd_main(){
 
         args)                                   ___x_cmd_args "$@"      ;;
         arg1)                                   ___x_cmd_args 1 "$@"    ;;
-        arg2)                                   ___x_cmd_args 2 "$@"    ;;
-        arg3)                                   ___x_cmd_args 3 "$@"    ;;
+        margs)                                  ___x_cmd_margs "$@"     ;;
+        marg1)                                  ___x_cmd_marg1 "$@"     ;;
 
         install)                                xrc install/v0 && ___x_cmd_install "$@" ;;
 
