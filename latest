@@ -679,7 +679,7 @@ NR==1{
     }
     # gsub("\"", "\\\"", argstr)
     # print "\"" argstr "\""
-    gsub(/\$/, "\\\$", argstr)
+    # gsub("\$", "\\\$", argstr)
     print argstr
 }
 
@@ -738,7 +738,7 @@ ___x_cmd_args(){
     ___x_cmd_arg_line "$n" "$@" | while read -r line; do
         if [ -z "$code" ]; then
             # code="$line"
-            eval ___x_cmd_args_let "$line"
+            eval ___x_cmd_args_let '${line:-"printf \"%s\\n\""}'
             continue
         fi
         eval ___x_cmd_args_funeach "$line"
@@ -760,7 +760,7 @@ ___x_cmd_margs(){
     ___x_cmd_arg_line "$n" "$@" | while read -r line; do
         if [ -z "$code" ]; then
             code="$line"
-            printf "%s %s\n" ___x_cmd_args_let "$line"
+            printf "%s %s\n" ___x_cmd_args_let '${line:-"printf \"%s\\n\""}'
             continue
         fi
         printf "%s %s\n" ___x_cmd_args_funeach "$line"
