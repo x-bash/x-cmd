@@ -251,7 +251,7 @@ BEGIN {
     gsub(/\*\*/, "([^/]+/){0,}[^/]+", pattern)
     gsub(/\*/, "[^/]+", pattern)
     pattern = "^" pattern "$"
-    print pattern >"/dev/stderr"
+    # print pattern >"/dev/stderr"
 }
 {
     if ( ($0 !~ /^[\ \t]+$/) && ($0 !~ /:$/)) {
