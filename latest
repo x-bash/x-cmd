@@ -673,14 +673,13 @@ NR==1{
 
     for (i=1; i<=argl; ++i) {
         gsub("\002", "\n", argv[i])
+        gsub(/\\/, "\\\\\\", argv[i])
         gsub("\"", "\\\"", argv[i])
-        argv[i] = "\"" argv[i] "\""
+        gsub(/\$/, "\\\$", argv[i])
+        argv[i] = "\\\"" argv[i] "\\\""
         if (argstr == "") argstr = argv[i]
         else argstr = argstr " " argv[i]
     }
-    gsub(/\\/, "\\\\\\", argstr)
-    gsub(/\$/, "\\\$", argstr)
-
     print argstr
 }
 
