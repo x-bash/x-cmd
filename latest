@@ -444,7 +444,7 @@ ___x_cmd_dust(){
     xrc static-build && static_build_init dust dust ___x_cmd_dust && ___x_cmd_dust  "$@"
 }
 
-___x_cmd_sqlite3(){
+___x_cmd_sqlite(){
     xrc static-build && static_build_init sqlite3 sqlite3 ___x_cmd_sqlite3 && ___x_cmd_sqlite3  "$@"
 }
 
@@ -1091,7 +1091,7 @@ ___x_cmd_main(){
         ll)                                     ___x_cmd_exa  -l    "$@"            ;;
         ps)                                     ___x_cmd_procs      "$@"            ;;
         du)                                     ___x_cmd_dust       "$@"            ;;
-        sqlite3)                                ___x_cmd_sqlite3    "$@"            ;;
+        sqlite)                                 ___x_cmd_sqlite     "$@"            ;;
         cat)
                                                 if [ "$#" -ne 0 ]; then
                                                     ___x_cmd_bat "$@"
