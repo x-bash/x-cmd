@@ -205,7 +205,11 @@ ___x_cmd_abspath(){
 # TODO: notice, the glob pattern is actually a regex pattern with ** and * extension. For example, dot is refer as any character, rather than actual .
 alias glob=___x_cmd_glob
 
-___x_cmd_glob()(
+___x_cmd_globu(){
+    ___x_cmd_glob "$@" | sort | uniq
+}
+
+___x_cmd_glob(){
     if [ $# -eq 1 ]; then
         ___x_cmd_glob file "$@"
         return
@@ -215,63 +219,75 @@ ___x_cmd_glob()(
 
     case "$op" in
         all|dir|file)       ;;
-        *)                  ___x_cmd_glob file "$@" ;;
+        *)                  ___x_cmd_glob file "$op" "$@";  return ;;
     esac
-
 
     while [ $# -gt 0 ]; do
         local pattern="${1:?Please provide pattern}";   shift
         local a
-        a="$(printf "" | awk -v pattern="${pattern}" 'BEGIN{
+        a="$(printf "" | awk -v pattern="${pattern}" '
+        function handle(elem){
+            gsub(/\*\*/, "([^/]+/){0,}[^/]+", elem)
+            gsub(/\*/, "[^/]+", elem)
+            return elem
+        }
+
+        BEGIN{
             arrl = split(pattern, arr, /\//)
-            folder = ""
-            for (i=1; i<=arrl; ++i) {
-                if (arr[i] ~ /\*/)  break
-                if (folder == "")   folder = arr[i]
-                else                folder = folder "/" arr[i]
+            if (arrl == 1) {
+                print ""
+                print "^" handle(pattern) "$"
+            } else {
+                folder = ""
+                for (i=1; i<=arrl; ++i) {
+                    if (arr[i] ~ /\*/)  break
+                    if (i == 1)         folder = arr[i]
+                    else                folder = folder "/" arr[i]
+                }
+                print folder
+                pat = ""
+                for (; i<=arrl; ++i) {
+                    arr[i] = handle(arr[i])
+                    if (pat == "")      pat = arr[i]
+                    else                pat = pat "/" arr[i]
+                }
+                pat = "^" pat "$"
+                print pat
             }
-            print folder
-            pat = ""
-            for (; i<=arrl; ++i) {
-                gsub(/\*\*/, "([^/]+/){0,}[^/]+", arr[i])
-                gsub(/\*/, "[^/]+", arr[i])
-                if (pat == "")      pat = arr[i]
-                else                pat = pat "/" arr[i]
-            }
-            pat = "^" pat "$"
-            print pat
         }')"
         local folder="${a%
 *}"
         pattern="${a#*
 }"
 
-        # printf "pat: %s\n" "$pattern" >&2
-        # printf "fol: %s\n" "$folder" >&2
 
-        if [ -n "$folder" ]; then
-            eval cd "$folder"
-        fi
+        (
+            if [ -n "$folder" ]; then
+                [ -d "$folder" ] || return
+                eval cd "$folder"
+            fi
 
-        case "$op" in
-            all)        find . ;;
-            dir)        find . -type dir ;;
-            file)       find . -type f ;;
-            *)          printf "Please provide argument.\n" >&2; return ;;
-        esac |\
-        awk -v pattern="$pattern" '
-            {
-                if ( ($0 !~ /^[\ \t]+$/) && ($0 !~ /:$/)) {
-                    tgt = substr($0, 3)
-                    if (match(tgt, pattern)) {
-                        print tgt
+            case "$op" in
+                all)        find . ;;
+                dir)        find . -type dir ;;
+                file)       find . -type f ;;
+                *)          printf "Please provide argument.\n" >&2; return ;;
+            esac |\
+            awk -v pattern="$pattern" -v prefix="$folder" '
+                BEGIN { if (prefix != "") prefix = prefix "/"; }
+                {
+                    if ( ($0 !~ /^[\ \t]+$/) && ($0 !~ /:$/)) {
+                        tgt = substr($0, 3)
+                        if (match(tgt, pattern)) {
+                            print prefix tgt
+                        }
                     }
                 }
-            }
-        '
+            '
+        )
     done
 
-)
+}
 
 # EndSection
 
@@ -429,7 +445,7 @@ ___x_cmd_dust(){
     xrc static-build && static_build_init dust dust ___x_cmd_dust && ___x_cmd_dust  "$@"
 }
 
-___x_cmd_sqlite3(){
+___x_cmd_sqlite(){
     xrc static-build && static_build_init sqlite3 sqlite3 ___x_cmd_sqlite3 && ___x_cmd_sqlite3  "$@"
 }
 
@@ -1004,7 +1020,7 @@ ___x_cmd_main(){
         alias)                                  ___x_cmd_alias      ___x_cmd "$@"   ;;
         unalias)                                ___x_cmd_unalias    ___x_cmd "$@"   ;;
 
-        boot)                                   ( xrc x-cmd/_v0/boot && ___x_cmd_boot "$@"; ) ;;
+        boot)                                   xrc x-cmd/_v0/boot && ___x_cmd_boot "$@" ;;
 
         conjoin)                                ___x_cmd_eval_concurrent_join "$@" ;;
         con)                                    ___x_cmd_eval_concurrent_assign "$@" ;;
@@ -1041,8 +1057,6 @@ ___x_cmd_main(){
         z)                                      (   xrc zuz && zuz z "$@"   ) ;;
         uz)                                     (   xrc zuz && zuz uz "$@"  ) ;;
 
-        ubu|alp|deb|cen|bus)                    (   xrc xdk/v0 && xdk "$subcmd" "$@" ) ;;
-        docker|dk|xdk)                          (   xrc xdk/v0 && xdk "$@" )   ;;
         sh|bash|zsh|fish|ksh|dash|ash)          ___x_cmd_shell_exec "$subcmd" "$@" ;;
 
         jar)                                    java -jar "$@" ;;
@@ -1074,11 +1088,11 @@ ___x_cmd_main(){
 
         7zr)                                    ( xrc p7zr/v0   &&  p7zr "$@" )     ;;
         7z)                                     ( xrc p7z/v0    &&  p7z "$@" )      ;;
-        ls)                                     ___x_cmd_ls         "$@"             ;;
-        ll)                                     ___x_cmd_exa  -l    "$@"             ;;
-        ps)                                     ___x_cmd_procs      "$@"             ;;
-        du)                                     ___x_cmd_dust       "$@"             ;;
-        sqlite3)                                ___x_cmd_sqlite3    "$@"             ;;
+        ls)                                     ___x_cmd_ls         "$@"            ;;
+        ll)                                     ___x_cmd_exa  -l    "$@"            ;;
+        ps)                                     ___x_cmd_procs      "$@"            ;;
+        du)                                     ___x_cmd_dust       "$@"            ;;
+        sqlite)                                 ___x_cmd_sqlite     "$@"            ;;
         cat)
                                                 if [ "$#" -ne 0 ]; then
                                                     ___x_cmd_bat "$@"
@@ -1086,7 +1100,7 @@ ___x_cmd_main(){
                                                     ___x_cmd_bat "--help"
                                                 fi
                                                 ;;
-        bw)                                     ___x_cmd_bw         "$@"             ;;
+        bw)                                     ___x_cmd_bw         "$@"            ;;
         jq)
                                                 if [ "$#" -ne 0 ]; then
                                                     ___x_cmd_jq "$@"
@@ -1094,17 +1108,17 @@ ___x_cmd_main(){
                                                     ___x_cmd_jq "--help"
                                                 fi
                                                 ;;
-        yq)                                     ___x_cmd_yq         "$@"             ;;
-        curl)                                   ___x_cmd_static_build_curl  "$@"     ;;
-        openssl|ssl)                            ___x_cmd_openssl    "$@"             ;;
-        tmux)                                   ___x_cmd_tmux       "$@"             ;;
-        git)                                    ___x_cmd_git        "$@"             ;;
-        nmap)                                   ___x_cmd_nmap       "$@"             ;;
-        ncat)                                   ___x_cmd_ncat       "$@"             ;;
-        nping)                                  ___x_cmd_nping      "$@"             ;;
-        traceroute)                             ___x_cmd_traceroute "$@"             ;;
-        run)                                    ___x_cmd_run_by_file "$@"            ;;
-        search_path)                            ___x_cmd_search_path "$@"            ;;
+        yq)                                     ___x_cmd_yq         "$@"            ;;
+        curl)                                   ___x_cmd_static_build_curl  "$@"    ;;
+        openssl|ssl)                            ___x_cmd_openssl    "$@"            ;;
+        tmux)                                   ___x_cmd_tmux       "$@"            ;;
+        git)                                    ___x_cmd_git        "$@"            ;;
+        nmap)                                   ___x_cmd_nmap       "$@"            ;;
+        ncat)                                   ___x_cmd_ncat       "$@"            ;;
+        nping)                                  ___x_cmd_nping      "$@"            ;;
+        traceroute)                             ___x_cmd_traceroute "$@"            ;;
+        run)                                    ___x_cmd_run_by_file "$@"           ;;
+        search_path)                            ___x_cmd_search_path "$@"           ;;
         which|w)                                local p
                                                 for p in "$@"; do
                                                     if ! ___x_cmd_which_one "$p"; then
