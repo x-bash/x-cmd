@@ -1027,7 +1027,7 @@ ___x_cmd_main(){
 
 # Section : advise.json
 ___x_cmd_x_cmd_advise_json(){
-    xrc cat _v0/advise.json
+    xrc cat _v0/x.json
     return 126
 }
 # EndSection
