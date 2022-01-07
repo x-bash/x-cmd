@@ -201,6 +201,35 @@ ___x_cmd_abspath(){
 
 # EndSection
 
+# Section: man
+
+# Reference: https://github.com/Valloric/dotfiles/blob/master/less/LESS_TERMCAP
+
+# termcap terminfo
+# ks      smkx      make the keypad send commands
+# ke      rmkx      make the keypad send digits
+# vb      flash     emit visual bell
+# mb      blink     start blink
+# md      bold      start bold
+# me      sgr0      turn off bold, blink and underline
+# so      smso      start standout (reverse video)
+# se      rmso      stop standout
+# us      smul      start underline
+# ue      rmul      stop underline
+
+___x_cmd_man() {
+    LESS_TERMCAP_md="${___X_CMD_THEME_MD:-"$(printf '\e[01;31m')"}" \
+    LESS_TERMCAP_me="${___X_CMD_THEME_ME:-"$(printf '\e[0m')"}" \
+    LESS_TERMCAP_us="${___X_CMD_THEME_US:-"$(printf '\e[01;04;32m')"}" \
+    LESS_TERMCAP_ue="${___X_CMD_THEME_UE:-"$(printf '\e[0m')"}" \
+    LESS_TERMCAP_so="${___X_CMD_THEME_SO:-"$(printf '\e[45;93m')"}" \
+    LESS_TERMCAP_se="${___X_CMD_THEME_SE:-"$(printf '\e[0m')"}" \
+    command man "$@"
+}
+alias man=___x_cmd_man
+
+# EndSection
+
 # Section : Find And Execute at .x-cmd folder
 
 ___x_cmd_exe_workspace(){
@@ -1028,125 +1057,7 @@ ___x_cmd_main(){
 
 # Section : advise.json
 ___x_cmd_x_cmd_advise_json(){
-    cat <<A
-{
-  "boot": {
-      "cat": null,
-      "which|w": null,
-      "mod": {
-          "add|+": null,
-          "del|-": "x initrc mod ls",
-          "ls": null
-      }
-  },
-  "install": {
-      "ls": "--- list all software",
-      "update": "--- update",
-      "get": {
-          "#1": "x install name",
-          "#desc": "get software installation command"
-      },
-      "run": {
-          "#1": "x install name",
-          "#desc": "run software installation command"
-      },
-      "#1": "x install name"
-  },
-  "config": {
-      "tab": null,
-      "ssh": null,
-      "sshd": null
-  },
-  "man": { },
-  "env": { },
-  "login": { },
-  "register": { },
-  "token": { },
-  "hub": {
-      "file": {
-          "ls": null,
-          "which": "x hub file ls",
-          "upload": "x hub file ls",
-          "share": "x hub file ls",
-          "private": "x hub file ls"
-      },
-      "login": null,
-      "register": null,
-      "token": null
-  },
-  "log": {
-      "init": { },
-      "timestamp": {
-          "on": { },
-          "off": { }
-      },
-      "#n": "xrc x-cmd/_v0/log && ___x_cmd_log_completer"
-  },
-  "upgrade": { },
-  "clear": { },
-  "reinstall": { },
-  "z": null,
-  "uz": null,
-  "ubu|alp|deb|cen|bus": {
-      "alias": { },
-      "run": {
-          "centos": { },
-          "ubuntu": { },
-          "alpine": { },
-          "busybox": { }
-      },
-      "exec": { },
-      "empower": { },
-      "centos": { },
-      "ubuntu": { },
-      "alpine": { },
-      "busybox": { }
-  },
-  "docker|dk|xdk": {
-      "alias": { },
-      "run": {
-          "centos": { },
-          "ubuntu": { },
-          "alpine": { },
-          "busybox": { }
-      },
-      "exec": { },
-      "empower": { },
-      "centos": { },
-      "ubuntu": { },
-      "alpine": { },
-      "busybox": { }
-  },
-  "sh|bash|zsh|fish|ksh|dash|ash": "___advise_ls",
-  "jar": "___advise_ls",
-  "java": "___advise_ls",
-  "pip|pip3": "___advise_ls",
-  "python|py|python3|py3": "___advise_ls",
-  "nvm": null,
-  "javascript|js|node": "___advise_ls",
-  "npm": null,
-  "npx": null,
-  "ts": null,
-  "ruby|rb": null,
-  "lua": null,
-  "jq": null,
-  "yq": null,
-  "cat|du": "___advise_ls",
-  "ls|ll|cd": "___advise_ls",
-  "ps|procs": null,
-  "nmap": null,
-  "ncat": null,
-  "nping": null,
-  "traceroute": null,
-  "sqlite3": null,
-  "run": { },
-  "search_path": { },
-  "which": { },
-  "wsroot": { },
-  "#1": "___x_cmd_list_resource",
-  "#n": "___advise_get_result 1"
-}
-A
+    xrc cat _v0/x.json
     return 126
 }
 # EndSection
