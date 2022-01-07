@@ -212,6 +212,12 @@ ___x_cmd_glob()(
 
     local op="${1}"; shift
 
+    case "$op" in
+        all|dir|file)       ;;
+        *)                  ___x_cmd_glob file "$@" ;;
+    esac
+
+
     while [ $# -gt 0 ]; do
         local pattern="${1:?Please provide pattern}";   shift
         local a
