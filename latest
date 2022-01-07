@@ -214,9 +214,8 @@ ___x_cmd_glob()(
 
     case "$op" in
         all|dir|file)       ;;
-        *)                  ___x_cmd_glob file "$@" ;;
+        *)                  ___x_cmd_glob file "$op" "$@";  return ;;
     esac
-
 
     while [ $# -gt 0 ]; do
         local pattern="${1:?Please provide pattern}";   shift
