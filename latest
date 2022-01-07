@@ -204,6 +204,10 @@ ___x_cmd_abspath(){
 # TODO: notice, the glob pattern is actually a regex pattern with ** and * extension. For example, dot is refer as any character, rather than actual .
 alias glob=___x_cmd_glob
 
+___x_cmd_globu(){
+    ___x_cmd_glob "$@" | sort | uniq
+}
+
 ___x_cmd_glob()(
     if [ $# -eq 1 ]; then
         ___x_cmd_glob file "$@"
