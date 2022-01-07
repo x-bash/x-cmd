@@ -946,7 +946,7 @@ ___x_cmd_main(){
 
         cd)                                     ___x_cmd_cd "$@";;
 
-        man)        ;;
+        man)                                    ___x_cmd_man "$@" ;;
         advise)                                 xrc advise/latest && advise "$@" ;;
         env)        ;;
 
