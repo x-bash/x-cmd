@@ -133,6 +133,7 @@ A
 $mod
 }" ]; then
                                                 printf "%s\n" "$mod"
+                                                printf "Module will be automatically imported during boot: %s\n" "$mod" >&2
                                             fi
                                         done
                                     } >> "$___X_CMD_ROOT_MOD"
