@@ -8,7 +8,8 @@ ___x_cmd_list_resource(){
 cowsay
 theme
 tldr
-advise"
+advise
+install"
 }
 
 # Section : Unfinished ___x_cmd_official_which
