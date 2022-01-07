@@ -737,7 +737,7 @@ NR>1{
 END {
     if (count > 0) printcode( count )
 }
-'
+' 2>/dev/null
 
 }
 
@@ -938,10 +938,10 @@ ___x_cmd_main(){
         *:=)                                    ___x_cmd_varset "${subcmd%:=}" "$@" ;;
         *=)                                     ___x_cmd_varset_without_end "${subcmd%=}" "$@" ;;
 
-        args)                                   ___x_cmd_args "$@"    2>/dev/null  ;;
-        arg1)                                   ___x_cmd_args 1 "$@"  2>/dev/null  ;;
-        margs)                                  ___x_cmd_margs "$@"   2>/dev/null  ;;
-        marg1)                                  ___x_cmd_margs 1 "$@" 2>/dev/null  ;;
+        args)                                   ___x_cmd_args "$@"      ;;
+        arg1)                                   ___x_cmd_args 1 "$@"    ;;
+        margs)                                  ___x_cmd_margs "$@"     ;;
+        marg1)                                  ___x_cmd_margs 1 "$@"   ;;
 
         install)                                xrc install/latest && ___x_cmd_install "$@" ;;
 
