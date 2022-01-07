@@ -216,7 +216,7 @@ ___x_cmd_glob()(
         arrl = split(pattern, arr, /\//)
         folder = ""
         for (i=1; i<=arrl; ++i) {
-            if (arr[i] ~ /\*/) break
+            if (arr[i] ~ /\*/)  break
             if (folder == "")   folder = arr[i]
             else                folder = folder "/" arr[i]
         }
