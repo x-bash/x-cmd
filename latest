@@ -203,13 +203,8 @@ ___x_cmd_abspath(){
 # glob file directory
 # TODO: notice, the glob pattern is actually a regex pattern with ** and * extension. For example, dot is refer as any character, rather than actual .
 alias glob=___x_cmd_glob
-___x_cmd_glob()(
-    if [ $# -eq 1 ]; then
-        ___x_cmd_refind file "$@"
-        return
-    fi
 
-    local op="${1}"; shift
+___x_cmd_glob(){
     local pattern="${1:?Please provide pattern}"
     local a
     a="$(printf "" | awk -v pattern="${pattern}" 'BEGIN{
@@ -243,13 +238,7 @@ ___x_cmd_glob()(
         eval cd "$folder"
     fi
 
-    case "$op" in
-        all)        find . ;;
-        dir)        find . -type dir ;;
-        "")         find . "$op" ;;
-        file)       find . -type f ;;
-        *)          printf "Please provide argument.\n" >&2; return ;;
-    esac | awk -v pattern="$pattern" '
+    awk -v pattern="$pattern" '
 {
     if ( ($0 !~ /^[\ \t]+$/) && ($0 !~ /:$/)) {
         tgt = substr($0, 3)
@@ -258,7 +247,26 @@ ___x_cmd_glob()(
         }
     }
 }
-'
+' | ___x_cmd_glob
+
+}
+
+___x_cmd_glob()(
+    if [ $# -eq 1 ]; then
+        ___x_cmd_glob file "$@"
+        return
+    fi
+
+    local op="${1}"; shift
+
+
+    case "$op" in
+        all)        find . ;;
+        dir)        find . -type dir ;;
+        "")         find . "$op" ;;
+        file)       find . -type f ;;
+        *)          printf "Please provide argument.\n" >&2; return ;;
+    esac | ''
 
 )
 
