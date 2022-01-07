@@ -944,7 +944,7 @@ ___x_cmd_main(){
 
         install)                                xrc install/latest && ___x_cmd_install "$@" ;;
 
-        cd)                                     ___x_cmd_cd "$@";;
+        cd)                                     ___x_cmd_cd "$@" ;;
 
         man)                                    ___x_cmd_man "$@" ;;
         advise)                                 xrc advise/latest && advise "$@" ;;
