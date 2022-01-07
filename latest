@@ -259,8 +259,6 @@ ___x_cmd_glob(){
         pattern="${a#*
 }"
 
-        printf "pat: %s\n" "$pattern" >&2
-        printf "fol: %s\n" "$folder" >&2
 
         (
             if [ -n "$folder" ]; then
