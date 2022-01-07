@@ -202,9 +202,10 @@ ___x_cmd_abspath(){
 # x glob abc*
 # glob file directory
 # TODO: notice, the glob pattern is actually a regex pattern with ** and * extension. For example, dot is refer as any character, rather than actual .
-___x_cmd_reglob()(
+alias glob=___x_cmd_glob
+___x_cmd_glob()(
     if [ $# -eq 1 ]; then
-        ___x_cmd_reglob file "$@"
+        ___x_cmd_refind file "$@"
         return
     fi
 
