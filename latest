@@ -245,7 +245,7 @@ ___x_cmd_glob()(
         dir)        find . -type dir ;;
         "")         find . "$op" ;;
         file)       find . -type f ;;
-        *)          printf "Wrong" >&2; return ;;
+        *)          printf "Please provide argument.\n" >&2; return ;;
     esac | awk -v pattern="$pattern" '
 BEGIN {
     gsub(/\*\*/, "([^/]+/){0,}[^/]+", pattern)
