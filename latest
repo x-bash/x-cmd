@@ -205,53 +205,6 @@ ___x_cmd_abspath(){
 # TODO: notice, the glob pattern is actually a regex pattern with ** and * extension. For example, dot is refer as any character, rather than actual .
 alias glob=___x_cmd_glob
 
-___x_cmd_glob(){
-    local pattern="${1:?Please provide pattern}"
-    local a
-    a="$(printf "" | awk -v pattern="${pattern}" 'BEGIN{
-        arrl = split(pattern, arr, /\//)
-        folder = ""
-        for (i=1; i<=arrl; ++i) {
-            if (arr[i] ~ /\*/)  break
-            if (folder == "")   folder = arr[i]
-            else                folder = folder "/" arr[i]
-        }
-        print folder
-        pat = ""
-        for (; i<=arrl; ++i) {
-            gsub(/\*\*/, "([^/]+/){0,}[^/]+", arr[i])
-            gsub(/\*/, "[^/]+", arr[i])
-            if (pat == "")      pat = arr[i]
-            else                pat = pat "/" arr[i]
-        }
-        pat = "^" pat "$"
-        print pat
-    }')"
-    local folder="${a%
-*}"
-    pattern="${a#*
-}"
-
-    # printf "pat: %s\n" "$pattern" >&2
-    # printf "fol: %s\n" "$folder" >&2
-
-    if [ -n "$folder" ]; then
-        eval cd "$folder"
-    fi
-
-    awk -v pattern="$pattern" '
-{
-    if ( ($0 !~ /^[\ \t]+$/) && ($0 !~ /:$/)) {
-        tgt = substr($0, 3)
-        if (match(tgt, pattern)) {
-            print tgt
-        }
-    }
-}
-' | ___x_cmd_glob
-
-}
-
 ___x_cmd_glob()(
     if [ $# -eq 1 ]; then
         ___x_cmd_glob file "$@"
@@ -260,14 +213,63 @@ ___x_cmd_glob()(
 
     local op="${1}"; shift
 
-
     case "$op" in
-        all)        find . ;;
-        dir)        find . -type dir ;;
-        "")         find . "$op" ;;
-        file)       find . -type f ;;
-        *)          printf "Please provide argument.\n" >&2; return ;;
-    esac | ''
+        all|dir|file)       ;;
+        *)                  ___x_cmd_glob file "$@" ;;
+    esac
+
+
+    while [ $# -gt 0 ]; do
+        local pattern="${1:?Please provide pattern}";   shift
+        local a
+        a="$(printf "" | awk -v pattern="${pattern}" 'BEGIN{
+            arrl = split(pattern, arr, /\//)
+            folder = ""
+            for (i=1; i<=arrl; ++i) {
+                if (arr[i] ~ /\*/)  break
+                if (folder == "")   folder = arr[i]
+                else                folder = folder "/" arr[i]
+            }
+            print folder
+            pat = ""
+            for (; i<=arrl; ++i) {
+                gsub(/\*\*/, "([^/]+/){0,}[^/]+", arr[i])
+                gsub(/\*/, "[^/]+", arr[i])
+                if (pat == "")      pat = arr[i]
+                else                pat = pat "/" arr[i]
+            }
+            pat = "^" pat "$"
+            print pat
+        }')"
+        local folder="${a%
+*}"
+        pattern="${a#*
+}"
+
+        # printf "pat: %s\n" "$pattern" >&2
+        # printf "fol: %s\n" "$folder" >&2
+
+        if [ -n "$folder" ]; then
+            eval cd "$folder"
+        fi
+
+        case "$op" in
+            all)        find . ;;
+            dir)        find . -type dir ;;
+            file)       find . -type f ;;
+            *)          printf "Please provide argument.\n" >&2; return ;;
+        esac |\
+        awk -v pattern="$pattern" '
+            {
+                if ( ($0 !~ /^[\ \t]+$/) && ($0 !~ /:$/)) {
+                    tgt = substr($0, 3)
+                    if (match(tgt, pattern)) {
+                        print tgt
+                    }
+                }
+            }
+        '
+    done
 
 )
 
