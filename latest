@@ -1019,7 +1019,7 @@ ___x_cmd_main(){
         alias)                                  ___x_cmd_alias      ___x_cmd "$@"   ;;
         unalias)                                ___x_cmd_unalias    ___x_cmd "$@"   ;;
 
-        boot)                                   ( xrc x-cmd/_v0/boot && ___x_cmd_boot "$@"; ) ;;
+        boot)                                   xrc x-cmd/_v0/boot && ___x_cmd_boot "$@" ;;
 
         conjoin)                                ___x_cmd_eval_concurrent_join "$@" ;;
         con)                                    ___x_cmd_eval_concurrent_assign "$@" ;;
