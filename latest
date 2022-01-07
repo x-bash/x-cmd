@@ -199,6 +199,72 @@ ___x_cmd_abspath(){
     fi
 }
 
+# x glob abc*
+# glob file directory
+___x_cmd_glob()(
+    if [ $# -eq 1 ]; then
+        ___x_cmd_glob file "$@"
+        return
+    fi
+
+    local op="${1}"; shift
+    local pattern="${1:?Please provide pattern}"
+    local a
+    a="$(printf "" | awk -v pattern="${pattern}" 'BEGIN{
+        arrl = split(pattern, arr, /\//)
+        folder = ""
+        for (i=1; i<=arrl; ++i) {
+            if (arr[i] ~ /\*/) break
+            if (folder == "")   folder = arr[i]
+            else                folder = folder "/" arr[i]
+        }
+        print folder
+        pat = ""
+        for (; i<=arrl; ++i) {
+            gsub(/\*\*/, "([^/]+/){0,}[^/]+", arr[i])
+            gsub(/\*/, "[^/]+", arr[i])
+            if (pat == "")      pat = arr[i]
+            else                pat = pat "/" arr[i]
+        }
+        print pat
+    }')"
+    local folder="${a%
+*}"
+    pattern="${a#*
+}"
+
+    # printf "pat: %s\n" "$pattern" >&2
+    # printf "fol: %s\n" "$folder" >&2
+
+    if [ -n "$folder" ]; then
+        eval cd "$folder"
+    fi
+
+    case "$op" in
+        all)        find . ;;
+        dir)        find . -type dir ;;
+        "")         find . "$op" ;;
+        file)       find . -type f ;;
+        *)          printf "Wrong" >&2; return ;;
+    esac | awk -v pattern="$pattern" '
+BEGIN {
+    gsub(/\*\*/, "([^/]+/){0,}[^/]+", pattern)
+    gsub(/\*/, "[^/]+", pattern)
+    pattern = "^" pattern "$"
+    print pattern >"/dev/stderr"
+}
+{
+    if ( ($0 !~ /^[\ \t]+$/) && ($0 !~ /:$/)) {
+        tgt = substr($0, 3)
+        if (match(tgt, pattern)) {
+            print tgt
+        }
+    }
+}
+'
+
+)
+
 # EndSection
 
 # Section: man
