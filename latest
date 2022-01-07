@@ -224,6 +224,7 @@ ___x_cmd_man() {
     LESS_TERMCAP_ue="${___X_CMD_THEME_UE:-"$(printf '\e[0m')"}" \
     LESS_TERMCAP_so="${___X_CMD_THEME_SO:-"$(printf '\e[45;93m')"}" \
     LESS_TERMCAP_se="${___X_CMD_THEME_SE:-"$(printf '\e[0m')"}" \
+    GROFF_NO_SGR=1 \
     command man "$@"
 }
 alias man=___x_cmd_man
