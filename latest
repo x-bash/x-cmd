@@ -201,9 +201,10 @@ ___x_cmd_abspath(){
 
 # x glob abc*
 # glob file directory
-___x_cmd_glob()(
+# TODO: notice, the glob pattern is actually a regex pattern with ** and * extension. For example, dot is refer as any character, rather than actual .
+___x_cmd_reglob()(
     if [ $# -eq 1 ]; then
-        ___x_cmd_glob file "$@"
+        ___x_cmd_reglob file "$@"
         return
     fi
 
@@ -226,6 +227,7 @@ ___x_cmd_glob()(
             if (pat == "")      pat = arr[i]
             else                pat = pat "/" arr[i]
         }
+        pat = "^" pat "$"
         print pat
     }')"
     local folder="${a%
@@ -247,12 +249,6 @@ ___x_cmd_glob()(
         file)       find . -type f ;;
         *)          printf "Please provide argument.\n" >&2; return ;;
     esac | awk -v pattern="$pattern" '
-BEGIN {
-    gsub(/\*\*/, "([^/]+/){0,}[^/]+", pattern)
-    gsub(/\*/, "[^/]+", pattern)
-    pattern = "^" pattern "$"
-    # print pattern >"/dev/stderr"
-}
 {
     if ( ($0 !~ /^[\ \t]+$/) && ($0 !~ /:$/)) {
         tgt = substr($0, 3)
