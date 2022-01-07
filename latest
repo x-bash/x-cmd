@@ -802,6 +802,7 @@ NR==1{
         gsub("\002", "\n", argv[i])
         gsub(/\\/, "\\\\\\", argv[i])
         gsub("\"", "\\\"", argv[i])
+        # TODO: Awk will have a warning about "$" and the solution: throw it to "2>/dev/null"
         gsub(/\$/, "\\\$", argv[i])
         argv[i] = "\\\"" argv[i] "\\\""
         if (argstr == "") argstr = argv[i]
@@ -835,7 +836,7 @@ NR>1{
 END {
     if (count > 0) printcode( count )
 }
-'
+' 2>/dev/null
 
 }
 
@@ -1036,10 +1037,10 @@ ___x_cmd_main(){
         *:=)                                    ___x_cmd_varset "${subcmd%:=}" "$@" ;;
         *=)                                     ___x_cmd_varset_without_end "${subcmd%=}" "$@" ;;
 
-        args)                                   ___x_cmd_args "$@"    2>/dev/null  ;;
-        arg1)                                   ___x_cmd_args 1 "$@"  2>/dev/null  ;;
-        margs)                                  ___x_cmd_margs "$@"   2>/dev/null  ;;
-        marg1)                                  ___x_cmd_margs 1 "$@" 2>/dev/null  ;;
+        args)                                   ___x_cmd_args "$@"      ;;
+        arg1)                                   ___x_cmd_args 1 "$@"    ;;
+        margs)                                  ___x_cmd_margs "$@"     ;;
+        marg1)                                  ___x_cmd_margs 1 "$@"   ;;
 
         cd)                                     ___x_cmd_cd "$@" ;;
 
