@@ -704,6 +704,7 @@ NR==1{
         gsub("\002", "\n", argv[i])
         gsub(/\\/, "\\\\\\", argv[i])
         gsub("\"", "\\\"", argv[i])
+        # TODO: Awk will have a warning about "$" and the solution: throw it to "2>/dev/null"
         gsub(/\$/, "\\\$", argv[i])
         argv[i] = "\\\"" argv[i] "\\\""
         if (argstr == "") argstr = argv[i]
