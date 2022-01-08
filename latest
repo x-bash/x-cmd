@@ -8,7 +8,8 @@ ___x_cmd_list_resource(){
 cowsay
 theme
 tldr
-advise"
+advise
+install"
 }
 
 # Section : Unfinished ___x_cmd_official_which
@@ -275,7 +276,7 @@ ___x_cmd_glob(){
             awk -v pattern="$pattern" -v prefix="$folder" '
                 BEGIN { if (prefix != "") prefix = prefix "/"; }
                 {
-                    if ( ($0 !~ /^[\ \t]+$/) && ($0 !~ /:$/)) {
+                    if ( ($0 !~ /^[ \t]+$/) && ($0 !~ /:$/)) {
                         tgt = substr($0, 3)
                         if (match(tgt, pattern)) {
                             print prefix tgt
@@ -1148,7 +1149,7 @@ ___x_cmd_main(){
 
 # Section : advise.json
 ___x_cmd_x_cmd_advise_json(){
-    xrc cat _v0/x.json
+    xrc cat x-cmd/_v0/x.json
     return 126
 }
 # EndSection
