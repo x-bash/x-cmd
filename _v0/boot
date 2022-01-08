@@ -1,6 +1,6 @@
 # shellcheck shell=sh disable=SC3043
 
-# Section: initrc, consider external module.
+# Section: bootrc consider external module.
 ___x_cmd_boot(){
     local subcmd="$1";  shift
     if ! mkdir -p "$HOME/.x-cmd/.boot"; then
