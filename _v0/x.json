@@ -1,5 +1,5 @@
 {
-    "boot": {    
+    "boot": {
         "cat": null,
         "which|w": null,
         "mod": {
@@ -43,7 +43,7 @@
     "reinstall": {},
     "z|uz": null,
     "sh|bash|zsh|fish|ksh|dash|ash": {
-        "#desc": "sh description",
+        "#desc": "Sh description",
         "#1": "___advise_ls"
     },
     "nvm": null,
@@ -64,11 +64,29 @@
     "search_path": {},
     "which": {},
     "wsroot": {},
-    "advise": "--- Command line complete",
-    "theme": "--- Change terminal theme",
-    "tldr": "--- Too Long, Didn't Read",
-    "install": "--- Install Command-line tools",
-    "proxy": "--- Change proxy",
-    "cowsay": "--- Use cowsay",
+    "advise": {
+        "#n": "___advise_get_result 1",
+        "#desc": "Command line complete"
+    },
+    "theme": {
+        "#n": "___advise_get_result 1",
+        "#desc": "Change terminal theme"
+    },
+    "tldr": {
+        "#n": "___advise_get_result 1",
+        "#desc": "Too Long, Didn't Read"
+    },
+    "install": {
+        "#n": "___advise_get_result 1",
+        "#desc": "Install Command-line tools"
+    },
+    "proxy": {
+        "#n": "___advise_get_result 1",
+        "#desc": "Change proxy"
+    },
+    "cowsay": {
+        "#n": "___advise_get_result 1",
+        "#desc": "Use cowsay"
+    },
     "#n": "___advise_get_result 1"
 }
