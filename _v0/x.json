@@ -1,5 +1,5 @@
 {
-    "boot": {
+    "boot": {    
         "cat": null,
         "which|w": null,
         "mod": {
@@ -41,22 +41,17 @@
     "upgrade": {},
     "clear": {},
     "reinstall": {},
-    "z": null,
-    "uz": null,
-    "sh|bash|zsh|fish|ksh|dash|ash": "___advise_ls",
-    "jar": "___advise_ls",
-    "java": "___advise_ls",
-    "pip|pip3": "___advise_ls",
-    "python|py|python3|py3": "___advise_ls",
+    "z|uz": null,
+    "sh|bash|zsh|fish|ksh|dash|ash": {
+        "#desc": "sh description",
+        "#1": "___advise_ls"
+    },
     "nvm": null,
-    "javascript|js|node": "___advise_ls",
-    "npm": null,
-    "npx": null,
-    "ts": null,
-    "ruby|rb": null,
-    "lua": null,
-    "jq": null,
-    "yq": null,
+    "jar|java|pip|py|js|node|npm|npx|ts|rb|lua": {
+        "#desc": "Use these environments to run scripts",
+        "#1": "___advise_ls"
+    },
+    "jq|yq": null,
     "cat|du": "___advise_ls",
     "ls|ll|cd": "___advise_ls",
     "ps|procs": null,
@@ -69,6 +64,11 @@
     "search_path": {},
     "which": {},
     "wsroot": {},
-    "#1": "___x_cmd_list_resource",
+    "advise": "--- Command line complete",
+    "theme": "--- Change terminal theme",
+    "tldr": "--- Too Long, Didn't Read",
+    "install": "--- Install Command-line tools",
+    "proxy": "--- Change proxy",
+    "cowsay": "--- Use cowsay",
     "#n": "___advise_get_result 1"
 }
