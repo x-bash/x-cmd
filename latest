@@ -1147,19 +1147,8 @@ ___x_cmd_x_cmd_advise_json(){
 
 # Section : help
 ___x_cmd_x_cmd_help(){
-    xrc advise/lib/advise_get_complete
-    ___x_cmd_advise_get_complete "$(xrc which x-cmd/_v0/x.json)" | awk 'BEGIN{max=0}{
-        if(match($0, " --- ")){
-            str = arr[substr($0, RSTART+4)] "|" substr($0, 1, RSTART-1)
-            arr[substr($0, RSTART+4)] = str
-            len = length(str)
-            arr_len[substr($0, RSTART+4) "#len"] = len
-            if(max < len) max = len
-        }
-    }END{
-        print "SUBCOMMAND:"
-        for(i in arr){print "    " substr(arr[i], 2) sprintf("%" max - arr_len[i "#len"] "s", "") " " i}
-    }'
+    xrc advise/lib/advise_get
+    ___x_cmd_advise_get_help "$(xrc which x-cmd/_v0/x.json)"
 }
 # EndSection
 
