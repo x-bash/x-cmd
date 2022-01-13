@@ -3,14 +3,6 @@
 # author:       Li Junhao           l@x-cmd.com
 # maintainer:   Li Junhao
 
-___x_cmd_list_resource(){
-    printf "%s" "proxy
-cowsay
-theme
-tldr
-advise
-install"
-}
 
 # Section : Unfinished ___x_cmd_official_which
 
@@ -995,7 +987,13 @@ ___x_cmd_main(){
 
     local subcmd=$1; [ $# -gt 0 ] && shift
     case "$subcmd" in
-        ""|help)                                printf "%s\n" "Show help" >&2; return 1 ;;
+        ""|help)                                printf "x     x-bash core function.
+    Uasge:  x <subcommand> [<subcommand>...]
+    Please visit our homepage for more information: https://x-cmd.com
+" >&2;
+                                                ___x_cmd_x_cmd_help
+                                                return 0
+;;
 
         alias)                                  ___x_cmd_alias      ___x_cmd "$@"   ;;
         unalias)                                ___x_cmd_unalias    ___x_cmd "$@"   ;;
@@ -1016,11 +1014,8 @@ ___x_cmd_main(){
 
         login)                                  xrc hub/latest && ___x_cmd_hub login "$@" ;;
 
-        upgrade)
-                                                ___XRC_UDPATE=1
-                                                ___X_CMD_XRC_MODULE_IMPORTED=
-                                                rm -rf "$___X_CMD_ROOT/.boot/boot" && eval "$(curl https://get.x-cmd.com)"
-                                                ;;
+        update)                                 xrc update "$@"  ;;
+        upgrade)                                xrc upgrade "$@" ;;
         clear)                                  if ! grep "___x_cmd_http_get()" "$___X_CMD_ROOT/xrc/latest" >/dev/null 2>&1; then
                                                     ___xrc_log debug "'$___X_CMD_ROOT/xrc/latest' NOT found. Please manually clear cache folder: $___X_CMD_ROOT"
                                                     return 1
@@ -1115,6 +1110,13 @@ ___x_cmd_main(){
 ___x_cmd_x_cmd_advise_json(){
     xrc cat x-cmd/_v0/x.json
     return 126
+}
+# EndSection
+
+# Section : help
+___x_cmd_x_cmd_help(){
+    xrc advise/lib/advise_get
+    ___x_cmd_advise_get_help "$(xrc which x-cmd/_v0/x.json)"
 }
 # EndSection
 
