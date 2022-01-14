@@ -17,7 +17,8 @@
             "cat": null,
             "ls": null,
             "#desc": "Modifiy module"
-        }
+        },
+        "#desc": "bootrc consider external module"
     },
     "config": {
         "tab": null,
@@ -26,7 +27,7 @@
     },
     "man": {},
     "env": {},
-    "login": {},
+    "login": "--- Login user account",
     "register": {},
     "token": {},
     "hub": {
@@ -39,7 +40,8 @@
         },
         "login": null,
         "register": null,
-        "token": null
+        "token": null,
+        "#desc": "Hub... "
     },
     "log": {
         "init": "--- Generate function \\'<module>_log\\'",
@@ -50,8 +52,11 @@
         },
         "#n": "xrc x-cmd/_v0/log && ___x_cmd_log_completer"
     },
-    "upgrade": null,
-    "update": ["nightly", "dev"],
+    "upgrade": "--- Upgrade x-cmd",
+    "update": {
+        "#1": ["nightly", "dev"],
+        "#desc": "Update x-cmd"
+    },
     "clear": {},
     "reinstall": {},
     "z|uz": null,
@@ -80,7 +85,10 @@
     "args": null,
     "alias|unalias": "--- x alias or unalias",
     "dev": null,
-    "ws": "xrc advise/lib/advise_get && ___x_cmd_advise_get_complete \"$(x advise which dev)\" mod ''",
+    "ws": {
+        "#1": "xrc advise/lib/advise_get && ___x_cmd_advise_get_complete \"$(x advise which dev)\" mod ''",
+        "#desc": "Execute the workcpace file"
+    },
     "advise": {
         "#n": "___advise_get_result 1",
         "#desc": "Command line complete"
