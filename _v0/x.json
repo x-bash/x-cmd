@@ -52,21 +52,21 @@
         },
         "#n": "xrc x-cmd/_v0/log && ___x_cmd_log_completer"
     },
-    "upgrade": "--- Upgrade x-cmd",
-    "update": {
+    "upgrade|update": {
         "#1": ["nightly", "dev"],
-        "#desc": "Update x-cmd"
+        "#desc": "Upgrade or Update x-cmd"
     },
     "clear": {},
     "reinstall": {},
     "z|uz": null,
     "sh|bash|zsh|fish|ksh|dash|ash": {
-        "#desc": "Sh description",
+        "#desc": "Execute your script use the corresponding shell",
         "#1": "___advise_ls"
     },
     "nvm": null,
-    "jar|java|pip|py|js|node|npm|npx|ts|rb|lua": {
-        "#desc": "Use these environments to run scripts",
+    "pip|npm": null,
+    "jar|java|py|js|node|npx|ts|rb|lua": {
+        "#desc": "Execute your script use these environments",
         "#1": "___advise_ls"
     },
     "jq|yq": null,
@@ -87,11 +87,11 @@
     "dev": null,
     "ws": {
         "#1": "xrc advise/lib/advise_get && ___x_cmd_advise_get_complete \"$(x advise which dev)\" mod ''",
-        "#desc": "Execute the workcpace file"
+        "#desc": "Execute a file in workspace, usually the .x-cmd directory in the repository"
     },
     "advise": {
         "#n": "___advise_get_result 1",
-        "#desc": "Command line complete"
+        "#desc": "Generate command completion based on advise json"
     },
     "theme": {
         "#n": "___advise_get_result 1",
@@ -99,7 +99,7 @@
     },
     "tldr": {
         "#n": "___advise_get_result 1",
-        "#desc": "Too Long, Didn't Read"
+        "#desc": "Collaborative cheatsheets for console commands"
     },
     "install": {
         "#n": "___advise_get_result 1",
@@ -107,11 +107,11 @@
     },
     "proxy": {
         "#n": "___advise_get_result 1",
-        "#desc": "Change proxy"
+        "#desc": "Setting up mirror sources for various package management"
     },
     "cowsay": {
         "#n": "___advise_get_result 1",
-        "#desc": "Use cowsay"
+        "#desc": "Generates ASCII art pictures of a cow with a message"
     },
     "#n": "___advise_get_result 1"
 }
