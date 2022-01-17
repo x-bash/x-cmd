@@ -90,28 +90,28 @@
         "#desc": "Execute a file in workspace, usually the .x-cmd directory in the repository"
     },
     "advise": {
-        "#n": "___advise_get_result 1",
+        "#n": "___x_cmd_advise_get_result",
         "#desc": "Generate command completion based on advise json"
     },
     "theme": {
-        "#n": "___advise_get_result 1",
+        "#n": "___x_cmd_advise_get_result",
         "#desc": "Change terminal theme"
     },
     "tldr": {
-        "#n": "___advise_get_result 1",
+        "#n": "___x_cmd_advise_get_result",
         "#desc": "Collaborative cheatsheets for console commands"
     },
     "install": {
-        "#n": "___advise_get_result 1",
+        "#n": "___x_cmd_advise_get_result",
         "#desc": "Install Command-line tools"
     },
     "proxy": {
-        "#n": "___advise_get_result 1",
+        "#n": "___x_cmd_advise_get_result",
         "#desc": "Setting up mirror sources for various package management"
     },
     "cowsay": {
-        "#n": "___advise_get_result 1",
+        "#n": "___x_cmd_advise_get_result",
         "#desc": "Generates ASCII art pictures of a cow with a message"
     },
-    "#n": "___advise_get_result 1"
+    "#n": "___x_cmd_advise_get_result"
 }
