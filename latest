@@ -442,16 +442,6 @@ ___x_cmd_bat(){
 
 # EndSection
 
-# Section : Runtime, future using xenv module
-
-# . _v0/node
-# . _v0/python
-
-# node: node v12 and above, x using v16
-# python: v3.6 and above, python using v14
-
-# EndSection
-
 # Section : run in concurrent
 
 # ___X_CMD_EVAL_CON_SEPERATOR="$(printf "\001")"
