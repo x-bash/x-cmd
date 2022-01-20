@@ -373,7 +373,7 @@ ___x_cmd_static_build_file(){
     local repo="${2:?Provide repo name}"
     shift 2
     eval " ___x_cmd_$app(){
-        xrc static-build && static_build_init $repo $app ___x_cmd_$app && ___x_cmd_$app  \"\$@\"
+        xrc static-build && static_build_init $app $repo ___x_cmd_$app && ___x_cmd_$app  \"\$@\"
     }"
     ___x_cmd_"$app" "$@"
 }
