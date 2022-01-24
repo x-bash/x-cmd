@@ -967,6 +967,7 @@ ___x_cmd_main(){
 
         z)                                      (   xrc zuz && zuz z "$@"   ) ;;
         uz)                                     (   xrc zuz && zuz uz "$@"  ) ;;
+        zl)                                     (   xrc zuz && zuz ls "$@"  ) ;;
 
         sh|bash|zsh|fish|ksh|dash|ash)          ___x_cmd_shell_exec "$subcmd" "$@" ;;
 
