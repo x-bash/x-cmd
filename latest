@@ -923,11 +923,6 @@ ___x_cmd_ws_(){
     fi
 }
 
-___x_cmd_cd(){
-    xrc x_fs/latest && ___x_cmd_cd "$@"
-}
-
-
 ___x_cmd_alias_init ___x_cmd
 
 ___x_cmd_main(){
@@ -956,8 +951,6 @@ ___x_cmd_main(){
         arg1)                                   ___x_cmd_args 1 "$@"    ;;
         margs)                                  ___x_cmd_margs "$@"     ;;
         marg1)                                  ___x_cmd_margs 1 "$@"   ;;
-
-        cd)                                     ___x_cmd_cd "$@" ;;
 
         env)                                    ;;
 
