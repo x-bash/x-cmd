@@ -3,7 +3,6 @@
 
 ___x_cmd_xbin_setroot(){
     [ -n "$___X_CMD_ROOT" ] && return
-
     local IFS="
 "
 
