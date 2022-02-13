@@ -1,5 +1,4 @@
 #! /bin/sh
-
 # shellcheck disable=SC2006,SC1091
 
 if [ -z "$___X_CMD_ROOT" ]; then
