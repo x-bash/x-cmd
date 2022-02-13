@@ -1,8 +1,10 @@
 #! /bin/sh
-# shellcheck disable=SC2006,SC1091
+# shellcheck disable=SC2006,SC1091,SC3043
 
-if [ -z "$___X_CMD_ROOT" ]; then
-    IFS="
+___x_cmd_xbin_setroot(){
+    [ -n "$___X_CMD_ROOT" ] && return
+
+    local IFS="
 "
 
     while read -r ___X_CMD_ROOT; do
@@ -17,15 +19,15 @@ $HOME/.x-cmd
 /usr/bin/.x-cmd
 A
 
-    if [ -z "$___X_CMD_ROOT" ]; then
-        cat >&2 <<A
+    cat >&2 <<A
 No x-cmd found in this computer.
 Type following cmd to setup:        eval `x init`
 If you need help, type:             eval `x help`
 A
-        exit 1
-    fi
-fi
+    return 1
+}
+
+___x_cmd_xbin_setroot || exit 1
 
 ___X_CMD_XBIN_CODE="$(cat <<A
 # This should be executed by:       eval `x init`
