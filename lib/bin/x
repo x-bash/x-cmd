@@ -9,7 +9,8 @@ if [ -z "$___X_CMD_ROOT" ]; then
         ___X_CMD_ROOT="/var/.x-cmd"
     else
         cat >&2 <<A
-Wrong ! # TODO: add info
+No x-cmd found in this computer.
+Type the following cmd to install:         eval `x init`
 A
         exit 1
     fi
@@ -27,7 +28,13 @@ A
 
 ___x_cmd_xbin_init(){
     if [ -t 1 ]; then
-        printf "%s" "$code"
+        if [ -z "$___X_CMD_ROOT" ]; then
+            cat <<A
+curl https://get.x-cmd.com
+A
+        else
+            printf "%s" "$code"
+        fi
         return 0
     else
         cat >&2 <<A
