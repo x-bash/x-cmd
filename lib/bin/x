@@ -10,7 +10,8 @@ if [ -z "$___X_CMD_ROOT" ]; then
     else
         cat >&2 <<A
 No x-cmd found in this computer.
-Type the following cmd to install:      eval `x init`
+Type following cmd to setup:        eval `x init`
+If you need help, type:             eval `x help`
 A
         exit 1
     fi
@@ -18,8 +19,8 @@ fi
 
 
 code="$(cat <<A
-# This should be executed by:           eval `x init`
-# If you need help, type:               eval `x help`
+# This should be executed by:       eval `x init`
+# If you need help, type:           eval `x help`
 
 . "${___X_CMD_ROOT}/xrc/latest";
 x boot setup;
