@@ -1,8 +1,8 @@
 #! /bin/sh
-# shellcheck disable=SC2006,SC1091,SC3043
+# shellcheck disable=SC2006,SC1091
 
 if [ -z "$___X_CMD_ROOT" ]; then
-    local IFS="
+    IFS="
 "
 
     while read -r ___X_CMD_ROOT; do
