@@ -16,8 +16,7 @@ A
     fi
 fi
 
-
-code="$(cat <<A
+___X_CMD_XBIN_CODE="$(cat <<A
 # This should be executed by:       eval `x init`
 # If you need help, type:           eval `x help`
 
@@ -27,21 +26,17 @@ A
 )"
 
 ___x_cmd_xbin_init(){
-    if [ -t 1 ]; then
-        if [ -z "$___X_CMD_ROOT" ]; then
-            cat <<A
-curl https://get.x-cmd.com
-A
-        else
-            printf "%s" "$code"
-        fi
-        return 0
-    else
+    if [ ! -t 1 ]; then
         cat >&2 <<A
 This should be executed by:   eval `x init`
 If you need help, type:       eval `x help`
 A
         return 1
+    fi
+    if [ -n "$___X_CMD_ROOT" ]; then
+        printf "%s" "$___X_CMD_XBIN_CODE"
+    else
+        printf "%s" "curl https://get.x-cmd.com"
     fi
 }
 
