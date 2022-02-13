@@ -1,0 +1,49 @@
+#! /bin/sh
+
+# shellcheck disable=SC2006,SC1091
+
+if [ -z "$___X_CMD_ROOT" ]; then
+    if [ -f "$HOME/.x-cmd/xrc/latest" ]; then
+        ___X_CMD_ROOT="$HOME/.x-cmd"
+    elif [ -f "/var/.x-cmd/xrc/latest" ]; then
+        ___X_CMD_ROOT="/var/.x-cmd"
+    else
+        cat >&2 <<A
+Wrong ! # TODO: add info
+A
+        exit 1
+    fi
+fi
+
+
+code="$(cat <<A
+# This should be executed by:   eval `x init`
+# If you need help, type:       eval `x help`
+
+. "${___X_CMD_ROOT}/xrc/latest";
+x boot setup;
+A
+)"
+
+___x_cmd_xbin_init(){
+    if [ -t 1 ]; then
+        printf "%s" "$code"
+        return 0
+    else
+        cat >&2 <<A
+This should be executed by:   eval `x init`
+If you need help, type:       eval `x help`
+A
+        return 1
+    fi
+}
+
+x(){
+    if [ "$1" = init ]; then
+        ___x_cmd_xbin_init
+        return
+    fi
+
+    . "$___X_CMD_ROOT/xrc/latest"
+    x "$@"
+}
