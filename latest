@@ -1006,7 +1006,10 @@ ___x_cmd_main(){
         bw)                                     ___x_cmd_static_build_file      bandwhich bandwhich     "$@"    ;;
         jq)                                     ___x_cmd_static_build_help      jq jq                   "$@"    ;;
         # TODO: we will rename ___x_cmd_curl to make room for it
-        curl|yq|tmux|git|nmap)                  ___x_cmd_static_build_file     "$subcmd" "$subcmd"      "$@"    ;;
+        curl|yq|tmux|git|nmap|tesseract|magick)        ___x_cmd_static_build_file     "$subcmd" "$subcmd"      "$@"    ;;
+        ffmpeg)                                 xrc ffmpeg && ___x_cmd_ffmpeg_download       "$@"    ;;
+        pandoc)                                 xrc pandoc && ___x_cmd_pandoc                "$@"    ;;
+
         openssl|ssl)                            ___x_cmd_static_build_file      openssl openssl         "$@"    ;;
         ncat)                                   ___x_cmd_static_build_file      nmap ncat               "$@"    ;;
         nping)                                  ___x_cmd_static_build_file      nmap nping              "$@"    ;;
