@@ -1,6 +1,5 @@
-# shellcheck shell=sh disable=SC3043
-
-# author:       Li Junhao           l@x-cmd.com
+# Author:       Li Junhao   l@x-cmd.com     # xrc
+# shellcheck    shell=sh    disable=SC3043
 
 # Section : Unfinished ___x_cmd_official_which
 
