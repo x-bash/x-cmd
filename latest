@@ -942,7 +942,7 @@ ___x_cmd_main(){
         alias)                                  ___x_cmd_alias      ___x_cmd "$@"   ;;
         unalias)                                ___x_cmd_unalias    ___x_cmd "$@"   ;;
 
-        rowcol)                                 ___x_cmd_rowcol     "$@" ;;
+        rowcol)                                 ___x_cmd_tab     "$@" ;;
 
         conjoin)                                ___x_cmd_eval_concurrent_join "$@" ;;
         con)                                    ___x_cmd_eval_concurrent_assign "$@" ;;
