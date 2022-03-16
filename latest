@@ -923,8 +923,6 @@ ___x_cmd_ws_(){
 
 ___x_cmd_alias_init ___x_cmd
 
-xrc x-cmd/lib/rowcol
-
 ___x_cmd_main(){
     local IFS=" "
 
@@ -941,8 +939,6 @@ ___x_cmd_main(){
 
         alias)                                  ___x_cmd_alias      ___x_cmd "$@"   ;;
         unalias)                                ___x_cmd_unalias    ___x_cmd "$@"   ;;
-
-        rowcol)                                 ___x_cmd_tab     "$@" ;;
 
         conjoin)                                ___x_cmd_eval_concurrent_join "$@" ;;
         con)                                    ___x_cmd_eval_concurrent_assign "$@" ;;

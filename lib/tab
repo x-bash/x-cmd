@@ -1,7 +1,0 @@
-
-___x_cmd_tab(){
-
-    command awk -v ROW="$1" -v COL="$2" -f rowcol.awk
-
-}
-
