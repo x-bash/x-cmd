@@ -25,7 +25,7 @@ BEGIN{
     if (ROW == "") {
         rowl = 1
         row[ rowl "S" ] = 1
-        row[ rowl "E" ] = ""
+        row[ rowl "E" ] = MAX_INT
         row[ rowl "P" ] = 1
     } else {
         rowl = split(ROW, row, ",")
@@ -35,9 +35,40 @@ BEGIN{
         }
     }
 }
+
+BEGIN {
+    if (COL == "") {
+        coll = 1
+        col[ coll "S" ] = 1
+        col[ coll "E" ] = MAX_INT
+        col[ coll "P" ] = 1
+    } else {
+        coll = split(COL, col, ",")
+        for (i=1; i<=coll; ++i)     handle( col[i], col, i )
+    }
+}
+
 # EndSection
 
 # Section: handle data
+
+function foreachrow(        i, j, start, end, sep ){
+    h = 0
+    for (i=1; i<=coll; ++i) {
+        start = col[ i "S" ]
+        end = col[ i "E" ]
+        sep = col[ i "P" ]
+        if (end < 0 ) end = NF + end + 1
+
+        for (j=start; j<end && j<=NF; j+=sep) {
+            if (h == 0) {
+                h=1;            printf("%s", $j)
+            } else              printf("\t%s", $j)
+        }
+    }
+    printf("\n")
+}
+
 function foreachline( lineno ){
     for (i=1; i<=rowl; ++i) {
         row_start   = row[ i "S" ]
@@ -48,7 +79,8 @@ function foreachline( lineno ){
         if ( (lineno < row_start) || (lineno >= row_end) )  continue
         if ( (row_sep != 1) && ( (lineno - row_start) % row_sep == 0 ) )   continue
 
-        print $0
+        if (coll == 0)      print $0
+        else                foreachrow( )
     }
 }
 
