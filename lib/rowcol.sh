@@ -7,4 +7,4 @@ a6  b   c
 a7  b   c
 a8  b   c
 a9  b   c
-" | ___x_cmd_rowcol 3:-1 2,3,2 # 3,8 # 3:6,8
+" | ___x_cmd_rowcol 3:-1 2,3,2      # 3,8 # 3:6,8
