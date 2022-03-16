@@ -1,3 +1,7 @@
+BEGIN {
+    MAX_INT = 4294967295
+}
+
 # 1:2:3
 function handle( astr, obj, idx,    arr, arrl ){
     arrl = split(astr, arr, ":")
@@ -9,8 +13,24 @@ function handle( astr, obj, idx,    arr, arrl ){
         obj[idx "P"] = 1
     } else {
         obj[idx "S"] = arr[1]
-        obj[idx "E"] = (arr[2] == "") ? "" : arr[2]
+        obj[idx "E"] = (arr[2] == "") ? MAX_INT : arr[2]
         obj[idx "P"] = (arr[3] == "") ? 1 : arr[3]
+    }
+
+    if ( (obj[idx "E"] != "") && (obj[idx "E"] < 0) )  BUFFER_MODE = 1
+}
+
+function foreachline( lineno ){
+    for (i=1; i<=rowl; ++i) {
+        row_start   = row[ i "S" ]
+        row_end     = row[ i "E" ]
+        row_sep     = row[ i "P" ]
+        # print row_start ":\t" row_end "=\t" row_sep
+
+        if ( (lineno < row_start) || (lineno >= row_end) )  continue
+        if ( (row_sep != 1) && ( (lineno - row_start) % row_sep == 0 ) )   continue
+
+        print $0
     }
 }
 
@@ -29,25 +49,19 @@ BEGIN{
 }
 
 {
+    if (BUFFER_MODE == 1)   data[ NR ] = $0
+    else                    foreachline( NR )
+}
+
+END {
     for (i=1; i<=rowl; ++i) {
-        row_start   = row[ i "S" ]
         row_end     = row[ i "E" ]
-        row_sep     = row[ i "P" ]
-        print row_start ":\t" row_end "=\t" row_sep
+        if (row_end < 0)    row[ i "E" ] = row_end + NR + 1
+    }
 
-        if (row_end != "") {
-            if (row_end < 0) {
-                data[ NR ] = $0
-                continue
-            }
-            if (NR >= row_end) continue
-        }
-
-        if (NR < row_start)     continue
-        if (row_sep != 1) {
-            if ((NR - row_start) % row_sep == 0 ) continue
-        }
-
-        print $0
+    for (j=1; j<=NR; ++j) {
+        $0 = data[ j ]
+        foreachline( j )
     }
 }
+
