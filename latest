@@ -860,23 +860,21 @@ ___x_cmd_main_otherwise(){
 
     # static build
     # update the static-build files
-    local p
     local ___X_CMD_WHICH_ONE_RESULT
     local ___X_CMD_WHICH_ONE_RESOURCE_TYPE
     if ___x_cmd_which_one "$subcmd"; then
-        p="$___X_CMD_WHICH_ONE_RESULT"
+        local p="$___X_CMD_WHICH_ONE_RESULT"
         case "$___X_CMD_WHICH_ONE_RESOURCE_TYPE" in
-            workspace)      ___x_cmd_exe_workspace "$p" "$@" ;;
-            local)          ___x_cmd_run_by_file "$p" "$@" ;;
-            hub)            ___x_cmd_run_by_file "$p" "$@" ;;
-            official)       ___x_cmd_run_by_file "$p" "$@" ;;
+            workspace)      ___x_cmd_exe_workspace  "$p" "$@" ;;
+            local)          ___x_cmd_run_by_file    "$p" "$@" ;;
+            hub)            ___x_cmd_run_by_file    "$p" "$@" ;;
+            official)       ___x_cmd_run_by_file    "$p" "$@" ;;
         esac
-        return
+        printf "%s" "$p"
     else
         printf "%s" "Error" >&2
         return 1
     fi
-    printf "%s" "$p"
 }
 
 ___x_cmd_ws(){
