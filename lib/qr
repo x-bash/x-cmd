@@ -4,12 +4,16 @@ ___x_cmd_qr(){
     case "$op" in
         enc)    shift 1; ___x_cmd_qr_enc "$@" ;;
         dec)    shift 1; ___x_cmd_qr_dec "$@" ;;
-        *://*)  ___x_cmd_qr_enc "$op" ;;
+        *://*)  ___x_cmd_qr_enc_default "$op" ;;
         "")     # decode from file, like
     esac
 }
 
 ___x_cmd_qr_enc(){
+    ___x_cmd_static_build_file qrencode "$@"
+}
+
+___x_cmd_qr_enc_default(){
     : Provide param
     ___x_cmd_static_build_file qrencode -t utf8i "${1:?Provide URL}"
 }
