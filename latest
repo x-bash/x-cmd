@@ -1,13 +1,6 @@
 # Author:       Li Junhao   l@x-cmd.com     # xrc
 # shellcheck    shell=sh    disable=SC3043
 
-# TODO: optimization. Consider sharing the big binary in a common folder.
-# But that will introduce risk.
-# How?
-# 1. Local user $HOME/.x-cmd
-# 2. Global sharing folder.
-# Consider using the sha512 to calculate the file hash for this purpose.
-
 # Section : run by file: get_engine_by_file* and run_by_file*
 
 ___x_cmd_xrc_run(){
