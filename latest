@@ -935,6 +935,7 @@ ___x_cmd_which_panic(){
 }
 
 . "$___X_CMD_ROOT/x-cmd/lib/qr"
+. "$___X_CMD_ROOT/x-cmd/lib/pidofsubshell"
 
 ___x_cmd_main(){
     local IFS=" "
