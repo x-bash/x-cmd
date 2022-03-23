@@ -620,7 +620,7 @@ ___x_cmd_alias_print(){
 
 # EndSection
 
-# Section: varset
+# Section : varset
 
 ___x_cmd_varset(){
     local _______variable_name="${1}"
@@ -655,7 +655,7 @@ ___x_cmd_varset_without_end(){
 
 # EndSection
 
-# Section: args
+# Section : args
 
 ___x_cmd_arg_line(){
 
