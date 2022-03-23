@@ -1012,14 +1012,12 @@ ___x_cmd_main(){
 
 # EndSection
 
-# Section : advise.json
+# Section : help and advise.json
 ___x_cmd_x_cmd_advise_json(){
     xrc cat x-cmd/lib/x.json
     return 126
 }
-# EndSection
 
-# Section : help
 ___x_cmd_x_cmd_help(){
     xrc advise/lib/advise_get
     ___x_cmd_advise_get_help "$(xrc which x-cmd/lib/x.json)"
