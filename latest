@@ -487,13 +487,6 @@ A
 
 # EndSection
 
-# Section : xaas
-
-# queue
-# cron
-
-# EndSection
-
 # Section : alias
 
 ___X_CMD_ALIAS_SEP="$(printf "\001")"
