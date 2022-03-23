@@ -1,4 +1,4 @@
-# Author:       Li Junhao   l@x-cmd.com     # xrc
+# Author:       Li Junhao   l@x-cmd.com             # xrc
 # shellcheck    shell=sh    disable=SC3043,SC1091
 
 # Section : run by file: get_engine_by_file* and run_by_file*
