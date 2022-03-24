@@ -17,7 +17,7 @@ ___x_cmd_eval_concurrent_single_tail(){
     sep="$(printf "\001")"
     s="$(eval "$1"; printf "%s" "${___X_CMD_EVAL_CON_SEPERATOR}$sep")"
     cat
-    printf "%s" "${s%$sep}"
+    printf "%s" "${s%"$sep"}"
 }
 
 ___x_cmd_eval_concurrent_single_tail_without_end(){
