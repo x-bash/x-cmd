@@ -65,7 +65,8 @@ ___x_cmd_eval_concurrent_assign(){
     local i=2
 
     while [ $i -le $# ]; do
-        local varname_eq="$(eval printf "%s" \""\$$((i-1))"\")"
+        local varname_eq
+        varname_eq="$(eval printf "%s" \""\$$((i-1))"\")"
         case "$varname_eq" in
             *:=)
                 eval "${varname_eq%:=}=s"
