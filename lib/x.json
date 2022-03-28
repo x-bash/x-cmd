@@ -57,6 +57,7 @@
     "clear": {},
     "reinstall": {},
     "z|uz|zl": {
+        "#desc": "compress and decompress file",
         "#n": "___advise_ls"
     },
     "sh|bash|zsh|fish|ksh|dash|ash": {
