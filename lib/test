@@ -51,7 +51,9 @@ ___x_cmd_test_folder(){
         ( ___x_cmd_test___folder_exec "$@" )
         code=$?
 
-        [ $code -ne 0 ] && return "$code"
+        if [ -n "$___X_CMD_TEST_ERR_EXIT" ]; then
+            [ $code -ne 0 ] && return "$code"
+        fi
     done
 }
 
