@@ -1,10 +1,31 @@
 
-
-
+x log init test
 
 ___x_cmd_test(){
-    :
+   ___x_cmd_test_main "$@"
 }
 
+___x_cmd_test_main(){
+    local target="${1}"
+    if [ -z "$target" ]; then
+        target="$(x wsroot)/.x-cmd/testcase"
+    fi
+    if [ ! -d "$target" ]; then
+        test:warn "Expecting to be folder: $target"
+        return 1
+    fi
+    cd "$target" && ___x_cmd_test_folder "$(pwd)"
+}
 
-
+___x_cmd_test_folder(){
+    test:info "Test: $(basename "$target")"
+    for i in *; do
+        if [ -f "$i" ]; then
+            ( . "$i"; )
+        elif [ -d "$i" ]; then
+            ( cd "$i" && ___x_cmd_test_folder "$(pwd)"; )
+        else
+            :
+        fi
+    done
+}
