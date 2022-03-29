@@ -1,4 +1,3 @@
-
 x log init test
 
 ___x_cmd_test(){
@@ -20,8 +19,16 @@ ___x_cmd_test_main(){
 ___x_cmd_test_folder(){
     test:info "Test: $(basename "$target")"
     for i in *; do
+        case "$i" in
+            setup)      continue ;;
+            teardown)   continue ;;
+        esac
         if [ -f "$i" ]; then
-            ( . "$i"; )
+            (
+                . ./setup
+                . "$i";
+                . ./teardown
+            )
         elif [ -d "$i" ]; then
             ( cd "$i" && ___x_cmd_test_folder "$(pwd)"; )
         else
