@@ -4,7 +4,7 @@
 x log init test
 
 ___x_cmd_test(){
-   ___x_cmd_test_main "$@"
+    ___x_cmd_test_main "$@"
 }
 
 ___x_cmd_test_main(){
@@ -16,6 +16,8 @@ ___x_cmd_test_main(){
         test:warn "Expecting to be folder: $target"
         return 1
     fi
+
+    printf "\n"
     (
         cd "$target" && NAME="root" INDENT="" ___x_cmd_test_folder "$(pwd)"
     )
@@ -33,6 +35,7 @@ ___x_cmd_test_folder(){
 
         ( ___x_cmd_test___folder_exec "$@" )
         code=$?
+
         [ $code -ne 0 ] && return "$code"
     done
     # printf "%s\n" "${INDENT}================"
@@ -40,18 +43,25 @@ ___x_cmd_test_folder(){
 
 ___x_cmd_test___folder_exec() {
     if [ -f "$testcase" ]; then
-        printf "%s\n" "${INDENT}────────────────────────────────────────"
-        printf "%s\n" "${INDENT}│--> $testcase"
+        # printf "%s\n" "${INDENT}────────────────────────────────────────"
+        printf "\033[36m%s\033[0m" "${INDENT}-[ ] $testcase"
 
         [ -f ./setup ] && . ./setup
         . "$testcase"
         code="$?"
         [ -f ./teardown ] &&  . ./teardown
+
+        if [ $code -eq 0 ]; then
+            printf "\r\033[32m%s\033[0m\n" "${INDENT}-[Y] $NAME $testcase"
+        else
+            printf "\r\033[1;31m%s\033[0m\n" "${INDENT}-[X] $NAME $testcase"
+        fi
         return "$code"
 
     elif [ -d "$testcase" ]; then
-        printf "%s\n" "${INDENT}────────────────────────────────────────"
-        printf "%s\n" "${INDENT}+ $testcase"
+        # printf "%s\n" "${INDENT}────────────────────────────────────────"
+        # printf "\033[36m%s\033[0m" "${INDENT}-[ ] $testcase"
+        printf "\r\033[34m%s\033[0m\n" "${INDENT}>>> $NAME $testcase"
         cd "$testcase" || return 1
 
         [ -f ./setup ] && . ./setup
