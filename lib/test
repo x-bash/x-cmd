@@ -41,7 +41,7 @@ ___x_cmd_test_folder(){
 ___x_cmd_test___folder_exec() {
     if [ -f "$testcase" ]; then
         printf "%s\n" "${INDENT}────────────────────────────────────────"
-        printf "%s\n" "${INDENT}│───> $NAME: $testcase"
+        printf "%s\n" "${INDENT}│--> $testcase"
 
         [ -f ./setup ] && . ./setup
         . "$testcase"
@@ -51,7 +51,7 @@ ___x_cmd_test___folder_exec() {
 
     elif [ -d "$testcase" ]; then
         printf "%s\n" "${INDENT}────────────────────────────────────────"
-        printf "%s\n" "${INDENT}+ $NAME: $testcase"
+        printf "%s\n" "${INDENT}+ $testcase"
         cd "$testcase" || return 1
 
         [ -f ./setup ] && . ./setup
