@@ -1,4 +1,4 @@
-
+# shellcheck disable=SC1090,SC1091
 # load in need
 
 x log init test
@@ -28,16 +28,16 @@ ___x_cmd_test_folder(){
         esac
         if [ -f "$testcase" ]; then
             (
-                . ./setup
+                [ -f ./setup ] && . ./setup
                 . "$testcase"
-                . ./teardown
+                [ -f ./teardown ] &&  . ./teardown
             )
         elif [ -d "$testcase" ]; then
             (
                 cd "$testcase" && (
-                    . ./setup
+                    [ -f ./setup ] && . ./setup
                     ___x_cmd_test_folder "$(pwd)"
-                    . ./teardown
+                    [ -f ./teardown ] &&  . ./teardown
                 )
             )
         else
