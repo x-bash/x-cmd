@@ -35,13 +35,17 @@ ___x_cmd_test_main(){
     (
         cd "$target" && NAME="" INDENT="" ___x_cmd_test_folder "$(pwd)"
     )
+    local code="$?"
     ui sep "━"
     # printf "%s\n" "-------------------"
+
+    return "$code"
 }
 
 ___x_cmd_test_folder(){
 
     local testcase
+    local global_code=0
     local code
     for testcase in *; do
         case "$testcase" in
@@ -54,7 +58,10 @@ ___x_cmd_test_folder(){
         if [ -n "$___X_CMD_TEST_ERR_EXIT" ]; then
             [ $code -ne 0 ] && return "$code"
         fi
+
+        [ $code -ne 0 ] && global_code=1
     done
+    return "$global_code"
 }
 
 ___x_cmd_test___folder_exec() {
