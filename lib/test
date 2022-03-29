@@ -29,11 +29,17 @@ ___x_cmd_test_folder(){
         if [ -f "$testcase" ]; then
             (
                 . ./setup
-                . "$testcase";
+                . "$testcase"
                 . ./teardown
             )
         elif [ -d "$testcase" ]; then
-            ( cd "$testcase" && ___x_cmd_test_folder "$(pwd)"; )
+            (
+                cd "$testcase" && (
+                    . ./setup
+                    ___x_cmd_test_folder "$(pwd)"
+                    . ./teardown
+                )
+            )
         else
             :
         fi
