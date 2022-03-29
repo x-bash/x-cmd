@@ -1,3 +1,6 @@
+
+# load in need
+
 x log init test
 
 ___x_cmd_test(){
@@ -18,19 +21,19 @@ ___x_cmd_test_main(){
 
 ___x_cmd_test_folder(){
     test:info "Test: $(basename "$target")"
-    for i in *; do
-        case "$i" in
-            setup)      continue ;;
-            teardown)   continue ;;
+    local testcase
+    for testcase in *; do
+        case "$testcase" in
+            setup|teardown)         continue ;;
         esac
-        if [ -f "$i" ]; then
+        if [ -f "$testcase" ]; then
             (
                 . ./setup
-                . "$i";
+                . "$testcase";
                 . ./teardown
             )
-        elif [ -d "$i" ]; then
-            ( cd "$i" && ___x_cmd_test_folder "$(pwd)"; )
+        elif [ -d "$testcase" ]; then
+            ( cd "$testcase" && ___x_cmd_test_folder "$(pwd)"; )
         else
             :
         fi
