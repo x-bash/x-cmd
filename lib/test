@@ -21,35 +21,46 @@ ___x_cmd_test_main(){
     )
 }
 
+___x_cmd_test___folder_exec() (
+    if [ -f "$testcase" ]; then
+        printf "%s\n" "${INDENT}────────────────────────────────────────"
+        printf "%s\n" "${INDENT}│───> $NAME: $testcase"
+
+        [ -f ./setup ] && . ./setup
+        . "$testcase"
+        code="$?"
+        [ -f ./teardown ] &&  . ./teardown
+        exit "$?"
+
+    elif [ -d "$testcase" ]; then
+        printf "%s\n" "${INDENT}────────────────────────────────────────"
+        printf "%s\n" "${INDENT}+ $NAME: $testcase"
+        cd "$testcase" || exit
+
+        [ -f ./setup ] && . ./setup
+        NAME="$NAME/$testcase" INDENT="${INDENT}    " \
+            ___x_cmd_test_folder "$(pwd)"
+        code=$?
+        [ -f ./teardown ] &&  . ./teardown
+        exit "$code"
+    else
+        :
+    fi
+)
+
 ___x_cmd_test_folder(){
     # test:info "Test: $(basename "$target") Begin"
     # printf "%s\n" "${INDENT}================"
     local testcase
+    local code
     for testcase in *; do
         case "$testcase" in
             setup|teardown)         continue ;;
         esac
-        if [ -f "$testcase" ]; then
-            printf "%s\n" "${INDENT}────────────────────────────────────────"
-            printf "%s\n" "${INDENT}│───> $NAME: $testcase"
-            (
-                [ -f ./setup ] && . ./setup
-                . "$testcase"
-                [ -f ./teardown ] &&  . ./teardown
-            )
-        elif [ -d "$testcase" ]; then
-            (
-                printf "%s\n" "${INDENT}────────────────────────────────────────"
-                printf "%s\n" "${INDENT}+ $NAME: $testcase"
-                cd "$testcase" && (
-                    [ -f ./setup ] && . ./setup
-                    NAME="$NAME/$testcase" INDENT="${INDENT}    " ___x_cmd_test_folder "$(pwd)"
-                    [ -f ./teardown ] &&  . ./teardown
-                )
-            )
-        else
-            :
-        fi
+
+        ___x_cmd_test___folder_exec "$@"
+        code=$?
+        [ $code -ne 0 ] && return "$code"
     done
     # printf "%s\n" "${INDENT}================"
 }
