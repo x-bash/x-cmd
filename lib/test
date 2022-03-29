@@ -17,15 +17,15 @@ ___x_cmd_test_main(){
         return 1
     fi
 
-    printf "\n"
+    printf "%s\n" "-------------------"
     (
         cd "$target" && NAME="root" INDENT="" ___x_cmd_test_folder "$(pwd)"
     )
+    printf "%s\n" "-------------------"
 }
 
 ___x_cmd_test_folder(){
-    # test:info "Test: $(basename "$target") Begin"
-    # printf "%s\n" "${INDENT}================"
+
     local testcase
     local code
     for testcase in *; do
@@ -38,13 +38,11 @@ ___x_cmd_test_folder(){
 
         [ $code -ne 0 ] && return "$code"
     done
-    # printf "%s\n" "${INDENT}================"
 }
 
 ___x_cmd_test___folder_exec() {
     if [ -f "$testcase" ]; then
-        # printf "%s\n" "${INDENT}────────────────────────────────────────"
-        printf "\033[36m%s\033[0m" "${INDENT}-[ ] $testcase"
+        # printf "\033[36m%s\033[0m" "${INDENT}-[ ] $testcase"
 
         [ -f ./setup ] && . ./setup
         . "$testcase"
@@ -52,18 +50,16 @@ ___x_cmd_test___folder_exec() {
         [ -f ./teardown ] &&  . ./teardown
 
         if [ $code -eq 0 ]; then
-            printf "\r\033[32m%s\033[0m\n" "${INDENT}-[Y] $NAME $testcase"
+            printf "\033[32m%s\033[0m\n" "${INDENT}-[Y] $NAME $testcase"
         else
-            printf "\r\033[1;31m%s\033[0m\n" "${INDENT}-[X] $NAME $testcase"
+            printf "\033[1;31m%s\033[0m\n" "${INDENT}-[X] $NAME $testcase"
         fi
         return "$code"
 
     elif [ -d "$testcase" ]; then
-        # printf "%s\n" "${INDENT}────────────────────────────────────────"
-        # printf "\033[36m%s\033[0m" "${INDENT}-[ ] $testcase"
-        printf "\r\033[34m%s\033[0m\n" "${INDENT}>>> $NAME $testcase"
         cd "$testcase" || return 1
 
+        printf "\033[34m%s\033[0m\n" "${INDENT}>>> $NAME $testcase"
         [ -f ./setup ] && . ./setup
         NAME="$NAME/$testcase" INDENT="${INDENT}    " \
             ___x_cmd_test_folder "$(pwd)"
