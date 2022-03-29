@@ -16,17 +16,22 @@ ___x_cmd_test_main(){
         test:warn "Expecting to be folder: $target"
         return 1
     fi
-    cd "$target" && ___x_cmd_test_folder "$(pwd)"
+    (
+        cd "$target" && NAME="root" INDENT="" ___x_cmd_test_folder "$(pwd)"
+    )
 }
 
 ___x_cmd_test_folder(){
-    test:info "Test: $(basename "$target")"
+    # test:info "Test: $(basename "$target") Begin"
+    # printf "%s\n" "${INDENT}================"
     local testcase
     for testcase in *; do
         case "$testcase" in
             setup|teardown)         continue ;;
         esac
         if [ -f "$testcase" ]; then
+            printf "%s\n" "${INDENT}────────────────────────────────────────"
+            printf "%s\n" "${INDENT}│───> $NAME: $testcase"
             (
                 [ -f ./setup ] && . ./setup
                 . "$testcase"
@@ -34,9 +39,11 @@ ___x_cmd_test_folder(){
             )
         elif [ -d "$testcase" ]; then
             (
+                printf "%s\n" "${INDENT}────────────────────────────────────────"
+                printf "%s\n" "${INDENT}+ $NAME: $testcase"
                 cd "$testcase" && (
                     [ -f ./setup ] && . ./setup
-                    ___x_cmd_test_folder "$(pwd)"
+                    NAME="$NAME/$testcase" INDENT="${INDENT}    " ___x_cmd_test_folder "$(pwd)"
                     [ -f ./teardown ] &&  . ./teardown
                 )
             )
@@ -44,4 +51,5 @@ ___x_cmd_test_folder(){
             :
         fi
     done
+    # printf "%s\n" "${INDENT}================"
 }
