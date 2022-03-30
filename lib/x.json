@@ -28,19 +28,6 @@
     "login": "--- Login user account",
     "register": {},
     "token": {},
-    "hub": {
-        "file": {
-            "ls": null,
-            "which": "x hub file ls",
-            "upload": "x hub file ls",
-            "share": "x hub file ls",
-            "private": "x hub file ls"
-        },
-        "login": null,
-        "register": null,
-        "token": null,
-        "#desc": "Hub... "
-    },
     "log": {
         "init": "--- Generate function \\'<module>_log\\'",
         "timestamp": {
