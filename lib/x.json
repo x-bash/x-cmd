@@ -75,6 +75,7 @@
     },
     "#1": [
         "cd --- Change the working directory",
+        "hub --- Manage your script file in x-service",
         "dev",
         "man --- An interface to the system reference manuals",
         "env --- Inject the environment",
