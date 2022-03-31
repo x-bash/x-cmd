@@ -2,12 +2,7 @@
 # load in need
 
 x log init test
-___x_cmd_ui_sep(){
-    awk -v sep="${1:-—}" -v maxw="${2:-$COLUMNS}" 'BEGIN{ for(i=1;i<=maxw;i++){ c=c sep; }; print c}'
-    # printf "%0.s${1:-—}" {1..${2:-$COLUMNS}}
-    # printf "%0.s${1:-—}" $(seq 1 "${2:-$COLUMNS}")
-    printf "\n"
-}
+xrc:mod ui/latest
 
 ___x_cmd_test(){
     ___x_cmd_test_main "$@"
