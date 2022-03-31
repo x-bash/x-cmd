@@ -76,6 +76,7 @@ ___x_cmd_test_true_or_exit(){
     return "$code"
 }
 
+___X_CMD_TEST_ASSERT_ERREXIT=1
 ___x_cmd_test_set_errexit(){
     ___X_CMD_TEST_ASSERT_ERREXIT=${1:-1}
 }
