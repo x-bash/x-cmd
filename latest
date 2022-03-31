@@ -260,7 +260,7 @@ ___x_cmd_static_build_help(){
 }
 # EndSection
 
-xrc:mod:lib x-cmd glob con alias args rmrf qr
+xrc:mod:lib x-cmd glob con alias args rmrf qr util
 
 # Section : varset
 
@@ -425,7 +425,7 @@ ___x_cmd_which_panic(){
 }
 
 ___x_cmd_main(){
-    local IFS=" "
+    # local IFS=" "
 
     local subcmd=$1; [ $# -gt 0 ] && shift
     case "$subcmd" in
@@ -529,6 +529,9 @@ ___x_cmd_main(){
         _ws)                                    ___x_cmd_ws_ "$@" ;;
         rmrf)                                   ___x_cmd_rmrf "$@" ;;
         test)                                   command -v ___x_cmd_test >/dev/null 2>&1 || xrc:mod x-cmd/lib/test; ___x_cmd_test "$@" ;;
+
+        repeat)                                 ___x_cmd_repeat "$@" ;;
+
         *)                                      ___x_cmd_main_otherwise "$subcmd" "$@" ;;
 
     esac
