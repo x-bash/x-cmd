@@ -2,19 +2,8 @@
 # load in need
 
 x log init test
-
-xrc ui
-
 ___x_cmd_ui_sep(){
-    local maxw="${2:-$COLUMNS}"
-
-    # TODO: Introducing a much better solution
-    # printf "%s\n" "$(seq -f "\xE2\x80\x95" -s '' "$COLUMNS")"
-    # local sep
-    # sep="$(seq -f "${1:-—}" -s '' "$maxw")"
-    # printf "%s\n" "$sep"
-    # printf "%0.s${1:-—}" {1..$maxw}
-    printf "%0.s${1:-—}" $(seq 1 "$maxw")
+    printf "%0.s${1:-—}" $(seq 1 "${2:-$COLUMNS}")
     printf "\n"
 }
 
@@ -34,12 +23,12 @@ ___x_cmd_test_main(){
     fi
 
     # printf "%s\n" "-------------------"
-    ui sep "━"
+    ___x_cmd_ui_sep "━"
     (
         cd "$target" && NAME="" INDENT="" ___x_cmd_test_folder "$(pwd)"
     )
     local code="$?"
-    ui sep "━"
+    ___x_cmd_ui_sep "━"
     # printf "%s\n" "-------------------"
 
     return "$code"
@@ -76,15 +65,16 @@ ___x_cmd_test___folder_exec() {
         local err
         err="$(. "$testcase" 2>/dev/stdout)"
         code="$?"
+        test:debug "testcase: $testcase code: $code err: $err"
         [ -f ./teardown ] &&  . ./teardown
 
         if [ $code -eq 0 ]; then
             printf "\033[32m%s\033[0m\n" "${INDENT}-[Y] $NAME $testcase"
         else
             printf "\033[1;31m%s\033[0m\n" "${INDENT}-[X] $NAME $testcase"
-            printf "\033[2m%s\n" "$(ui sep3 "~") <out+err> "
+            printf "\033[2m%s\n" "$(___x_cmd_ui_sep "~" $(( $(___x_cmd_ui cols) / 3 )) ) <out+err> "
             printf "\033[2;33m%s\033[0m\n" "$err"
-            printf "\033[2m%s\033[0m\n" "$(ui sep3 "~") <end>"
+            printf "\033[2m%s\033[0m\n" "$(___x_cmd_ui_sep "~" $(( $(___x_cmd_ui cols) / 3 )) ) <end>"
         fi
         return "$code"
 
@@ -97,7 +87,7 @@ ___x_cmd_test___folder_exec() {
             ___x_cmd_test_folder "$(pwd)"
         code=$?
         [ -f ./teardown ] &&  . ./teardown
-        s="$(ui sep '─')"
+        s="$(___x_cmd_ui_sep '─')"
         printf "\033[34m%s\033[0m\n" "${s}" # "${INDENT}--- ${s#────}"
         return "$code"
     else
