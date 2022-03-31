@@ -45,8 +45,6 @@ ___x_cmd_test_cycle_exec(){
 ___x_cmd_test_cycle_init(){
     xrc:mod assert/latest
 
-    alias @assert=___x_cmd_assert
-
     ___x_cmd_assert_or_exit(){
         local code
         ___x_cmd_assert "$@"
@@ -56,19 +54,32 @@ ___x_cmd_test_cycle_init(){
         fi
     }
 
+    alias @assert=___x_cmd_assert
     alias @assert!=___x_cmd_assert_or_exit
 
-    assert_true_for_all_func() {
+    ___x_cmd_assert_true_for_all_func() {
         < "${1:-$___X_CMD_TEST_CURRENT_TESTCASE}" \
             awk -v PREFIX="${2:-test}" '$0~ "^" PREFIX "_[^\\(]+\\(\\)"{ gsub(/\(\)\{/, "", $0); print $0 }' | \
         while read -r ___line; do
             printf "%s\n" "Testing Function: $___line"
             if ! eval "$___line"; then
                 printf "\033[0;31m======= Fail at function: %s \033[0m" "$___line" >&2
-                exit 1
+                return 1
             fi
         done
     }
+
+    ___x_cmd_assert_true_for_all_func_or_exit(){
+        local code
+        ___x_cmd_assert_true_for_all_func "$@"
+        code=$?
+        if [ $code -ne 0 ]; then
+            exit $code
+        fi
+    }
+
+    alias @assert:file:allfunc=___x_cmd_assert_true_for_all_func
+    alias @assert:file:allfunc!=___x_cmd_assert_true_for_all_func_or_exit
 }
 # EndSection
 
