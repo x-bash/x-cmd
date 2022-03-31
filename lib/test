@@ -5,7 +5,7 @@ x log init test
 xrc:mod ui/latest
 
 ___x_cmd_test(){
-    ___x_cmd_test_cycle_run "$@"
+    ___x_cmd_test_cycle "$@"
 }
 
 ___x_cmd_test_cycle(){
@@ -62,7 +62,42 @@ ___x_cmd_test_cycle_init(){
 }
 # EndSection
 
-# Section: cycle run
+
+# Section: execute
+___x_cmd_test___cycle_run_file_execute(){
+
+    local testcase="${1:?Provide testcase}"
+
+    # printf "\033[36m%s\033[0m" "${INDENT}-[ ] $testcase"
+
+    [ -f ./setup ] && . ./setup
+
+    local err
+    local code
+
+    err="$(
+        ___X_CMD_TEST_CURRENT_TESTCASE="$testcase"
+        . "./$testcase" 2>/dev/stdout
+    )"
+
+    code="$?"
+    test:debug "testcase: $testcase code: $code err: $err"
+    [ -f ./teardown ] &&  . ./teardown
+
+    if [ $code -eq 0 ]; then
+        printf "\033[32m%s\033[0m\n" "${INDENT}-[Y] $NAME $testcase"
+    else
+        printf "\033[1;31m%s\033[0m\n" "${INDENT}-[X] $NAME $testcase"
+        printf "\033[2m%s\n" "$(___x_cmd_ui_sep "~" $(( $(___x_cmd_ui cols) / 3 )) ) <out+err> "
+        printf "\033[2;33m%s\033[0m\n" "$err"
+        printf "\033[2m%s\033[0m\n" "$(___x_cmd_ui_sep "~" $(( $(___x_cmd_ui cols) / 3 )) ) <end>"
+    fi
+    return "$code"
+}
+
+# EndSection
+
+# Section: cycle folder run
 ___x_cmd_test_cycle_run_folder(){
 
     local testcase
@@ -113,36 +148,3 @@ ___x_cmd_test___cycle_run_folder_execute(){
 }
 # EndSection
 
-# Section: execute
-___x_cmd_test___cycle_run_file_execute(){
-
-    local testcase="${1:?Provide testcase}"
-
-    # printf "\033[36m%s\033[0m" "${INDENT}-[ ] $testcase"
-
-    [ -f ./setup ] && . ./setup
-
-    local err
-    local code
-
-    err="$(
-        ___X_CMD_TEST_CURRENT_TESTCASE="$testcase"
-        . "./$testcase" 2>/dev/stdout
-    )"
-
-    code="$?"
-    test:debug "testcase: $testcase code: $code err: $err"
-    [ -f ./teardown ] &&  . ./teardown
-
-    if [ $code -eq 0 ]; then
-        printf "\033[32m%s\033[0m\n" "${INDENT}-[Y] $NAME $testcase"
-    else
-        printf "\033[1;31m%s\033[0m\n" "${INDENT}-[X] $NAME $testcase"
-        printf "\033[2m%s\n" "$(___x_cmd_ui_sep "~" $(( $(___x_cmd_ui cols) / 3 )) ) <out+err> "
-        printf "\033[2;33m%s\033[0m\n" "$err"
-        printf "\033[2m%s\033[0m\n" "$(___x_cmd_ui_sep "~" $(( $(___x_cmd_ui cols) / 3 )) ) <end>"
-    fi
-    return "$code"
-}
-
-# EndSection
