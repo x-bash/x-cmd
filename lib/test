@@ -78,8 +78,8 @@ ___x_cmd_test_cycle_init(){
         fi
     }
 
-    alias @assert:file:allfunc=___x_cmd_assert_true_for_all_func
-    alias @assert:file:allfunc!=___x_cmd_assert_true_for_all_func_or_exit
+    alias @assert:file:func=___x_cmd_assert_true_for_all_func
+    alias @assert:file:func!=___x_cmd_assert_true_for_all_func_or_exit
 }
 # EndSection
 
