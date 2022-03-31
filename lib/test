@@ -59,7 +59,11 @@ ___x_cmd_test___folder_exec() {
         [ -f ./setup ] && . ./setup
 
         local err
-        err="$(. "./$testcase" 2>/dev/stdout)"
+        err="$(
+            ___X_CMD_TEST_CURRENT_TESTCASE="$testcase"
+            . "./$testcase" 2>/dev/stdout
+        )"
+
         code="$?"
         test:debug "testcase: $testcase code: $code err: $err"
         [ -f ./teardown ] &&  . ./teardown
