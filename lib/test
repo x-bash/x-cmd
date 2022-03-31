@@ -50,12 +50,12 @@ ___x_cmd_test_cycle_init(){
 
     assert_true_for_all_func() {
         < "${1:-$___X_CMD_TEST_CURRENT_TESTCASE}" \
-            awk -v PREFIX="${2:-test}" '$0~ "^" PREFIX "_[^\(]+\(\)"{ gsub(/\(\)\{/, "", $0); print $0 }' | \
+            awk -v PREFIX="${2:-test}" '$0~ "^" PREFIX "_[^\\(]+\\(\\)"{ gsub(/\(\)\{/, "", $0); print $0 }' | \
         while read -r ___line; do
             printf "%s\n" "Testing Function: $___line"
             if ! eval "$___line"; then
-                printf "%s" "\033[0;31m======= Fail at function: %s \033[0m" "$___line" >&2
-                break
+                printf "\033[0;31m======= Fail at function: %s \033[0m" "$___line" >&2
+                exit 1
             fi
         done
     }
