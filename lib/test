@@ -41,21 +41,21 @@ ___x_cmd_test_cycle_exec(){
     return "$code"
 }
 
+___x_cmd_test_true_or_exit(){
+    local code
+    "$@"
+    code=$?
+    if [ $code -ne 0 ]; then
+        exit $code
+    fi
+}
+
 # Section: cycle init
 ___x_cmd_test_cycle_init(){
     xrc:mod assert/latest
 
-    ___x_cmd_assert_or_exit(){
-        local code
-        ___x_cmd_assert "$@"
-        code=$?
-        if [ $code -ne 0 ]; then
-            exit $code
-        fi
-    }
-
     alias @assert=___x_cmd_assert
-    alias @assert!=___x_cmd_assert_or_exit
+    alias @assert!='___x_cmd_test_true_or_exit ___x_cmd_assert'
 
     ___x_cmd_assert_true_for_all_func() {
         < "${1:-$___X_CMD_TEST_CURRENT_TESTCASE}" \
@@ -69,17 +69,8 @@ ___x_cmd_test_cycle_init(){
         done
     }
 
-    ___x_cmd_assert_true_for_all_func_or_exit(){
-        local code
-        ___x_cmd_assert_true_for_all_func "$@"
-        code=$?
-        if [ $code -ne 0 ]; then
-            exit $code
-        fi
-    }
-
     alias @assert:file:func=___x_cmd_assert_true_for_all_func
-    alias @assert:file:func!=___x_cmd_assert_true_for_all_func_or_exit
+    alias @assert:file:func!='___x_cmd_test_true_or_exit ___x_cmd_assert_true_for_all_func'
 }
 # EndSection
 
