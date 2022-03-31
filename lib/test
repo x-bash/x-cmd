@@ -10,9 +10,12 @@ ___x_cmd_ui_sep(){
 
     # TODO: Introducing a much better solution
     # printf "%s\n" "$(seq -f "\xE2\x80\x95" -s '' "$COLUMNS")"
-    local sep
-    sep="$(seq -f "${1:-—}" -s '' "$maxw")"
-    printf "%s\n" "$sep"
+    # local sep
+    # sep="$(seq -f "${1:-—}" -s '' "$maxw")"
+    # printf "%s\n" "$sep"
+    # printf "%0.s${1:-—}" {1..$maxw}
+    printf "%0.s${1:-—}" $(seq 1 "$maxw")
+    printf "\n"
 }
 
 
