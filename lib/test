@@ -5,10 +5,10 @@ x log init test
 xrc:mod ui/latest
 
 ___x_cmd_test(){
-    ___x_cmd_test_main "$@"
+    ___x_cmd_test_cycle_run "$@"
 }
 
-___x_cmd_test_init(){
+___x_cmd_test_cycle_init(){
     xrc:mod assert/latest
     assert(){
         ___x_cmd_assert "$@"
@@ -25,10 +25,9 @@ ___x_cmd_test_init(){
             fi
         done
     }
-
 }
 
-___x_cmd_test_main(){
+___x_cmd_test_cycle_run(){
     local target="${1}"
     if [ -z "$target" ]; then
         target="$(x wsroot)/.x-cmd/testcase"
@@ -41,8 +40,8 @@ ___x_cmd_test_main(){
     # printf "%s\n" "-------------------"
     ___x_cmd_ui_sep "━"
     (
-        ___x_cmd_test_init
-        cd "$target" && NAME="" INDENT="" ___x_cmd_test_folder "$(pwd)"
+        ___x_cmd_test_cycle_init
+        cd "$target" && NAME="" INDENT="" ___x_cmd_test_cycle_run_folder "$(pwd)"
     )
     local code="$?"
     ___x_cmd_ui_sep "━"
@@ -51,7 +50,7 @@ ___x_cmd_test_main(){
     return "$code"
 }
 
-___x_cmd_test_folder(){
+___x_cmd_test_cycle_run_folder(){
 
     local testcase
     local global_code=0
@@ -61,7 +60,7 @@ ___x_cmd_test_folder(){
             setup|teardown)         continue ;;
         esac
 
-        ( ___x_cmd_test___folder_exec "$@" )
+        ( ___x_cmd_test___cycle_run_folder_exec "$@" )
         code=$?
 
         if [ -n "$___X_CMD_TEST_ERR_EXIT" ]; then
@@ -73,7 +72,7 @@ ___x_cmd_test_folder(){
     return "$global_code"
 }
 
-___x_cmd_test___folder_exec() {
+___x_cmd_test___cycle_run_folder_exec() {
     if [ -f "$testcase" ]; then
         # printf "\033[36m%s\033[0m" "${INDENT}-[ ] $testcase"
 
@@ -105,7 +104,7 @@ ___x_cmd_test___folder_exec() {
         printf "\033[1;34m%s\033[0m\n" "${INDENT}>>> $NAME $testcase"
         [ -f ./setup ] && . ./setup
         NAME="$NAME/$testcase" INDENT="${INDENT}    " \
-            ___x_cmd_test_folder "$(pwd)"
+            ___x_cmd_test_cycle_run_folder "$(pwd)"
         code=$?
         [ -f ./teardown ] &&  . ./teardown
         s="$(___x_cmd_ui_sep '─')"
