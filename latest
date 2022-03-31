@@ -2,6 +2,7 @@
 # shellcheck    shell=sh    disable=SC3043,SC1091
 
 # Section : run by file: get_engine_by_file* and run_by_file*
+___x_cmd_log init x
 
 ___x_cmd_xrc_run(){
     local fp="${1:?filepath}"; shift
