@@ -51,7 +51,9 @@ ___x_cmd_test_cycle_init(){
         local code
         ___x_cmd_assert "$@"
         code=$?
-        [ $code -ne 0 ] && exit $code
+        if [ $code -ne 0 ]; then
+            exit $code
+        fi
     }
 
     alias @assert!=___x_cmd_assert_or_exit
