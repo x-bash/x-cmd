@@ -46,7 +46,7 @@ ___x_cmd_test_cycle_exec(){
 ___x_cmd_test_cycle_init(){
     xrc:mod assert/latest
 
-    alias @assert:errexit=___x_cmd_test_set_errexit
+    alias @assert:errexit='___x_cmd_test_set_errexit 1'
     alias @assert:errexit:off='___x_cmd_test_set_errexit ""'
 
     alias @assert='___x_cmd_test_true_or_exit ___x_cmd_assert'
@@ -78,7 +78,7 @@ ___x_cmd_test_true_or_exit(){
 
 ___X_CMD_TEST_ASSERT_ERREXIT=1
 ___x_cmd_test_set_errexit(){
-    ___X_CMD_TEST_ASSERT_ERREXIT=${1:-1}
+    ___X_CMD_TEST_ASSERT_ERREXIT=${1}
 }
 
 # EndSection
