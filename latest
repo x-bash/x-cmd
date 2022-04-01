@@ -528,6 +528,7 @@ ___x_cmd_main(){
         ws)                                     ___x_cmd_ws "$@" ;;
         _ws)                                    ___x_cmd_ws_ "$@" ;;
         rmrf)                                   ___x_cmd_rmrf "$@" ;;
+        test)                                   { command -v ___x_cmd_test >/dev/null 2>&1 || xrc test/latest; } && ___x_cmd_test "$@" ;;
 
         repeat)                                 ___x_cmd_repeat "$@" ;;
 
