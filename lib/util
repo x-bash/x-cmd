@@ -107,14 +107,3 @@ ___x_cmd_static_build_help(){
     fi
 }
 # EndSection
-
-# TODO: Will be replaced by module ls
-___x_cmd_ls(){
-    case "$1" in
-        @*|*@*/*)
-            ___x_cmd_file_ls "$@"
-            return
-            ;;
-    esac
-    ___x_cmd_static_build_file exa exa   "$@"
-}
