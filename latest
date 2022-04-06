@@ -394,10 +394,7 @@ ___x_cmd_main(){
         test)                                   { command -v ___x_cmd_test >/dev/null 2>&1 || xrc:mod test/latest; } && ___x_cmd_test "$@" ;;
         login)                                  xrc hub/latest && ___x_cmd_hub login "$@" ;;
 
-        update)                                 xrc update "$@"  ;;
-        upgrade)                                xrc upgrade "$@" ;;
-        clear)                                  xrc:mod xrc/lib/clear ;;
-        reinstall)                              x clear && RELOAD=1 x upgrade ;;
+        update|upgrade|clear|reinstall)         "$___X_CMD_ROOT_MOD/xrc/lib/setup/$subcmd" "$@" ;;
 
         z|uz)                                   ( xrc zuz && ___x_cmd_zuz "$subcmd" "$@" ) ;;   # zl)  ( xrc zuz && ___x_cmd_zuz_ls "$@"        ) ;;       # Using ls to replace
 
