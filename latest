@@ -223,7 +223,7 @@ A
 # EndSection
 
 
-xrc:mod:lib x-cmd glob con alias args rmrf util
+xrc:mod:lib x-cmd glob con alias args rmrf util lang
 
 # Section : x main function
 
