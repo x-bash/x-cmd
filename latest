@@ -381,13 +381,9 @@ ___x_cmd_main(){
         ll)                                     ___x_cmd_static_build_file      exa exa  -l             "$@"    ;;
 
         # TODO: we will rename ___x_cmd_curl to make room for it
-        curl|jq|yq|tmux|git|nmap|tesseract|magick|\
-            ps|du|sqlite|cat|bw|\
-            ncat|nping|traceroute)
+        curl|jq|yq|tmux|git|tesseract|magick|\
+            ps|du|sqlite|cat|bw|    nmap|ncat|nping|traceroute)
                                                 ___x_cmd_static_build_file     "$subcmd" "$subcmd"      "$@"    ;;
-
-        ffmpeg)                                 xrc ffmpeg && ___x_cmd_ffmpeg_download       "$@"    ;;
-        pandoc)                                 xrc pandoc && ___x_cmd_pandoc                "$@"    ;;
 
         openssl|ssl)                            ___x_cmd_static_build_file      openssl openssl         "$@"    ;;
         run)                                    ___x_cmd_run_by_file "$@"       ;;
