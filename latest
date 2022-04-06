@@ -40,17 +40,13 @@ ___x_cmd_source_run(){
     # fi
 }
 
-___x_cmd_xsh_run()(
-    ___x_cmd_source_run "$@"
-)
-
 ___x_cmd_run_with_engine(){
     local engine="${1:?Please provide engine}";
     local filepath="${2:?Please provide filepath}";        shift 2
     case "$engine" in
-        source)     ___x_cmd_source_run "$filepath" "$@";;
-        xrc)        ___x_cmd_xrc_run "$filepath" "$@";;
-        xsh)        ___x_cmd_xsh_run "$filepath" "$@";;
+        xrc)        ___x_cmd_xrc_run "$filepath" "$@" ;;
+        source)     ___x_cmd_source_run "$filepath" "$@" ;;
+        xsh)        ( ___x_cmd_source_run "$filepath" "$@" ) ;;
         7z)         ___x_cmd_main 7z x "$filepath" "$@"      ;;
         *)          ___x_cmd_main "$engine" "$filepath" "$@" ;;
     esac
@@ -222,11 +218,9 @@ A
 
 # EndSection
 
-
 xrc:mod:lib x-cmd glob con alias args rmrf util lang ws
 
 # Section : x main function
-
 
 ___x_cmd_main_otherwise(){
     local subcmd="$1";  shift
