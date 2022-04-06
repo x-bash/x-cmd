@@ -154,16 +154,6 @@ ___x_cmd_run_by_file(){
 
 # Section : Find And Execute at .x-cmd folder
 
-___x_cmd_abspath(){
-    local target_path="${1:-Please provide path}"
-    # $(dirname "$filepath")/
-    if [ "${target_path#/}" = "${target_path}" ]; then
-        printf "%s" "$(cd "$(dirname "$target_path")" && pwd)/$(basename "$target_path")"
-    else
-        printf "%s" "$target_path"
-    fi
-}
-
 ___x_cmd_exe_workspace(){
     local filepath="${1:?filepath}"
     if [ -L "$filepath" ]; then
@@ -363,7 +353,7 @@ ___x_cmd_main(){
         python|py)                              shift;  ___x_cmd_python "$@" ;;
         pip|pip3)                               shift;  ___x_cmd_pip3 "$@" ;;
 
-        jar|java|npm|npx|ts|    _ws|wsroot|ws|      args|margs|conjoin|con|rmrf|repeat|     which|search_path|_x_cmd_advise_json|       ls|ll   |ssl  )
+        jar|java|npm|npx|ts|    _ws|wsroot|ws|      args|margs|conjoin|con|rmrf|repeat|     which|search_path|_x_cmd_advise_json|       ls|ll   |ssl    | abspath  )
                                                 shift;  "___x_cmd_$subcmd" "$@" ;;
 
         curl|jq|yq|tmux|git|7z|tesseract|magick|    ps|du|sqlite|cat|bw|    nmap|ncat|nping|traceroute)     # TODO: we will rename ___x_cmd_curl to make room for it

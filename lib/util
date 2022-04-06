@@ -1,3 +1,14 @@
+
+___x_cmd_abspath(){
+    local target_path="${1:-Please provide path}"
+    # $(dirname "$filepath")/
+    if [ "${target_path#/}" = "${target_path}" ]; then
+        printf "%s" "$(cd "$(dirname "$target_path")" && pwd)/$(basename "$target_path")"
+    else
+        printf "%s" "$target_path"
+    fi
+}
+
 ___x_cmd_repeat(){
     local IFS="
 "
