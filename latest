@@ -399,8 +399,7 @@ ___x_cmd_main(){
         clear)                                  xrc:mod xrc/lib/clear ;;
         reinstall)                              x clear && RELOAD=1 x upgrade ;;
 
-        z|uz)                                   ( xrc zuz && ___x_cmd_zuz "$subcmd" "$@" ) ;;
-        zl)                                     ( xrc zuz && ___x_cmd_zuz_ls "$@"        ) ;;
+        z|uz)                                   ( xrc zuz && ___x_cmd_zuz "$subcmd" "$@" ) ;;   # zl)  ( xrc zuz && ___x_cmd_zuz_ls "$@"        ) ;;       # Using ls to replace
 
         *)                                      ___x_cmd_main_otherwise "$subcmd" "$@" ;;
     esac
