@@ -370,7 +370,7 @@ ___x_cmd_main(){
         pip|pip3)                               shift;  ___x_cmd_pip3 "$@" ;;
         python|py)                              shift;  ___x_cmd_python "$@" ;;
 
-        javascript|js|node)                     shift;  ___x_cmd_node "$@" ;;
+        js|node)                                shift;  ___x_cmd_node "$@" ;;
         jar|java|npm|npx|ts)                    shift;  "___x_cmd_$subcmd" "$@" ;;
 
         ls)                                     shift;  ___x_cmd_ls         "$@"        ;;
