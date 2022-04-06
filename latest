@@ -360,16 +360,10 @@ ___x_cmd_which_panic(){
 ___x_cmd_main(){
     # local IFS=" "
 
-    local subcmd=$1; [ $# -gt 0 ] && shift
+    local subcmd="$1"; [ $# -gt 0 ] && shift
     case "$subcmd" in
         log)                                    ___x_cmd_log "$@" ;;
-        ""|help)                                printf "x     x-bash core function.
-    Uasge:  x <subcommand> [<subcommand>...]
-    Please visit our homepage for more information: https://x-cmd.com
-" >&2;
-                                                ___x_cmd_x_cmd_help
-                                                return 0
-;;
+        ""|help)                                ___x_cmd_x_cmd_help ;;
         \.)                                     command code . ;;
 
         alias)                                  ___x_cmd_alias      ___x_cmd "$@"   ;;
@@ -390,11 +384,7 @@ ___x_cmd_main(){
 
         update)                                 xrc update "$@"  ;;
         upgrade)                                xrc upgrade "$@" ;;
-        clear)                                  if ! grep "___x_cmd_http_get()" "$___X_CMD_ROOT/xrc/latest" >/dev/null 2>&1; then
-                                                    x:debug "'$___X_CMD_ROOT/xrc/latest' NOT found. Please manually clear cache folder: $___X_CMD_ROOT"
-                                                    return 1
-                                                fi
-                                                rm -rf "$___X_CMD_ROOT" ;;
+        clear)                                  xrc:mod xrc/lib/clear ;;
         reinstall)                              x clear && RELOAD=1 x upgrade ;;
 
         z|uz)                                   ( xrc zuz && ___x_cmd_zuz "$subcmd" "$@" ) ;;
@@ -433,21 +423,17 @@ ___x_cmd_main(){
 
         ls)                                     ___x_cmd_ls         "$@"        ;;
         ll)                                     ___x_cmd_static_build_file      exa exa  -l             "$@"    ;;
-        ps)                                     ___x_cmd_static_build_file      procs procs             "$@"    ;;
-        du)                                     ___x_cmd_static_build_file      dust dust               "$@"    ;;
-        sqlite)                                 ___x_cmd_static_build_file      sqlite3 sqlite3         "$@"    ;;
-        cat)                                    ___x_cmd_static_build_help      bat bat                 "$@"    ;;
-        bw)                                     ___x_cmd_static_build_file      bandwhich bandwhich     "$@"    ;;
-        jq)                                     ___x_cmd_static_build_help      jq jq                   "$@"    ;;
+
         # TODO: we will rename ___x_cmd_curl to make room for it
-        curl|yq|tmux|git|nmap|tesseract|magick)        ___x_cmd_static_build_file     "$subcmd" "$subcmd"      "$@"    ;;
+        curl|yq|tmux|git|nmap|tesseract|magick|\
+            ps|du|sqlite|cat|bw|jq|\
+            ncat|nping|traceroute)
+                                                ___x_cmd_static_build_file     "$subcmd" "$subcmd"      "$@"    ;;
+
         ffmpeg)                                 xrc ffmpeg && ___x_cmd_ffmpeg_download       "$@"    ;;
         pandoc)                                 xrc pandoc && ___x_cmd_pandoc                "$@"    ;;
 
         openssl|ssl)                            ___x_cmd_static_build_file      openssl openssl         "$@"    ;;
-        ncat)                                   ___x_cmd_static_build_file      nmap ncat               "$@"    ;;
-        nping)                                  ___x_cmd_static_build_file      nmap nping              "$@"    ;;
-        traceroute)                             ___x_cmd_static_build_file      nmap traceroute         "$@"    ;;
         run)                                    ___x_cmd_run_by_file "$@"       ;;
         search_path)                            ___x_cmd_search_path "$@"       ;;
         which|w)                                local p
@@ -456,16 +442,17 @@ ___x_cmd_main(){
                                                 done
                                                 ;;
         _x_cmd_advise_json)                     ___x_cmd_x_cmd_advise_json "$@" ;;
+
         wsroot)                                 ___x_cmd_workspace_root "$@" ;;
         ws)                                     ___x_cmd_ws "$@" ;;
         _ws)                                    ___x_cmd_ws_ "$@" ;;
+
         rmrf)                                   ___x_cmd_rmrf "$@" ;;
-        test)                                   { command -v ___x_cmd_test >/dev/null 2>&1 || xrc:mod test/latest; } && ___x_cmd_test "$@" ;;
 
         repeat)                                 ___x_cmd_repeat "$@" ;;
+        test)                                   { command -v ___x_cmd_test >/dev/null 2>&1 || xrc:mod test/latest; } && ___x_cmd_test "$@" ;;       # Test is a inner module.
 
         *)                                      ___x_cmd_main_otherwise "$subcmd" "$@" ;;
-
     esac
 }
 

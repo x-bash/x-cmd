@@ -15,6 +15,11 @@ ___x_cmd_x_cmd_advise_json(){
 }
 
 ___x_cmd_x_cmd_help(){
+    printf "x     x-bash core function.
+    Uasge:  x <subcommand> [<subcommand>...]
+    Please visit our homepage for more information: https://x-cmd.com
+" >&2;
+
     xrc advise/lib/advise_get
     ___x_cmd_advise_get_help "$(xrc which x-cmd/lib/x.json)"
 }
