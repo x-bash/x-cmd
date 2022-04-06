@@ -20,3 +20,6 @@ ___x_cmd_definelazyloader ___x_cmd_ts           node/latest
 # EndSection
 
 
+___x_cmd_7z(){
+    ___x_cmd_static_build_file      p7zip 7za               "$@"
+}

@@ -346,6 +346,10 @@ ___x_cmd__ws(){
 
 ___x_cmd_alias_init ___x_cmd
 
+#       7zd)                                    shift;  ( xrc p7zip/v0   &&  p7zd "$@" ) ;;
+#       7z|7za|7zr)                             shift;  ___x_cmd_static_build_file      p7zip 7za               "$@"    ;;
+
+
 ___x_cmd_main(){
     local subcmd="$1"
     case "$subcmd" in
@@ -369,13 +373,10 @@ ___x_cmd_main(){
         javascript|js|node)                     shift;  ___x_cmd_node "$@" ;;
         jar|java|npm|npx|ts)                    shift;  "___x_cmd_$subcmd" "$@" ;;
 
-        7zd)                                    shift;  ( xrc p7zip/v0   &&  p7zd "$@" ) ;;
-        7z|7za|7zr)                             shift;  ___x_cmd_static_build_file      p7zip 7za               "$@"    ;;
-
         ls)                                     shift;  ___x_cmd_ls         "$@"        ;;
         ll)                                     shift;  ___x_cmd_static_build_file      exa exa  -l             "$@"    ;;
 
-        curl|jq|yq|tmux|git|tesseract|magick|\
+        curl|jq|yq|tmux|git|7z|tesseract|magick|\
             ps|du|sqlite|cat|bw|    nmap|ncat|nping|traceroute)     # TODO: we will rename ___x_cmd_curl to make room for it
                                                 shift;  ___x_cmd_static_build_file     "$subcmd" "$subcmd"      "$@"    ;;
 
