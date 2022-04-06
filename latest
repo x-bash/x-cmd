@@ -219,9 +219,9 @@ xrc:mod:lib x-cmd glob con alias args rmrf util lang ws
 ___x_cmd_main_otherwise(){
     local subcmd="$1";  shift
 
-    if [ -d "$subcmd" ]; then
-        [ -d "$subcmd/.vscode" ] && code "$subcmd" && return
-    fi
+    # if [ -d "$subcmd" ]; then
+    #     [ -d "$subcmd/.vscode" ] && code "$subcmd" && return
+    # fi
 
     local code
     ___x_cmd_alias_exec ___x_cmd "$subcmd" "$@"
