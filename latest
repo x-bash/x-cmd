@@ -260,7 +260,7 @@ ___x_cmd_static_build_help(){
 }
 # EndSection
 
-xrc:mod:lib x-cmd glob con alias args rmrf qr util
+xrc:mod:lib x-cmd glob con alias args rmrf util
 
 # Section : varset
 
@@ -522,7 +522,6 @@ ___x_cmd_main(){
                                                     ___x_cmd_which_panic || return 1
                                                 done
                                                 ;;
-        qr)                                     ___x_cmd_qr "$@" ;;
         _x_cmd_advise_json)                     ___x_cmd_x_cmd_advise_json "$@" ;;
         wsroot)                                 ___x_cmd_workspace_root "$@" ;;
         ws)                                     ___x_cmd_ws "$@" ;;
