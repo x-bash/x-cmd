@@ -44,9 +44,9 @@ ___x_cmd_run_with_engine(){
     local engine="${1:?Please provide engine}";
     local filepath="${2:?Please provide filepath}";        shift 2
     case "$engine" in
-        xrc)        ___x_cmd_xrc_run "$filepath" "$@" ;;
-        source)     ___x_cmd_source_run "$filepath" "$@" ;;
-        xsh)        ( ___x_cmd_source_run "$filepath" "$@" ) ;;
+        xrc)        ___x_cmd_xrc_run "$filepath" "$@";;
+        source)     ___x_cmd_source_run "$filepath" "$@";;
+        xsh)        ( ___x_cmd_source_run "$filepath" "$@"; ) ;;
         7z)         ___x_cmd_main 7z x "$filepath" "$@"      ;;
         *)          ___x_cmd_main "$engine" "$filepath" "$@" ;;
     esac
