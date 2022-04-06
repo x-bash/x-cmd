@@ -348,8 +348,6 @@ ___x_cmd__ws(){
 ___x_cmd_alias_init ___x_cmd
 
 ___x_cmd_main(){
-    # local IFS=" "
-
     local subcmd="$1"; [ $# -gt 0 ] && shift
     case "$subcmd" in
         log)                                    ___x_cmd_log "$@" ;;
