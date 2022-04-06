@@ -36,6 +36,20 @@ ___x_cmd_which(){
     done
 }
 
+___x_cmd_shell_exec(){
+    local shell="${1:?Provide shell}"
+    shift
+    if [ -x "/bin/$shell" ]; then
+        # "/bin/$shell" $X_CMD_SRC_PATH/boot && ___x_cmd_source "$@"
+        "/bin/$shell" "$@"
+    elif [ -x "/usr/bin/$shell" ]; then
+        # "/usr/bin/$shell" $X_CMD_SRC_PATH/boot && ___x_cmd_source "$@"
+        "/usr/bin/$shell" "$@"
+    else
+        command "$shell" "$@"
+    fi
+}
+
 
 # Section : help and advise.json
 ___x_cmd__x_cmd_advise_json(){
