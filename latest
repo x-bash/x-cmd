@@ -236,7 +236,6 @@ ___x_cmd_main_otherwise(){
     local ___X_CMD_WHICH_ONE_RESOURCE_TYPE
     if ___x_cmd_which_one "$subcmd"; then
         local p="$___X_CMD_WHICH_ONE_RESULT"
-        printf "%s\n" "!!! ---> $p $___X_CMD_WHICH_ONE_RESOURCE_TYPE"
         case "$___X_CMD_WHICH_ONE_RESOURCE_TYPE" in
             workspace)      ___x_cmd_exe_workspace  "$p" "$@" ;;
             local)          ___x_cmd_run_by_file    "$p" "$@" ;;
