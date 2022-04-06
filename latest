@@ -375,8 +375,7 @@ ___x_cmd_main(){
         ls)                                     shift;  ___x_cmd_ls         "$@"        ;;
         ll)                                     shift;  ___x_cmd_static_build_file      exa exa  -l             "$@"    ;;
 
-        curl|jq|yq|tmux|git|7z|tesseract|magick|\
-            ps|du|sqlite|cat|bw|    nmap|ncat|nping|traceroute)     # TODO: we will rename ___x_cmd_curl to make room for it
+        curl|jq|yq|tmux|git|7z|tesseract|magick|    ps|du|sqlite|cat|bw|    nmap|ncat|nping|traceroute)     # TODO: we will rename ___x_cmd_curl to make room for it
                                                 shift;  ___x_cmd_static_build_file     "$subcmd" "$subcmd"      "$@"    ;;
 
         openssl|ssl)                            shift;  ___x_cmd_static_build_file      openssl openssl         "$@"    ;;
