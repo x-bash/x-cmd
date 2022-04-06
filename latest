@@ -354,16 +354,17 @@ ___x_cmd_main(){
     case "$subcmd" in
         log)                                    ___x_cmd_log "$@" ;;
 
-        conjoin)                                ___x_cmd_eval_concurrent_join "$@" ;;
-        con)                                    ___x_cmd_eval_concurrent_assign "$@" ;;
-
         *:=)                                    ___x_cmd_varset "${subcmd%:=}" "$@" ;;
         *=)                                     ___x_cmd_varset_without_end "${subcmd%=}" "$@" ;;
 
-        args)                                   ___x_cmd_args "$@"      ;;
         arg1)                                   ___x_cmd_args 1 "$@"    ;;
-        margs)                                  ___x_cmd_margs "$@"     ;;
         marg1)                                  ___x_cmd_margs 1 "$@"   ;;
+
+        args|margs|\
+        rmrf|repeat|\
+        _ws|wsroot|ws|\
+        conjoin|con|\
+        which|search_path|_x_cmd_advise_json)   "___x_cmd_$subcmd" "$@" ;;
 
         sh|bash|zsh|fish|ksh|dash|ash)          ___x_cmd_shell_exec "$subcmd" "$@" ;;
 
@@ -380,8 +381,8 @@ ___x_cmd_main(){
         ll)                                     ___x_cmd_static_build_file      exa exa  -l             "$@"    ;;
 
         # TODO: we will rename ___x_cmd_curl to make room for it
-        curl|yq|tmux|git|nmap|tesseract|magick|\
-            ps|du|sqlite|cat|bw|jq|\
+        curl|jq|yq|tmux|git|nmap|tesseract|magick|\
+            ps|du|sqlite|cat|bw|\
             ncat|nping|traceroute)
                                                 ___x_cmd_static_build_file     "$subcmd" "$subcmd"      "$@"    ;;
 
@@ -390,10 +391,6 @@ ___x_cmd_main(){
 
         openssl|ssl)                            ___x_cmd_static_build_file      openssl openssl         "$@"    ;;
         run)                                    ___x_cmd_run_by_file "$@"       ;;
-
-        rmrf|repeat|\
-        _ws|wsroot|ws|\
-        which|search_path|_x_cmd_advise_json)   "___x_cmd_$subcmd" "$@" ;;
 
         ""|help)                                ___x_cmd_x_cmd_help ;;
         \.)                                     command code . ;;      # Test is a inner module.
