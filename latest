@@ -139,11 +139,8 @@ ___x_cmd_run_by_file(){
     fi
 
     local engine
-    if engine="$(___x_cmd_get_engine_by_file "$filepath")"; then
-        ___x_cmd_run_with_engine "$engine" "$filepath" "$@"
-    else
-        ___x_cmd_run_with_engine source "$filepath" "$@"
-    fi
+    engine="$(___x_cmd_get_engine_by_file "$filepath")" || engine=source
+    ___x_cmd_run_with_engine source "$filepath" "$@"
 }
 
 # EndSection
@@ -153,9 +150,6 @@ ___x_cmd_run_by_file(){
 ___x_cmd_exe_workspace(){
     local filepath="${1:?filepath}"
     if [ -L "$filepath" ]; then
-        # local target_path
-        # target_path="$(___x_cmd_readlink_recursive "$filepath")"
-        # target_path="$(___x_cmd_abspath "$target_path")"
         filepath="$(___x_cmd_readlink_recursive "$filepath")"
         filepath="$(___x_cmd_abspath "$filepath")"
     fi
