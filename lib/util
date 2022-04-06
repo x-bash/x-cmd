@@ -8,8 +8,26 @@ ___x_cmd_repeat(){
     done
 }
 
+___x_cmd_which_panic(){
+    local ___X_CMD_WHICH_ONE_RESULT
+    if ! ___x_cmd_which_one "$p"; then
+        printf "%s\n" "Fail to find path for $p" >&2
+        return 1
+    else
+        printf "%s\n" "$___X_CMD_WHICH_ONE_RESULT"
+    fi
+}
+
+___x_cmd_which(){
+    local p
+    for p in "$@"; do
+        ___x_cmd_which_panic || return 1
+    done
+}
+
+
 # Section : help and advise.json
-___x_cmd_x_cmd_advise_json(){
+___x_cmd__x_cmd_advise_json(){
     xrc cat x-cmd/lib/x.json
     return 126
 }

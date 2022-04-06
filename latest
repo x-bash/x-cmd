@@ -251,7 +251,7 @@ ___x_cmd_shell_exec(){
     fi
 }
 
-___x_cmd_workspace_root(){
+___x_cmd_wsroot(){
     local cur="${1:-.}"
 
     cur="$(cd "$cur" 1>/dev/null 2>&1 && pwd)"
@@ -330,7 +330,7 @@ ___x_cmd_ws(){
 }
 
 
-___x_cmd_ws_(){
+___x_cmd__ws(){
     local X_DISABLE_WORKSPACE_EXECUTION_CONFIRMATION=1
 
     local RESOURCE_NAME="$1"; shift
@@ -347,27 +347,12 @@ ___x_cmd_ws_(){
 
 ___x_cmd_alias_init ___x_cmd
 
-___x_cmd_which_panic(){
-    local ___X_CMD_WHICH_ONE_RESULT
-    if ! ___x_cmd_which_one "$p"; then
-        printf "%s\n" "Fail to find path for $p" >&2
-        return 1
-    else
-        printf "%s\n" "$___X_CMD_WHICH_ONE_RESULT"
-    fi
-}
-
 ___x_cmd_main(){
     # local IFS=" "
 
     local subcmd="$1"; [ $# -gt 0 ] && shift
     case "$subcmd" in
         log)                                    ___x_cmd_log "$@" ;;
-        ""|help)                                ___x_cmd_x_cmd_help ;;
-        \.)                                     command code . ;;
-
-        alias)                                  ___x_cmd_alias      ___x_cmd "$@"   ;;
-        unalias)                                ___x_cmd_unalias    ___x_cmd "$@"   ;;
 
         conjoin)                                ___x_cmd_eval_concurrent_join "$@" ;;
         con)                                    ___x_cmd_eval_concurrent_assign "$@" ;;
@@ -380,43 +365,13 @@ ___x_cmd_main(){
         margs)                                  ___x_cmd_margs "$@"     ;;
         marg1)                                  ___x_cmd_margs 1 "$@"   ;;
 
-        login)                                  xrc hub/latest && ___x_cmd_hub login "$@" ;;
-
-        update)                                 xrc update "$@"  ;;
-        upgrade)                                xrc upgrade "$@" ;;
-        clear)                                  xrc:mod xrc/lib/clear ;;
-        reinstall)                              x clear && RELOAD=1 x upgrade ;;
-
-        z|uz)                                   ( xrc zuz && ___x_cmd_zuz "$subcmd" "$@" ) ;;
-        zl)                                     ( xrc zuz && ___x_cmd_zuz_ls "$@"        ) ;;
-
         sh|bash|zsh|fish|ksh|dash|ash)          ___x_cmd_shell_exec "$subcmd" "$@" ;;
 
-        jar)                                    xrc java/latest && ___x_cmd_java -jar "$@" ;;
-        java)                                   xrc java/latest && ___x_cmd_java "$@" ;;
+        pip|pip3)                               ___x_cmd_pip3 "$@" ;;
+        python|py)                              ___x_cmd_python "$@" ;;
 
-        pip|pip3)                               xrc python/latest && ___x_cmd_pip3 "$@" ;;
-        python|py)                              xrc python/latest && ___x_cmd_python "$@" ;;
-
-        nvm)                                    xrc nvm/latest  && ___x_cmd_nvm "$@" ;;
-        javascript|js|node)                     xrc node/latest && ___x_cmd_node "$@" ;;
-        npm)                                    xrc node/latest && ___x_cmd_npm "$@" ;;
-        npx)                                    xrc node/latest && ___x_cmd_npx "$@" ;;
-        ts)                                     local arg
-                                                local argstr
-                                                while [ $# -ge 0 ]; do
-                                                    case "$arg" in
-                                                        -*)     argstr="$argstr $arg"   ;;
-                                                        *)      break
-                                                    esac
-                                                done
-                                                local script
-                                                script="$1"
-                                                shift
-                                                x npx @typeshell/exec "$argstr" "$script" "$@"
-                                                ;;
-        # ruby|rb)                                ruby "$(___x_cmd_official_which "$2")" "$@"      ;;
-        lua)            ;;
+        javascript|js|node)                     ___x_cmd_node "$@" ;;
+        jar|java|npm|npx|ts)                    "___x_cmd_$subcmd" "$@" ;;
 
         7zd)                                    ( xrc p7zip/v0   &&  p7zd "$@" ) ;;
         7z|7za|7zr)                             ___x_cmd_static_build_file      p7zip 7za               "$@"    ;;
@@ -435,22 +390,26 @@ ___x_cmd_main(){
 
         openssl|ssl)                            ___x_cmd_static_build_file      openssl openssl         "$@"    ;;
         run)                                    ___x_cmd_run_by_file "$@"       ;;
-        search_path)                            ___x_cmd_search_path "$@"       ;;
-        which|w)                                local p
-                                                for p in "$@"; do
-                                                    ___x_cmd_which_panic || return 1
-                                                done
-                                                ;;
-        _x_cmd_advise_json)                     ___x_cmd_x_cmd_advise_json "$@" ;;
 
-        wsroot)                                 ___x_cmd_workspace_root "$@" ;;
-        ws)                                     ___x_cmd_ws "$@" ;;
-        _ws)                                    ___x_cmd_ws_ "$@" ;;
+        rmrf|repeat|\
+        _ws|wsroot|ws|\
+        which|search_path|_x_cmd_advise_json)   "___x_cmd_$subcmd" "$@" ;;
 
-        rmrf)                                   ___x_cmd_rmrf "$@" ;;
+        ""|help)                                ___x_cmd_x_cmd_help ;;
+        \.)                                     command code . ;;      # Test is a inner module.
 
-        repeat)                                 ___x_cmd_repeat "$@" ;;
-        test)                                   { command -v ___x_cmd_test >/dev/null 2>&1 || xrc:mod test/latest; } && ___x_cmd_test "$@" ;;       # Test is a inner module.
+        alias|unalias)                          "___x_cmd_$subcmd"  ___x_cmd "$@"   ;;
+
+        test)                                   { command -v ___x_cmd_test >/dev/null 2>&1 || xrc:mod test/latest; } && ___x_cmd_test "$@" ;;
+        login)                                  xrc hub/latest && ___x_cmd_hub login "$@" ;;
+
+        update)                                 xrc update "$@"  ;;
+        upgrade)                                xrc upgrade "$@" ;;
+        clear)                                  xrc:mod xrc/lib/clear ;;
+        reinstall)                              x clear && RELOAD=1 x upgrade ;;
+
+        z|uz)                                   ( xrc zuz && ___x_cmd_zuz "$subcmd" "$@" ) ;;
+        zl)                                     ( xrc zuz && ___x_cmd_zuz_ls "$@"        ) ;;
 
         *)                                      ___x_cmd_main_otherwise "$subcmd" "$@" ;;
     esac
