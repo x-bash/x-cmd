@@ -359,9 +359,8 @@ ___x_cmd_main(){
         marg1)                                  ___x_cmd_margs 1 "$@"   ;;
 
         args|margs|\
-        rmrf|repeat|\
         _ws|wsroot|ws|\
-        conjoin|con|\
+        conjoin|con|rmrf|repeat|\
         which|search_path|_x_cmd_advise_json)   "___x_cmd_$subcmd" "$@" ;;
 
         sh|bash|zsh|fish|ksh|dash|ash)          ___x_cmd_shell_exec "$subcmd" "$@" ;;
@@ -378,9 +377,9 @@ ___x_cmd_main(){
         ls)                                     ___x_cmd_ls         "$@"        ;;
         ll)                                     ___x_cmd_static_build_file      exa exa  -l             "$@"    ;;
 
-        # TODO: we will rename ___x_cmd_curl to make room for it
+
         curl|jq|yq|tmux|git|tesseract|magick|\
-            ps|du|sqlite|cat|bw|    nmap|ncat|nping|traceroute)
+            ps|du|sqlite|cat|bw|    nmap|ncat|nping|traceroute)     # TODO: we will rename ___x_cmd_curl to make room for it
                                                 ___x_cmd_static_build_file     "$subcmd" "$subcmd"      "$@"    ;;
 
         openssl|ssl)                            ___x_cmd_static_build_file      openssl openssl         "$@"    ;;
