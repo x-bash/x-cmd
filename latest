@@ -140,7 +140,6 @@ ___x_cmd_run_by_file(){
 
     local engine
     engine="$(___x_cmd_get_engine_by_file "$filepath")" || engine=source
-    x:error "engine: $engine"
     ___x_cmd_run_with_engine "$engine" "$filepath" "$@"
 }
 
