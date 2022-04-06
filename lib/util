@@ -21,6 +21,42 @@ ___x_cmd_x_cmd_help(){
 # EndSection
 
 
+# Section : varset
+
+___x_cmd_varset(){
+    local _______variable_name="${1}"
+    if [ "$#" -eq 1 ]; then
+        eval printf "%s" "\"\$$_______variable_name\""
+        return
+    fi
+
+    local result
+    shift 1
+
+    local ___X_CMD_EVAL_CON_SEPERATOR
+    ___X_CMD_EVAL_CON_SEPERATOR="$(printf "\001")"
+
+    result="$("$@"; printf "${___X_CMD_EVAL_CON_SEPERATOR}")"
+    result="${result%${___X_CMD_EVAL_CON_SEPERATOR}}"
+    eval "$_______variable_name=\"\$result\""
+}
+
+___x_cmd_varset_without_end(){
+    local _______variable_name="${1}"
+    if [ "$#" -eq 1 ]; then
+        eval printf "%s" "\"\$$_______variable_name\""
+        return
+    fi
+
+    local result
+    shift 1
+    result="$("$@")"
+    eval "$_______variable_name=\"\$result\""
+}
+
+# EndSection
+
+
 # Section : utilties in static-build
 
 # _x_xrc_static_run(){
