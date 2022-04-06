@@ -367,10 +367,9 @@ ___x_cmd_main(){
 
         sh|bash|zsh|fish|ksh|dash|ash)          shift;  ___x_cmd_shell_exec "$subcmd" "$@" ;;
 
-        pip|pip3)                               shift;  ___x_cmd_pip3 "$@" ;;
-        python|py)                              shift;  ___x_cmd_python "$@" ;;
-
         js|node)                                shift;  ___x_cmd_node "$@" ;;
+        python|py)                              shift;  ___x_cmd_python "$@" ;;
+        pip|pip3)                               shift;  ___x_cmd_pip3 "$@" ;;
         jar|java|npm|npx|ts)                    shift;  "___x_cmd_$subcmd" "$@" ;;
 
         ls)                                     shift;  ___x_cmd_ls         "$@"        ;;
