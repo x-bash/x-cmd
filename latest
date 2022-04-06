@@ -232,33 +232,6 @@ A
 
 # EndSection
 
-# Section : utilties in static-build
-
-# _x_xrc_static_run(){
-#     local name=$1;  shift
-#     xrc static-build
-#     static_build_xrc "$name"
-#     "_${name}_bin" "$@"
-# }
-
-___x_cmd_static_build_file(){
-    local app="${1:?Provide app name}"
-    local repo="${2:?Provide repo name}"
-    shift 2
-    eval " ___x_cmd_$app(){
-        xrc static-build && static_build_init $app $repo ___x_cmd_$app && ___x_cmd_$app  \"\$@\"
-    }"
-    ___x_cmd_"$app" "$@"
-}
-
-___x_cmd_static_build_help(){
-    if [ "$#" -eq 2 ]; then
-        ___x_cmd_static_build_file "$@" "--help"
-    else
-        ___x_cmd_static_build_file "$@"
-    fi
-}
-# EndSection
 
 xrc:mod:lib x-cmd glob con alias args rmrf util
 
@@ -313,15 +286,6 @@ ___x_cmd_shell_exec(){
     fi
 }
 
-___x_cmd_ls(){
-    case "$1" in
-        @*|*@*/*)
-            ___x_cmd_file_ls "$@"
-            return
-            ;;
-    esac
-    ___x_cmd_static_build_file exa exa   "$@"
-}
 
 ___x_cmd_workspace_root(){
     local cur="${1:-.}"
@@ -538,17 +502,6 @@ ___x_cmd_main(){
 
 # EndSection
 
-# Section : help and advise.json
-___x_cmd_x_cmd_advise_json(){
-    xrc cat x-cmd/lib/x.json
-    return 126
-}
-
-___x_cmd_x_cmd_help(){
-    xrc advise/lib/advise_get
-    ___x_cmd_advise_get_help "$(xrc which x-cmd/lib/x.json)"
-}
-# EndSection
 
 x(){
     ___x_cmd_main "$@"
