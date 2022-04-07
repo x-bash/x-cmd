@@ -4,7 +4,7 @@
 # Section : run by file: get_engine_by_file* and run_by_file*
 ___x_cmd_log init x
 
-___x_cmd_xrc_run(){
+___x_cmd___xrc_run(){
     local fp="${1:?filepath}"; shift
 
     local main
@@ -19,24 +19,24 @@ ___x_cmd_xrc_run(){
     "$main" "$@"
 }
 
-___x_cmd_source_run(){
+___x_cmd___source_run(){
     local ___x_cmd_x_source_run_filepath="${1:?filepath}";        shift
     ___x_cmd_source "$___x_cmd_x_source_run_filepath" "$@"
 }
 
-___x_cmd_run_with_engine(){
+___x_cmd___run_with_engine(){
     local engine="${1:?Please provide engine}";
     local filepath="${2:?Please provide filepath}";        shift 2
     case "$engine" in
-        xrc)        ___x_cmd_xrc_run "$filepath" "$@" ;;
-        source)     ___x_cmd_source_run "$filepath" "$@" ;;
-        xsh)        ( ___x_cmd_source_run "$filepath" "$@"; ) ;;
+        xrc)        ___x_cmd___xrc_run "$filepath" "$@" ;;
+        source)     ___x_cmd___source_run "$filepath" "$@" ;;
+        xsh)        ( ___x_cmd___source_run "$filepath" "$@"; ) ;;
         7z)         ___x_cmd_main 7z x "$filepath" "$@"      ;;
         *)          ___x_cmd_main "$engine" "$filepath" "$@" ;;
     esac
 }
 
-___x_cmd_get_engine_by_file_header(){
+___x_cmd___get_engine_by_file_header(){
     local filepath="${1:?Please provide filepath}"; shift
     case "$(head -n1 "$filepath")" in
         *source*)       printf "%s" source          ;;
@@ -58,11 +58,11 @@ ___x_cmd_get_engine_by_file_header(){
     esac
 }
 
-___x_cmd_run_by_file_header(){
+___x_cmd___run_by_file_header(){
     local filepath="${1:?filepath}"; shift
     local engine
-    if engine="$(___x_cmd_get_engine_by_file_header "$filepath")"; then
-        ___x_cmd_run_with_engine "$engine" "$filepath" "$@"
+    if engine="$(___x_cmd___get_engine_by_file_header "$filepath")"; then
+        ___x_cmd___run_with_engine "$engine" "$filepath" "$@"
     fi
 }
 
@@ -93,13 +93,13 @@ ___x_cmd_run_by_file_ext(){
     local filepath="${1:?filepath}"; shift
     local engine
     if engine="$(___x_cmd_get_engine_by_file_ext "$filepath")"; then
-        ___x_cmd_run_with_engine "$engine" "$filepath" "$@"
+        ___x_cmd___run_with_engine "$engine" "$filepath" "$@"
     fi
 }
 
 ___x_cmd_get_engine_by_file(){
     local filepath="${1:?filepath}"
-    ___x_cmd_get_engine_by_file_ext "$filepath" || ___x_cmd_get_engine_by_file_header "$filepath"
+    ___x_cmd_get_engine_by_file_ext "$filepath" || ___x_cmd___get_engine_by_file_header "$filepath"
 }
 
 ___x_cmd_run_by_file(){
@@ -124,7 +124,7 @@ ___x_cmd_run_by_file(){
 
     local engine
     engine="$(___x_cmd_get_engine_by_file "$filepath")" || engine=source
-    ___x_cmd_run_with_engine "$engine" "$filepath" "$@"
+    ___x_cmd___run_with_engine "$engine" "$filepath" "$@"
 }
 
 # EndSection
