@@ -3,7 +3,6 @@
 
 ___x_cmd_log init x
 
-
 xrc:mod:lib x-cmd glob con alias args rmrf util lang ws exe
 
 # Section : x main function
