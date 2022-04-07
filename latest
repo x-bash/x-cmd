@@ -203,10 +203,6 @@ xrc:mod:lib x-cmd glob con alias args rmrf util lang ws
 ___x_cmd_main_otherwise(){
     local subcmd="$1";  shift
 
-    # if [ -d "$subcmd" ]; then
-    #     [ -d "$subcmd/.vscode" ] && code "$subcmd" && return
-    # fi
-
     local code
     ___x_cmd_alias_exec ___x_cmd "$subcmd" "$@"
     code=$?
@@ -214,8 +210,7 @@ ___x_cmd_main_otherwise(){
         return $?
     fi
 
-    # static build
-    # update the static-build files
+    # static build: update the static-build files
     local ___X_CMD_WHICH_ONE_RESULT
     local ___X_CMD_WHICH_ONE_RESOURCE_TYPE
     if ___x_cmd_which_one "$subcmd"; then
