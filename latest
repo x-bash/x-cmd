@@ -58,7 +58,6 @@ ___x_cmd___get_engine_by_file_header(){
     esac
 }
 
-
 ___x_cmd_get_engine_by_file_ext(){
     local filepath="${1:?filepath}"; shift
     local ext="${filepath##*.}"
