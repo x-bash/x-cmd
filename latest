@@ -287,7 +287,7 @@ ___x_cmd_main(){
         test)                                   shift;  { command -v ___x_cmd_test >/dev/null 2>&1 || xrc:mod test/latest; } && ___x_cmd_test "$@" ;;
         login)                                  shift;  xrc hub/latest && ___x_cmd_hub login "$@" ;;
 
-        update|upgrade|clear|reinstall)         shift;  "$___X_CMD_ROOT_MOD/xrc/lib/setup/$subcmd" "$@" ;;
+        update|upgrade|clear|reinstall)         shift;  xrc update "$@" ;;
 
         z|uz)                                           ( xrc zuz && ___x_cmd_zuz "$@" ) ;;   # zl)  ( xrc zuz && ___x_cmd_zuz_ls "$@"        ) ;;       # Using ls to replace
         ""|help)                                        ___x_cmd_x_cmd_help ;;
