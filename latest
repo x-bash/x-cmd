@@ -21,31 +21,15 @@ ___x_cmd_xrc_run(){
 
 ___x_cmd_source_run(){
     local ___x_cmd_x_source_run_filepath="${1:?filepath}";        shift
-
     ___x_cmd_source "$___x_cmd_x_source_run_filepath" "$@"
-
-    # local ___xrc_module_name="${___x_cmd_x_source_run_filepath##*/}"
-
-    # if command -v "___x_cmd_${___xrc_module_name}" >/dev/null; then
-    #     "___x_cmd_${___xrc_module_name}" "$@"
-    # elif command -v "${___xrc_module_name}" >/dev/null; then
-    #     "${___xrc_module_name}" "$@"
-    # else
-#         cat 2>/dev/null <<A
-# File not containing function: $___xrc_module_name
-# Exit without execute: $___xrc_module_name "$@"
-# A
-#         return 1
-    #     :
-    # fi
 }
 
 ___x_cmd_run_with_engine(){
     local engine="${1:?Please provide engine}";
     local filepath="${2:?Please provide filepath}";        shift 2
     case "$engine" in
-        xrc)        ___x_cmd_xrc_run "$filepath" "$@";;
-        source)     ___x_cmd_source_run "$filepath" "$@";;
+        xrc)        ___x_cmd_xrc_run "$filepath" "$@" ;;
+        source)     ___x_cmd_source_run "$filepath" "$@" ;;
         xsh)        ( ___x_cmd_source_run "$filepath" "$@"; ) ;;
         7z)         ___x_cmd_main 7z x "$filepath" "$@"      ;;
         *)          ___x_cmd_main "$engine" "$filepath" "$@" ;;
