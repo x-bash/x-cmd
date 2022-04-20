@@ -50,17 +50,29 @@ ___x_cmd_shell_exec(){
     fi
 }
 
-___x_cmd_readeval(){
+___x_cmd_reval(){
     local _
     read -r _ && eval "$_"      # Notice: If read encountering EOF, return 1
 }
 
-___x_cmd_readvar(){
-    local i
-    for i in "$@"; do
-        read -r "${i?}"
+
+___x_cmd_wreval(){  while ___x_cmd_reval; do    :;  done;   }
+
+___x_cmd_rl(){
+    local i=0
+    for arg in "$@"; do
+        (( i++ ))
+        case "$arg" in
+            --) shift "$i"; ___x_cmd_evex "$@"; break ;;
+            *)  read -r "${arg?}" || return 1 ;;
+        esac
     done
 }
+
+___x_cmd_wrl(){     while ___x_cmd_rl "$@"; do  :;  done;    }
+
+# x jo .a a b c | x readvar a b c
+
 
 # Section : help and advise.json
 ___x_cmd__x_cmd_advise_json(){
