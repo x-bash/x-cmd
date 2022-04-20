@@ -68,7 +68,7 @@ ___x_cmd_main(){
         sqlite)                                 shift;  ___x_cmd_static_build_file      sqlite3 sqlite3         "$@"    ;;
         cat)                                    shift;  ___x_cmd_static_build_help      bat bat                 "$@"    ;;
         bw)                                     shift;  ___x_cmd_static_build_file      bandwhich bandwhich     "$@"    ;;
-        7z|7za|7zr)                             shift;  ___x_cmd_static_build_file      p7zip 7za               "$@"    ;;
+        7z)                                     shift;  ___x_cmd_static_build_file      p7zip 7za               "$@"    ;;
 
         7zd)                                    shift;  ( xrc p7zip/v0   &&  p7zd "$@" ) ;;
 
