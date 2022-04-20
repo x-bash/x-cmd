@@ -51,7 +51,6 @@ ___x_cmd_main(){
         rl)                                     shift;  ___x_cmd_rl "$@"   ;;
         wrl)                                    shift;  ___x_cmd_wrl "$@"   ;;
         reval)                                  shift;  ___x_cmd_reval "$@"   ;;
-        wreval)                                 shift;  ___x_cmd_wreval "$@"   ;;
 
         js|node)                                shift;  ___x_cmd_node "$@" ;;
         python|py)                              shift;  ___x_cmd_python "$@" ;;
