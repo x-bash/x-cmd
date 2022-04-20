@@ -1,6 +1,5 @@
 
 ___x_cmd_arg_line(){
-
     local every="$1"; shift
     local IFS
     IFS="$(printf "\001")"
