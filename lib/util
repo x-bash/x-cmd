@@ -55,6 +55,13 @@ ___x_cmd_readeval(){
     read -r _ && eval "$_"      # Notice: If read encountering EOF, return 1
 }
 
+___x_cmd_readvar(){
+    local i
+    for i in "$@"; do
+        read -r "${i?}"
+    done
+}
+
 # Section : help and advise.json
 ___x_cmd__x_cmd_advise_json(){
     xrc cat x-cmd/lib/x.json
