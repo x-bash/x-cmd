@@ -58,14 +58,11 @@ ___x_cmd_main(){
 
         alias|unalias)                          shift;  "___x_cmd_$subcmd"  ___x_cmd "$@"   ;;
         jar|java|npm|npx|ts|    _ws|wsroot|ws|      args|margs|conjoin|con|rmrf|repeat|     which|search_path|_x_cmd_advise_json|       ls|ll   |ssl    | abspath \
-            | ps|du|sqlite|cat|bw )
+            | ps|du|sqlite|cat|bw | 7z|7zd )
                                                 shift;  "___x_cmd_$subcmd" "$@" ;;
 
         curl|jq|yq|tmux|git|tesseract|magick)   shift;  ___x_cmd_static_build_file     "$subcmd" "$subcmd"      "$@"    ;;
         nmap|ncat|nping|traceroute)             shift;  ___x_cmd_static_build_file      nmap "$subcmd"          "$@"    ;;
-
-        7z)                                     shift;  ___x_cmd_static_build_file      p7zip 7za               "$@"    ;;
-        7zd)                                    shift;  ( xrc p7zip/v0   &&  p7zd "$@" ) ;;
 
         sh|bash|zsh|fish|ksh|dash|ash)          shift;  ___x_cmd_shell_exec "$subcmd" "$@" ;;
 
