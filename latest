@@ -77,8 +77,6 @@ ___x_cmd_main(){
 
         run)                                    shift;  ___x_cmd_run_by_file "$@"       ;;
 
-        \.)                                     shift;  command code . ;;      # Test is a inner module.
-
         alias|unalias)                          shift;  "___x_cmd_$subcmd"  ___x_cmd "$@"   ;;
 
         readeval)                               shift;  ___x_cmd_readeval "$@" ;;
