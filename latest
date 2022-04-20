@@ -48,8 +48,8 @@ ___x_cmd_main(){
 
         arg1)                                   shift;  ___x_cmd_args 1 "$@"    ;;
         marg1)                                  shift;  ___x_cmd_margs 1 "$@"   ;;
+
         rl)                                     shift;  ___x_cmd_rl "$@"   ;;
-        wrl)                                    shift;  ___x_cmd_wrl "$@"   ;;
         reval)                                  shift;  ___x_cmd_reval "$@"   ;;
 
         js|node)                                shift;  ___x_cmd_node "$@" ;;
