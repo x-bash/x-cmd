@@ -38,7 +38,7 @@ ___x_cmd_args(){
     local code=""
     ___x_cmd_arg_line "$n" "$@" | while read -r line; do
         if [ -z "$code" ]; then
-            # code="$line"
+            code="$line"
             eval ___x_cmd_args_let "$line"
             continue
         fi
