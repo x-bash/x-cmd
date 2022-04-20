@@ -3,7 +3,7 @@
 
 ___x_cmd_log init x
 
-xrc:mod:lib x-cmd glob con alias args rmrf util lang ws exe
+xrc:mod:lib x-cmd glob con alias args rmrf util lang ws exe tomod
 
 # Section : x main function
 
@@ -57,17 +57,12 @@ ___x_cmd_main(){
         pip|pip3)                               shift;  ___x_cmd_pip3 "$@" ;;
 
         alias|unalias)                          shift;  "___x_cmd_$subcmd"  ___x_cmd "$@"   ;;
-        jar|java|npm|npx|ts|    _ws|wsroot|ws|      args|margs|conjoin|con|rmrf|repeat|     which|search_path|_x_cmd_advise_json|       ls|ll   |ssl    | abspath  )
+        jar|java|npm|npx|ts|    _ws|wsroot|ws|      args|margs|conjoin|con|rmrf|repeat|     which|search_path|_x_cmd_advise_json|       ls|ll   |ssl    | abspath \
+            | ps|du|sqlite|cat|bw )
                                                 shift;  "___x_cmd_$subcmd" "$@" ;;
 
         curl|jq|yq|tmux|git|tesseract|magick)   shift;  ___x_cmd_static_build_file     "$subcmd" "$subcmd"      "$@"    ;;
         nmap|ncat|nping|traceroute)             shift;  ___x_cmd_static_build_file      nmap "$subcmd"          "$@"    ;;
-
-        ps)                                     shift;  ___x_cmd_static_build_file      procs procs             "$@"    ;;
-        du)                                     shift;  ___x_cmd_static_build_file      dust dust               "$@"    ;;
-        sqlite)                                 shift;  ___x_cmd_static_build_file      sqlite3 sqlite3         "$@"    ;;
-        cat)                                    shift;  ___x_cmd_static_build_help      bat bat                 "$@"    ;;
-        bw)                                     shift;  ___x_cmd_static_build_file      bandwhich bandwhich     "$@"    ;;
 
         7z)                                     shift;  ___x_cmd_static_build_file      p7zip 7za               "$@"    ;;
         7zd)                                    shift;  ( xrc p7zip/v0   &&  p7zd "$@" ) ;;
