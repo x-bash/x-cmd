@@ -54,6 +54,7 @@ ___x_cmd_reval(){
     local _
     while read -r _; do
         eval "$_"      # Notice: If read encountering EOF, return 1
+        "$@"
     done
 }
 
