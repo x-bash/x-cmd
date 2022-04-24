@@ -59,21 +59,20 @@ ___x_cmd_reval(){
 }
 
 ___x_cmd___rl(){
-    ____X_CMD_RL_DISCONTINUE=
     local i=0
     local arg
     for arg in "$@"; do
         (( i++ ))
         case "$arg" in
-            --) shift "$i"; ___x_cmd_evex "$@"; return $? ;;
+            --) shift "$i"; ___x_cmd_evex "$@"; return 0 ;;
             *)  read -r "${arg?}" || return 1 ;;
         esac
     done
-    ____X_CMD_RL_DISCONTINUE=1
+    return 1
 }
 
 ___x_cmd_rl(){
-    while ___x_cmd___rl "$@" && [ -z "$____X_CMD_RL_DISCONTINUE" ]; do
+    while ___x_cmd___rl "$@"; do
         :;
     done
 }
