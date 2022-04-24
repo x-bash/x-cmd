@@ -57,7 +57,7 @@ ___x_cmd_reval(){
     done
 }
 
-___x_cmd_rl_(){
+___x_cmd___rl(){
     ____X_CMD_RL_DISCONTINUE=
     local i=0
     for arg in "$@"; do
@@ -71,7 +71,7 @@ ___x_cmd_rl_(){
 }
 
 ___x_cmd_rl(){
-    while ___x_cmd_rl_ "$@" && [ -z "$____X_CMD_RL_DISCONTINUE" ]; do
+    while ___x_cmd___rl "$@" && [ -z "$____X_CMD_RL_DISCONTINUE" ]; do
         :;
     done
 }
