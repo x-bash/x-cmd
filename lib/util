@@ -61,6 +61,7 @@ ___x_cmd_reval(){
 ___x_cmd___rl(){
     ____X_CMD_RL_DISCONTINUE=
     local i=0
+    local arg
     for arg in "$@"; do
         (( i++ ))
         case "$arg" in
@@ -76,6 +77,30 @@ ___x_cmd_rl(){
         :;
     done
 }
+
+___x_cmd_rl(){
+    local code="read -r ${1:?At least provide one argument}"; shift
+    local arg
+    for arg in "$@"; do
+        case "$arg" in
+            --)
+                shift
+                break ;;
+            *)
+                code="$code && read -r $arg"
+                shift ;;
+        esac
+    done
+
+    if [ "$#" -eq 0 ]; then
+        eval "$code"
+    else
+        while eval "$code"; do
+            ___x_cmd_evex "$@"
+        done
+    fi
+}
+
 
 # x jo .a a b c | x readvar a b c
 
