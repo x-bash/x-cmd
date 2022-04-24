@@ -59,13 +59,15 @@ ___x_cmd_reval(){
 }
 
 ___x_cmd___rl(){
-    local i=0
-    local arg
-    for arg in "$@"; do
-        (( i++ ))
-        case "$arg" in
-            --) shift "$i"; ___x_cmd_evex "$@"; return 0 ;;
-            *)  read -r "${arg?}" || return 1 ;;
+    while [ $# -gt 0 ]; do
+        case "$1" in
+            --)
+                shift
+                ___x_cmd_evex "$@";
+                return 0  ;;
+            *)
+                read -r "${arg?}" || return 1;
+                shift ;;
         esac
     done
     return 1
@@ -79,14 +81,13 @@ ___x_cmd_rl(){
 
 ___x_cmd_rl(){
     local code="read -r ${1:?At least provide one argument}"; shift
-    local arg
-    for arg in "$@"; do
-        case "$arg" in
+    while [ "$#" -gt 0 ]; do
+        case "$1" in
             --)
                 shift
                 break ;;
             *)
-                code="$code && read -r $arg"
+                code="$code && read -r $1"
                 shift ;;
         esac
     done
