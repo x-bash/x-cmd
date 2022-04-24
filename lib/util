@@ -58,27 +58,6 @@ ___x_cmd_reval(){
     done
 }
 
-___x_cmd___rl(){
-    while [ $# -gt 0 ]; do
-        case "$1" in
-            --)
-                shift
-                ___x_cmd_evex "$@";
-                return 0  ;;
-            *)
-                read -r "${arg?}" || return 1;
-                shift ;;
-        esac
-    done
-    return 1
-}
-
-___x_cmd_rl(){
-    while ___x_cmd___rl "$@"; do
-        :;
-    done
-}
-
 ___x_cmd_rl(){
     local code="read -r ${1:?At least provide one argument}"; shift
     while [ "$#" -gt 0 ]; do
@@ -100,10 +79,6 @@ ___x_cmd_rl(){
         done
     fi
 }
-
-
-# x jo .a a b c | x readvar a b c
-
 
 # Section : help and advise.json
 ___x_cmd__x_cmd_advise_json(){
