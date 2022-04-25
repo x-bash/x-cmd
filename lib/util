@@ -100,7 +100,6 @@ ___x_cmd_rml___readone(){
         if [ "$line" = "$___X_CMD_MULTIPLELINE_SEP" ]; then
             break
         fi
-        echo "ok $ok $line $f $res"
 
         if [ -z "$res" ]; then  res="$line"
         else                    res="$res
