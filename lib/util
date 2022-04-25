@@ -83,20 +83,14 @@ ___x_cmd_rl(){
 }
 
 
+# . util; ___x_cmd_wml "$t" cde  | { ___x_cmd_rml c d; echo "|$c|"; echo "$d"; }
+
 ___X_CMD_MULTIPLELINE_SEP="${___X_CMD_UNSEENCHAR_003}${___X_CMD_UNSEENCHAR_002}${___X_CMD_UNSEENCHAR_005}"
 ___x_cmd_rml___readone(){
     local res
     local line
-    local ok=-1
-    local f=0           # tricky
     while :; do
-        read -r line;   ok=$?
-        case "$ok" in   # tricky
-            0)      ;;
-            1)      [ $f -eq 0 ] && return ;;
-            *)      return $ok
-        esac
-        f=1
+        read -r line || return $?
         if [ "$line" = "$___X_CMD_MULTIPLELINE_SEP" ]; then
             eval "$1=\"\$res\""
             return 0
