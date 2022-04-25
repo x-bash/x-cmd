@@ -97,12 +97,15 @@ ___x_cmd_rml___readone(){
             *)      return $ok
         esac
         f=1
-        [ "$ok" -gt 1 ] && return "$ok"
         if [ "$line" = "$___X_CMD_MULTIPLELINE_SEP" ]; then
             break
         fi
-        res="${res:+"$res
-${line}"}"
+        echo "ok $ok $line $f $res"
+
+        if [ -z "$res" ]; then  res="$line"
+        else                    res="$res
+$line"
+        fi
     done
 
     eval "$1=\"\$res\""
@@ -135,7 +138,10 @@ ___x_cmd_wml(){
         cat
         printf "\n%s\n" "$___X_CMD_MULTIPLELINE_SEP"
     else
-        printf "%s\n%s\n" "$1" "$___X_CMD_MULTIPLELINE_SEP"
+        while [ $# -gt 0 ]; do
+            printf "%s\n%s\n" "$1" "$___X_CMD_MULTIPLELINE_SEP"
+            shift
+        done
     fi
 }
 
