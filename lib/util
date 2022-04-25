@@ -83,7 +83,7 @@ ___x_cmd_rl(){
 }
 
 
-# . util; ___x_cmd_wml "$t" cde  | { ___x_cmd_rml c d; echo "|$c|"; echo "$d"; }
+# testcase: . util; ___x_cmd_wml "$t" cde  | { ___x_cmd_rml c d; echo "|$c|"; echo "$d"; }
 
 ___X_CMD_MULTIPLELINE_SEP="${___X_CMD_UNSEENCHAR_003}${___X_CMD_UNSEENCHAR_002}${___X_CMD_UNSEENCHAR_005}"
 ___x_cmd_rml___readone(){
