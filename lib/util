@@ -60,7 +60,7 @@ ___x_cmd_reval(){
 
 
 # f(){ seq "${1:-1000}" | while read -r aaa; do  :; done   }; time f; 1ms = 100 read
-___x_cmd_rl(){
+___x_cmd_readl(){
     local code="read -r ${1:?At least provide one argument}"; shift
     while [ "$#" -gt 0 ]; do
         case "$1" in
