@@ -7,7 +7,7 @@ ___x_cmd_trace(){
     eval [ "\${___X_CMD_LOG__${new_trace_name%%/*}:-2}" -le 1 ] || return
 
     if [ -z "$old_trace_name" ] || [ "${1#"$old_trace_name"}" != "$1" ]; then
-        x:info "TRACE: [${old_trace_name:-/}] >>> [${1#"$old_trace_name"}] "
+        x:info "TRACE: [/${old_trace_name:-/}] >>> [${1#"$old_trace_name"/}] "
         return
     fi
 
