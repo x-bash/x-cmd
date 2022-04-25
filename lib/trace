@@ -1,0 +1,46 @@
+
+___x_cmd_trace(){
+    if [ -z "$___X_CMD_TRACE_LINE_LOCAL" ] || [ "${1#"$___X_CMD_TRACE_LINE_LOCAL"}" != "$1" ]; then
+        x:info "TRACE: [${___X_CMD_TRACE_LINE_LOCAL:-/}] >>> [${1#$___X_CMD_TRACE_LINE_LOCAL}] "
+        ___X_CMD_TRACE_LINE_LOCAL="$1"
+        return
+    fi
+
+    local i
+    local common
+    local rest="${___X_CMD_TRACE_LINE_LOCAL}"
+    local e
+    local IFS="/"
+    for i in ${1:?Provide New Trace}; do
+        e="${rest#"$i"}"
+        [ "${e}" != "$rest" ] || break
+        common="$common/${i}"
+        rest="${e#/}"
+    done
+
+    common="${common#/}"
+
+    ___X_CMD_TRACE_LINE_LOCAL="$1"
+    x:info "TRACE: [${common}]: [$rest => ${1#"$common/"}]"
+}
+
+alias x:trace='local ___X_CMD_TRACE_LINE_LOCAL="${___X_CMD_TRACE_LINE_LOCAL}" 2>/dev/null; ___x_cmd_trace'
+
+
+# f_a_c(){
+#     x:trace f/a/c
+#     echo "$1"
+# }
+
+# f_a_b(){
+#     x:trace f/a/b
+#     echo "$1"
+#     f_a_c 111
+# }
+
+# f_a(){
+#     x:trace f/a
+#     f_a_b 1
+# }
+
+# f_a
