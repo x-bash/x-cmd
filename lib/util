@@ -98,7 +98,8 @@ ___x_cmd_rml___readone(){
         esac
         f=1
         if [ "$line" = "$___X_CMD_MULTIPLELINE_SEP" ]; then
-            break
+            eval "$1=\"\$res\""
+            return 0
         fi
 
         if [ -z "$res" ]; then  res="$line"
@@ -106,8 +107,6 @@ ___x_cmd_rml___readone(){
 $line"
         fi
     done
-
-    eval "$1=\"\$res\""
 }
 
 ___x_cmd_rml(){
