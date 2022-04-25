@@ -37,6 +37,7 @@ ___x_cmd_trace_debugtrig_stop(){
     ___X_CMD_TRACE_DEBUGTRIG=
 }
 
+___X_CMD_TRACE_DEBUGTRIG=1
 alias x:trace:dbgtrig:stop=___x_cmd_trace_debugtrig
 alias x:trace:dbgtrig=___x_cmd_trace_debugtrig_stop
 
