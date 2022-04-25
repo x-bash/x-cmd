@@ -1,17 +1,22 @@
 
 ___x_cmd_trace(){
-    if [ -z "$___X_CMD_TRACE_LINE_LOCAL" ] || [ "${1#"$___X_CMD_TRACE_LINE_LOCAL"}" != "$1" ]; then
-        x:info "TRACE: [${___X_CMD_TRACE_LINE_LOCAL:-/}] >>> [${1#$___X_CMD_TRACE_LINE_LOCAL}] "
-        ___X_CMD_TRACE_LINE_LOCAL="$1"
+    local old_trace_name="${___X_CMD_TRACE_LINE_LOCAL}"
+    ___X_CMD_TRACE_LINE_LOCAL="$1"
+
+    local new_trace_name="${1:?Provide New Trace}"
+    eval [ "\$___X_CMD_LOG__${new_trace_name%%/*}" -le 1 ] || return
+
+    if [ -z "$old_trace_name" ] || [ "${1#"$old_trace_name"}" != "$1" ]; then
+        x:info "TRACE: [${old_trace_name:-/}] >>> [${1#"$old_trace_name"}] "
         return
     fi
 
     local i
     local common
-    local rest="${___X_CMD_TRACE_LINE_LOCAL}"
+    local rest="${old_trace_name}"
     local e
     local IFS="/"
-    for i in ${1:?Provide New Trace}; do
+    for i in ${1}; do
         e="${rest#"$i"}"
         [ "${e}" != "$rest" ] || break
         common="$common/${i}"
@@ -19,8 +24,6 @@ ___x_cmd_trace(){
     done
 
     common="${common#/}"
-
-    ___X_CMD_TRACE_LINE_LOCAL="$1"
     x:info "TRACE: [${common}]: [$rest => ${1#"$common/"}]"
 }
 
