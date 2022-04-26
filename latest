@@ -23,7 +23,7 @@ ___x_cmd_main_otherwise(){
         case "$___X_CMD_WHICH_ONE_RESOURCE_TYPE" in
             workspace)      ___x_cmd_exe_workspace  "$p" "$@" ;;
             local)          ___x_cmd_run_by_file    "$p" "$@" ;;
-            hub)            ___x_cmd_run_by_file    "$p" "$@" ;;
+            hub|http)       ___x_cmd_run_by_file    "$p" "$@" ;;
             official)       ___x_cmd_run_by_file    "$p" "$@" ;;
         esac
         code=$?;                                    x:debug "Resource Executed: [type=$___X_CMD_WHICH_ONE_RESOURCE_TYPE] [file=$p]"
