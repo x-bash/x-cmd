@@ -16,6 +16,8 @@ ___x_cmd_main_otherwise(){
     fi
 
     # static build: update the static-build files
+    local ___X_CMD_NO_LOCAL=1
+
     local ___X_CMD_WHICH_ONE_RESULT
     local ___X_CMD_WHICH_ONE_RESOURCE_TYPE
     if ___x_cmd_which_one "$subcmd"; then
