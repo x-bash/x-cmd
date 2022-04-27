@@ -3,38 +3,38 @@ ___x_cmd_args(){
     local n="${1:?Provide N}"; shift
 
     local i
-    local code='___x_cmd_args___run_inner(){ eval '
+    local code_func='___x_cmd_args___run_inner(){ eval '
     for ((i=1; i<=$#; ++i)); do
         eval "local _$i; _$i=\"\$$i\""
-        code="$code \"\$_$i\" "
+        code_func="$code_func \"\$_$i\" "
     done
-    code="$code ; }"
-    eval "$code"
+    code_func="$code_func ; }"
+    eval "$code_func"
 
-    local readcode
-    local invoke_code="___x_cmd_args___run_inner \"\$_a1\" "
-    local reset_code="_a1=;"
+    local code_read
+    local code_invoke="___x_cmd_args___run_inner \"\$_a1\" "
+    local code_reset="_a1=;"
     local _a1
     for ((i=2; i<=n; ++i)); do
         eval "local _a$i"
-        readcode="$readcode && read -r _a$i"
-        invoke_code="$invoke_code \"\$_a$i\""
-        reset_code="$reset_code _a$i=;"
+        code_read="$code_read && read -r _a$i"
+        code_invoke="$code_invoke \"\$_a$i\""
+        code_reset="$code_reset _a$i=;"
     done
-    readcode="${readcode# && }"
+    code_read="${code_read# && }"
 
-    # echo "$code"
-    # echo "$readcode"
-    # echo "$invoke_code"
+    # echo "$code_func"
+    # echo "$code_read"
+    # echo "$code_invoke"
 
-    local code=$?
+    local errcode
     while read -r _a1; do
-        eval "$readcode"
-        code=$?
-        case "$code" in
-            0) eval "$invoke_code"; eval "$reset_code"; continue ;;
-            1) eval "$invoke_code"; return 0 ;;
-            *) return "$code"
+        eval "$code_read"
+        errcode=$?
+        case "$errcode" in
+            0) eval "$code_invoke"; eval "$code_reset"; continue ;;
+            1) eval "$code_invoke"; return 0 ;;
+            *) return "$errcode"
         esac
     done
 }
