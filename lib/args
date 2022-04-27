@@ -3,7 +3,7 @@ ___x_cmd_args(){
     local n="${1:?Provide N}"; shift
 
     local i
-    local code_func='___x_cmd_args___run_inner(){ eval '
+    local code_func='___x_cmd_args___run_inner(){ ___x_cmd_eval '
     for ((i=1; i<=$#; ++i)); do
         eval "local _$i; _$i=\"\$$i\""
         code_func="$code_func \"\$_$i\" "
