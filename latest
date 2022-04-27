@@ -47,9 +47,6 @@ ___x_cmd_main(){
         *:=)                                    shift;  ___x_cmd_varset "${subcmd%:=}" "$@" ;;
         *=)                                     shift;  ___x_cmd_varset_without_end "${subcmd%=}" "$@" ;;
 
-        arg1)                                   shift;  ___x_cmd_args 1 "$@"    ;;
-        marg1)                                  shift;  ___x_cmd_margs 1 "$@"   ;;
-
         eval)                                   shift;  ___x_cmd_eval "$@"      ;;
         readl|rl)                               shift;  ___x_cmd_readl "$@"     ;;
         readeval|reval)                         shift;  ___x_cmd_reval "$@"     ;;
@@ -61,7 +58,7 @@ ___x_cmd_main(){
         pip|pip3)                               shift;  ___x_cmd_pip3 "$@"      ;;
 
         alias|unalias)                          shift;  "___x_cmd_$subcmd"  ___x_cmd "$@"   ;;
-        jar|java|npm|npx|ts|    _ws|wsroot|ws|      args|margs|conjoin|con|rmrf|repeat|     which|search_path|_x_cmd_advise_json|       ls|ll   |ssl    | abspath \
+        jar|java|npm|npx|ts|    _ws|wsroot|ws|      arg1|args|conjoin|con|rmrf|repeat|     which|search_path|_x_cmd_advise_json|       ls|ll   |ssl    | abspath \
             | ps|du|sqlite|cat|bw | 7z|7zd )
                                                 shift;  "___x_cmd_$subcmd" "$@" ;;
 
