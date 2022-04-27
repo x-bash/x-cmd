@@ -50,14 +50,15 @@ ___x_cmd_main(){
         arg1)                                   shift;  ___x_cmd_args 1 "$@"    ;;
         marg1)                                  shift;  ___x_cmd_margs 1 "$@"   ;;
 
-        readl|rl)                               shift;  ___x_cmd_readl "$@"   ;;
-        readeval|reval)                         shift;  ___x_cmd_reval "$@"   ;;
-        readml)                                 shift;  ___x_cmd_readml "$@"   ;;
+        readl|rl)                               shift;  ___x_cmd_readl "$@"     ;;
+        eval)                                   shift;  ___x_cmd_eval "$@"      ;;
+        readeval|reval)                         shift;  ___x_cmd_reval "$@"     ;;
+        readml)                                 shift;  ___x_cmd_readml "$@"    ;;
         writeml)                                shift;  ___x_cmd_writeml "$@"   ;;
 
-        js|node)                                shift;  ___x_cmd_node "$@" ;;
-        python|py)                              shift;  ___x_cmd_python "$@" ;;
-        pip|pip3)                               shift;  ___x_cmd_pip3 "$@" ;;
+        js|node)                                shift;  ___x_cmd_node "$@"      ;;
+        python|py)                              shift;  ___x_cmd_python "$@"    ;;
+        pip|pip3)                               shift;  ___x_cmd_pip3 "$@"      ;;
 
         alias|unalias)                          shift;  "___x_cmd_$subcmd"  ___x_cmd "$@"   ;;
         jar|java|npm|npx|ts|    _ws|wsroot|ws|      args|margs|conjoin|con|rmrf|repeat|     which|search_path|_x_cmd_advise_json|       ls|ll   |ssl    | abspath \
