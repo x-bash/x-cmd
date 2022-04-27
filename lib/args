@@ -39,7 +39,7 @@ ___x_cmd_args(){
     done
 }
 
-___x_cmd_arg1(){
+___x_cmd_arg1___(){
     local i
     local code_func='___x_cmd_args___run_inner(){ eval '
     for ((i=1; i<=$#; ++i)); do
@@ -52,14 +52,8 @@ ___x_cmd_arg1(){
     local code_reset="_a1=;"
     # echo "$code_func"
 
-    local errcode
     while read -r _a1; do
-        errcode=$?
-        case "$errcode" in
-            0) ___x_cmd_args___run_inner "$_a1"; continue ;;
-            1) ___x_cmd_args___run_inner "$_a1"; return 0 ;;
-            *) return "$errcode"
-        esac
+        ___x_cmd_args___run_inner "$_a1"
     done
 }
 
