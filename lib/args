@@ -39,6 +39,24 @@ ___x_cmd_args(){
     done
 }
 
+___x_cmd_arg1(){
+    local i
+    local code_func='eval '
+    for ((i=1; i<=$#; ++i)); do
+        eval "local _$i; _$i=\"\$$i\""
+        code_func="$code_func \"\$_$i\" "
+    done
+
+    local code_reset="_a1=;"
+    # echo "$code_func"
+
+    while read -r _a1; do
+        set -- "$_a1"
+        $code_func
+    done
+}
+
+
 ___x_cmd_arg1___(){
     local i
     local code_func='___x_cmd_args___run_inner(){ eval '
