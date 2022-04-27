@@ -32,7 +32,7 @@ ___x_cmd_args(){
         eval "$code_read"
         errcode=$?
         case "$errcode" in
-            0) eval "$code_invoke"; eval "$code_reset"; continue ;;
+            0) eval "$code_invoke; $code_reset "; continue ;;
             1) eval "$code_invoke"; return 0 ;;
             *) return "$errcode"
         esac
