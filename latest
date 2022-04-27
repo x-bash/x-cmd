@@ -50,8 +50,8 @@ ___x_cmd_main(){
         arg1)                                   shift;  ___x_cmd_args 1 "$@"    ;;
         marg1)                                  shift;  ___x_cmd_margs 1 "$@"   ;;
 
-        readl|rl)                               shift;  ___x_cmd_readl "$@"     ;;
         eval)                                   shift;  ___x_cmd_eval "$@"      ;;
+        readl|rl)                               shift;  ___x_cmd_readl "$@"     ;;
         readeval|reval)                         shift;  ___x_cmd_reval "$@"     ;;
         readml)                                 shift;  ___x_cmd_readml "$@"    ;;
         writeml)                                shift;  ___x_cmd_writeml "$@"   ;;
