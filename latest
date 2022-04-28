@@ -75,7 +75,7 @@ ___x_cmd_main(){
 
         z|uz)                                           ( xrc zuz && ___x_cmd_zuz "$@" ) ;;   # zl)  ( xrc zuz && ___x_cmd_zuz_ls "$@"        ) ;;       # Using ls to replace
 
-        wsroot)                                         xrc ws/latest && ___x_cmd_wsroot ;;
+        wsroot)                                         x ws root ;;
         ""|help)                                        ___x_cmd_x_cmd_help ;;
 
         *)                                              ___x_cmd_main_otherwise "$@" ;;
