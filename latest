@@ -25,9 +25,9 @@ ___x_cmd_main_otherwise(){
         x:debug "Executing Resource: [type=$___X_CMD_WHICH_ONE_RESOURCE_TYPE] [file=$___X_CMD_WHICH_ONE_RESULT]"
         case "$___X_CMD_WHICH_ONE_RESOURCE_TYPE" in
             # workspace)      ___x_cmd_exe_workspace  "$___X_CMD_WHICH_ONE_RESULT" "$@" ;;
-            local)          ___x_cmd_run_by_file    "$___X_CMD_WHICH_ONE_RESULT" "$@" ;;
-            hub|http)       ___x_cmd_run_by_file    "$___X_CMD_WHICH_ONE_RESULT" "$@" ;;
-            official)       ___x_cmd_run_by_file    "$___X_CMD_WHICH_ONE_RESULT" "$@" ;;
+            local)          ___x_cmd_run_by_file                "$___X_CMD_WHICH_ONE_RESULT" "$@" ;;
+            hub|http)       ___x_cmd_run_by_file                "$___X_CMD_WHICH_ONE_RESULT" "$@" ;;
+            official)       ___x_cmd___run_with_engine xrc      "$___X_CMD_WHICH_ONE_RESULT" "$@" ;;
         esac
         ___x_cmd_main_otherwise_code=$?
         x:debug "Resource Executed: [type=$___X_CMD_WHICH_ONE_RESOURCE_TYPE] [file=$___X_CMD_WHICH_ONE_RESULT] [code=$___x_cmd_main_otherwise_code]"
