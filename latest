@@ -29,7 +29,7 @@ ___x_cmd_main_otherwise(){
             official)       ___x_cmd_run_by_file    "$___X_CMD_WHICH_ONE_RESULT" "$@" ;;
         esac
         ___x_cmd_main_otherwise_code=$?
-        x:debug "Resource Executed: [type=$___X_CMD_WHICH_ONE_RESOURCE_TYPE] [file=$___X_CMD_WHICH_ONE_RESULT]"
+        x:debug "Resource Executed: [type=$___X_CMD_WHICH_ONE_RESOURCE_TYPE] [file=$___X_CMD_WHICH_ONE_RESULT] [code=$___x_cmd_main_otherwise_code]"
         return "$___x_cmd_main_otherwise_code"
     else
         ___x_cmd_main_otherwise_code=$?
