@@ -9,11 +9,12 @@ ___x_cmd_main_otherwise(){
     local subcmd="$1";  shift
 
     local ___x_cmd_main_otherwise_code
-    ___x_cmd_alias_exec ___x_cmd "$subcmd" "$@"
-    ___x_cmd_main_otherwise_code=$?
-    if [ -n "$___X_CMD_ALIAS_EXEC_EXIST" ]; then
-        return $?
-    fi
+
+    # ___x_cmd_alias_exec ___x_cmd "$subcmd" "$@"
+    # ___x_cmd_main_otherwise_code=$?
+    # if [ -n "$___X_CMD_ALIAS_EXEC_EXIST" ]; then
+    #     return $?
+    # fi
 
     # static build: update the static-build files
     local ___X_CMD_NO_LOCAL=1
