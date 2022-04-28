@@ -28,7 +28,8 @@ ___x_cmd_main_otherwise(){
             hub|http)       ___x_cmd_run_by_file    "$___X_CMD_WHICH_ONE_RESULT" "$@" ;;
             official)       ___x_cmd_run_by_file    "$___X_CMD_WHICH_ONE_RESULT" "$@" ;;
         esac
-        ___x_cmd_main_otherwise_code=$?;                                    x:debug "Resource Executed: [type=$___X_CMD_WHICH_ONE_RESOURCE_TYPE] [file=$___X_CMD_WHICH_ONE_RESULT]"
+        ___x_cmd_main_otherwise_code=$?
+        x:debug "Resource Executed: [type=$___X_CMD_WHICH_ONE_RESOURCE_TYPE] [file=$___X_CMD_WHICH_ONE_RESULT]"
         return "$___x_cmd_main_otherwise_code"
     else
         ___x_cmd_main_otherwise_code=$?
