@@ -31,7 +31,8 @@ ___x_cmd_main_otherwise(){
         ___x_cmd_main_otherwise_code=$?;                                    x:debug "Resource Executed: [type=$___X_CMD_WHICH_ONE_RESOURCE_TYPE] [file=$___X_CMD_WHICH_ONE_RESULT]"
         return "$___x_cmd_main_otherwise_code"
     else
-        printf "%s" "Error" >&2
+        ___x_cmd_main_otherwise_code=$?
+        x:debug "___x_cmd_main_otherwise(): ___x_cmd_which_one fail [code: ${___x_cmd_main_otherwise_code}]"
         return 1
     fi
 }
