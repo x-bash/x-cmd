@@ -58,8 +58,6 @@ ___x_cmd_main(){        # x:trace x     # TODO: will effect x log
         python|py)                              shift;  ___x_cmd_python "$@"    ;;
         pip|pip3)                               shift;  ___x_cmd_pip3 "$@"      ;;
 
-        alias|unalias)                          shift;  "___x_cmd_$subcmd"  ___x_cmd "$@"   ;;
-
         curl|jq|yq|tmux|git|tesseract|magick)   shift;  ___x_cmd_static_build_file     "$subcmd" "$subcmd"      "$@"    ;;
         nmap|ncat|nping|traceroute)             shift;  ___x_cmd_static_build_file      nmap "$subcmd"          "$@"    ;;
 
