@@ -196,7 +196,7 @@ ___x_cmd_case(){
 }
 
 ___x_cmd_ifelse_(){
-    local condition="${1:?Provide function}"; shift
+    local condition="${1:?Provide function}";
     if eval "$condition"; then
         case "$2" in
             =*)     ___X_CMD_IFELSE_RESULT="$(eval "${2#=}")" ;;
