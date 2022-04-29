@@ -2,9 +2,18 @@
 
 ___x_cmd_path(){
     case "$1" in
-        shift|unshift|push|pop|ls)     shift; "___x_cmd_path_$1" "$@" ;;
+        shift|unshift|push|pop|ls)     local op="$1"; shift; "___x_cmd_path_$op" "$@" ;;
         "")                            ___x_cmd_path_ls "$@"
     esac
+}
+
+
+# u for move up
+# d for move down
+# w for command which
+# File Explorer at the right side. Show the binary folder
+___x_cmd_path_lsapp(){
+    printf "%s\n" "$PATH" | tr ':' '\n'
 }
 
 ___x_cmd_path_ls(){
