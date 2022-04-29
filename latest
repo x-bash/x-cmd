@@ -50,14 +50,15 @@ ___x_cmd_main(){
     # x:trace x     # TODO: will effect x log
     local subcmd="$1"
     case "$subcmd" in
-        log)                                    shift;  ___x_cmd_log "$@" ;;
+        log)                                    shift;  ___x_cmd_log "$@" ;;        # For efficiency
 
         *:=)                                    shift;  ___x_cmd_varset "${subcmd%:=}" "$@" ;;
         *=)                                     shift;  ___x_cmd_varset_without_end "${subcmd%=}" "$@" ;;
 
-        eval)                                   shift;  ___x_cmd_eval "$@"      ;;
         readl|rl)                               shift;  ___x_cmd_readl "$@"     ;;
         readeval|reval)                         shift;  ___x_cmd_reval "$@"     ;;
+
+        eval)                                   shift;  ___x_cmd_eval "$@"      ;;
         readml)                                 shift;  ___x_cmd_readml "$@"    ;;
         writeml)                                shift;  ___x_cmd_writeml "$@"   ;;
 
