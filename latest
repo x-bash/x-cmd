@@ -78,7 +78,7 @@ ___x_cmd_main(){
         wsroot)                                         x ws root ;;
 
         update|upgrade|clear|reinstall)         shift;  xrc update "$@" ;;
-        ""|help)                                        ___x_cmd_x_cmd_help ;;
+        ""|help|-H|--help|-h)                           ___x_cmd_x_cmd_help ;;
 
         *)                                              ___x_cmd_main_otherwise "$@" ;;
     esac
