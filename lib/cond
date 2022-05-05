@@ -1,0 +1,43 @@
+
+# Section: condition
+___x_cmd_case_(){
+    local val="${1:?Provide value}"; shift
+    local arg
+    for arg in "$@"; do
+        ___X_CMD_CASE_RESULT="${arg#$val:}"
+        [ "$___X_CMD_CASE_RESULT" == "$arg" ] || return 0
+
+        ___X_CMD_CASE_RESULT="${arg#$val=}"
+        [ "$___X_CMD_CASE_RESULT" == "$arg" ] || { ___X_CMD_CASE_RESULT="$(eval "$___X_CMD_CASE_RESULT")"; return 0; }
+    done
+    return 1
+}
+
+___x_cmd_case(){
+    ___x_cmd_case_ "$@" && printf "%s\n" "$___X_CMD_CASE_RESULT"
+}
+
+# x ifelse '[ $a = a ]' %a=1 %a=2
+# x ifelse '[ $a = 1 ]' cmd_result=1 cmd_result=2
+# x cmd_result= '[ $a = 1 ]' 1 2
+
+___x_cmd_ifelse_(){
+    local condition="${1:?Provide function}";
+    if eval "$condition"; then
+        case "$2" in
+            =*)     ___X_CMD_IFELSE_RESULT="$(eval "${2#=}")" ;;
+            *)      ___X_CMD_IFELSE_RESULT="$2" ;;
+        esac
+    else
+        case "$3" in
+            =*)     ___X_CMD_IFELSE_RESULT="$(eval "${3#=}")" ;;
+            *)      ___X_CMD_IFELSE_RESULT="$3" ;;
+        esac
+    fi
+}
+
+___x_cmd_ifelse(){
+    ___x_cmd_ifelse_ "$@" && printf "%s\n" "$___X_CMD_IFELSE_RESULT"
+}
+
+# EndSection
