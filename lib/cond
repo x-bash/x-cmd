@@ -21,7 +21,7 @@ ___x_cmd_case(){
 # x cmd_result=case linux linux=Linux win=Windows darwin=Macos
 ___x_cmd_eqcase(){
     local var="${1%=case}"
-    local val="${1:?Provide value}"; shift
+    local val="${2:?Provide value}"; shift 2
     local arg
     for arg in "$@"; do
         arg="${arg#$val=}"
