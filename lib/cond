@@ -17,9 +17,24 @@ ___x_cmd_case(){
     ___x_cmd_case_ "$@" && printf "%s\n" "$___X_CMD_CASE_RESULT"
 }
 
+# x case linux "linux=f" win="> handle " darwin="> do something"
+# x cmd_result=case linux linux=Linux win=Windows darwin=Macos
+___x_cmd_eqcase(){
+    local var="${1%=case}"
+    local val="${1:?Provide value}"; shift
+    local arg
+    for arg in "$@"; do
+        arg="${arg#$val=}"
+        if [ "$arg" != "$val" ]; then
+            eval "$var=\"\$arg\""
+            return 0
+        fi
+    done
+    return 1
+}
+
 # x ifelse '[ $a = a ]' %a=1 %a=2
 # x ifelse '[ $a = 1 ]' cmd_result=1 cmd_result=2
-# x cmd_result= '[ $a = 1 ]' 1 2
 
 ___x_cmd_ifelse_(){
     local condition="${1:?Provide function}";
@@ -38,6 +53,14 @@ ___x_cmd_ifelse_(){
 
 ___x_cmd_ifelse(){
     ___x_cmd_ifelse_ "$@" && printf "%s\n" "$___X_CMD_IFELSE_RESULT"
+}
+
+# x cmd_result=if '[ $a = 1 ]' 1 2
+___x_cmd_eq_ifelse(){
+    local var="${1%=if}"
+    if ___x_cmd_eval "$2"; then     eval "$var=\"\$3\""
+    else                            eval "$var=\"\$4\""
+    fi
 }
 
 # EndSection
