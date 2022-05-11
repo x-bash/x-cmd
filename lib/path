@@ -46,7 +46,7 @@ ___x_cmd_path_pop(){
 }
 
 
-___x_cmd_path_remove_(){
+___x_cmd_path_rm_(){
     local dir="${1:?Provide a directory}"
     _1=":$PATH:"
     local p="${_1#*:"$dir":}"
@@ -56,23 +56,23 @@ ___x_cmd_path_remove_(){
     done
 }
 
-___x_cmd_path_remove(){
+___x_cmd_path_rm(){
     local _1
-    ___x_cmd_path_remove_ "$@"
+    ___x_cmd_path_rm_ "$@"
     PATH="${_1#:}"
     PATH="${PATH%:}"
 }
 
 ___x_cmd_path_up_or_unshift(){
     local _1
-    ___x_cmd_path_remove_ "$@"
+    ___x_cmd_path_rm_ "$@"
     _1="${dir}${_1}"
     PATH="${_1%:}"
 }
 
 ___x_cmd_path_down_or_push(){
     local _1
-    ___x_cmd_path_remove_ "$@"
+    ___x_cmd_path_rm_ "$@"
     _1="${_1}${dir}"
     PATH="${_1#:}"
 }
