@@ -11,11 +11,15 @@ ___x_cmd_path(){
 # u for move up, d for move down, w for command which
 # File Explorer at the right side. Show the binary list in the folder
 ___x_cmd_path_lsapp(){
-    printf "%s\n" "$PATH" | tr ':' '\n'
+    printf "%s\n" "$PATH" | tr ':' '\n' | cat -n
 }
 
 ___x_cmd_path_ls(){
-    printf "%s\n" "$PATH" | tr ':' '\n'
+    if [ -t 1 ]; then
+        ___x_cmd_path_lsapp "$@"
+    else
+        printf "%s\n" "$PATH" | tr ':' '\n'
+    fi
 }
 
 ___x_cmd_path_shift(){
@@ -52,7 +56,7 @@ ___x_cmd_path_rm_(){
     local dir="${1:?Provide a directory}"
     _1=":$PATH:"
     local p="${_1#*:"$dir":}"
-    while [ "$_1" = "$p" ]; do
+    while [ "$_1" != "$p" ]; do
         _1="${_1%%:$dir:*}:$p"
         p="${_1#*:"$dir":}"
     done
