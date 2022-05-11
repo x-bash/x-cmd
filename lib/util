@@ -173,6 +173,15 @@ ___x_cmd_sleep(){
     sleep "$s"
 }
 
+___x_cmd_shudo(){
+    local ___CODE="
+. $___X_CMD_ROOT/.boot/boot;
+"
+    local IFS=" "
+    sudo "${SHELL}" -c "$___CODE
+$*"
+}
+
 # Section : help and advise.json
 ___x_cmd__x_cmd_advise_json(){
     xrc cat x-cmd/lib/x.json
