@@ -93,3 +93,14 @@ ___x_cmd_path_add_existed_folder(){
 
     ___x_cmd_path_up_or_unshift "$@"
 }
+
+___x_cmd_path_uniq(){
+    local IFS=:
+    local newpath=:
+    local p
+    for p in $PATH; do
+        [ "$newpath" != "${newpath#:$p:}" ] || newpath="${newpath}${p}:"
+    done
+    PATH="${newpath#:}"
+    PATH="${PATH%:}"
+}
