@@ -44,3 +44,35 @@ ___x_cmd_path_push(){
 ___x_cmd_path_pop(){
     PATH="${PATH%:*}"
 }
+
+
+___x_cmd_path_remove_(){
+    local dir="${1:?Provide a directory}"
+    _1=":$PATH:"
+    local p="${_1#*:"$dir":}"
+    while [ "$_1" = "$p" ]; do
+        _1="${_1%%:$dir:*}:$p"
+        p="${_1#*:"$dir":}"
+    done
+}
+
+___x_cmd_path_remove(){
+    local _1
+    ___x_cmd_path_remove_ "$@"
+    PATH="${_1#:}"
+    PATH="${PATH%:}"
+}
+
+___x_cmd_path_up_or_unshift(){
+    local _1
+    ___x_cmd_path_remove_ "$@"
+    _1="${dir}${_1}"
+    PATH="${_1%:}"
+}
+
+___x_cmd_path_down_or_push(){
+    local _1
+    ___x_cmd_path_remove_ "$@"
+    _1="${_1}${dir}"
+    PATH="${_1#:}"
+}
