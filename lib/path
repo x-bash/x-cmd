@@ -1,8 +1,10 @@
 # shellcheck shell=sh disable=SC3043
 ___x_cmd_path(){
     case "$1" in
-        shift|unshift|push|pop|ls)     local op="$1"; shift; "___x_cmd_path_$op" "$@" ;;
-        "")                            ___x_cmd_path_ls "$@"
+        shift|unshift|push|pop|ls|rm|up_or_unshift|down_or_push)
+            local op="$1"; shift; "___x_cmd_path_$op" "$@" ;;
+        "")
+            ___x_cmd_path_ls "$@"
     esac
 }
 
