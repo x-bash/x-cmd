@@ -1,7 +1,7 @@
 # shellcheck shell=sh disable=SC3043
 ___x_cmd_path(){
     case "$1" in
-        shift|unshift|push|pop|ls|rm|up_or_unshift|down_or_push)
+        shift|unshift|push|pop|ls|rm|up_or_unshift|down_or_push|add_existed_folder)
             local op="$1"; shift; "___x_cmd_path_$op" "$@" ;;
         "")
             ___x_cmd_path_ls "$@"
@@ -77,4 +77,15 @@ ___x_cmd_path_down_or_push(){
     ___x_cmd_path_rm_ "$@"
     _1="${_1}${dir}"
     PATH="${_1#:}"
+}
+
+___x_cmd_path_add_existed_folder(){
+    local dir="${1:?Provide a directory}"
+
+    if [ ! -d "$dir" ] ; then
+        printf "%s\n" "Failed to add path: $dir, not a directory" >&2
+        return 1
+    fi
+
+    ___x_cmd_path_up_or_unshift "$@"
 }
