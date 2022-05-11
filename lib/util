@@ -165,7 +165,8 @@ ___x_cmd_sleep(){
             *m) s=$(( s + ${1%m} * 60 )) ;;
             *h) s=$(( s + ${1%h} * 3600 )) ;;
             *d) s=$(( s + ${1%d} * 86400 )) ;;
-            *)  printf "%s\n" "Expecting arg with optional suffix of (s)econds, (m)inutes, (h)ours, or (d)ays\n" >&2; return 1
+            *)  s=$(( s + ${1} )) ;;
+            # *)  printf "%s\n" "Expecting arg with optional suffix of (s)econds, (m)inutes, (h)ours, or (d)ays\n" >&2; return 1
         esac
         shift
     done
