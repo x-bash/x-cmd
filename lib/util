@@ -169,7 +169,7 @@ ___x_cmd_sleep(){
         esac
         shift
     done
-    x:info "Sleep in seconds: $s"
+    x:debug "Sleep in seconds: $s"
     sleep "$s"
 }
 
