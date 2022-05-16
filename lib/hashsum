@@ -12,7 +12,7 @@ ___x_cmd_md5(){
 
 ___x_cmd_sha1(){
     if command -v shasum 1>/dev/null; then
-        shasum -a 1 "$@" | awk '{ print $NF; }'
+        shasum -a 1 "$@" | awk '{ print $1; }'
     elif command -v sha1sum; then
         sha1sum "$@" | awk '{ print $1; }'
     else
@@ -23,7 +23,7 @@ ___x_cmd_sha1(){
 
 ___x_cmd_sha256(){
     if command -v shasum 1>/dev/null; then
-        shasum -a 256 "$@" | awk '{ print $NF; }'
+        shasum -a 256 "$@" | awk '{ print $1; }'
     elif command -v sha256sum; then
         sha256sum "$@" | awk '{ print $1; }'
     else
@@ -34,7 +34,7 @@ ___x_cmd_sha256(){
 
 ___x_cmd_sha3(){
     if command -v shasum 1>/dev/null; then
-        shasum -a 384 "$@" | awk '{ print $NF; }'
+        shasum -a 384 "$@" | awk '{ print $1; }'
     elif command -v sha3sum; then
         sha3sum "$@" | awk '{ print $1; }'
     else
@@ -45,7 +45,7 @@ ___x_cmd_sha3(){
 
 ___x_cmd_sha512(){
     if command -v shasum 1>/dev/null; then
-        shasum -a 512 "$@" | awk '{ print $NF; }'
+        shasum -a 512 "$@" | awk '{ print $1; }'
     elif command -v sha512sum; then
         sha512sum "$@" | awk '{ print $1; }'
     else
