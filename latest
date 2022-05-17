@@ -38,7 +38,7 @@ ___x_cmd_main_otherwise(){
         ___x_cmd_main_otherwise_code=$?
         if x pkg xbin init "$subcmd"; then
             # Introduce binmod
-            "___x_cmd_$subcmd" "$@"
+            "___x_cmd_${subcmd}" "$@"
         else
             x:error "___x_cmd_main_otherwise(): ___x_cmd_which_one fail [code: ${___x_cmd_main_otherwise_code}]"
             return 1
