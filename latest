@@ -66,7 +66,7 @@ ___x_cmd_main(){        # x:trace x     # TODO: will effect x log
         pip|pip3)                               shift;  ___x_cmd_pip3 "$@"      ;;
 
         curl|jq|yq|tmux|git|tesseract|magick)   shift;  ___x_cmd_static_build_file     "$subcmd" "$subcmd"      "$@"    ;;
-        nmap|ncat|nping|traceroute)             shift;  ___x_cmd_static_build_file      nmap "$subcmd"          "$@"    ;;
+        # nmap|ncat|nping|traceroute)             shift;  ___x_cmd_static_build_file      nmap "$subcmd"          "$@"    ;;
 
         sh|bash|zsh|fish|ksh|dash|ash)          shift;  ___x_cmd_shell_exec "$subcmd" "$@" ;;
         run)                                    shift;  ___x_cmd_run_by_file "$@"       ;;
