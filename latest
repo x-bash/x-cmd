@@ -62,7 +62,11 @@ ___x_cmd_main(){        # x:trace x     # TODO: will effect x log
         readeval|reval)                         shift;  ___x_cmd_reval "$@"     ;;
 
         js|node)                                shift;  ___x_cmd_node "$@"      ;;
+        js=*|node=*)                            shift;  ___X_CMD_PKG_XBIN_DEFAULT_node="${subcmd#*=}" ___x_cmd_node "$@"      ;;
+
         python|py)                              shift;  ___x_cmd_python "$@"    ;;
+        python=*|py=*)                          shift;  ___X_CMD_PKG_XBIN_DEFAULT_python="${subcmd#*=}" ___x_cmd_python "$@"    ;;
+
         pip|pip3)                               shift;  ___x_cmd_pip3 "$@"      ;;
 
         curl|jq|yq|tmux|git|tesseract|magick)   shift;  ___x_cmd_static_build_file     "$subcmd" "$subcmd"      "$@"    ;;
