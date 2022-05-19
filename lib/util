@@ -281,6 +281,7 @@ ___x_cmd_until_is_int(){
     if [ "$1" -gt 0 ] || [ "$1" -le 0 ]; then
         return 0
     fi 2>/dev/null
+    return 1
 }
 
 ___x_cmd_until(){
@@ -306,11 +307,13 @@ ___x_cmd_until(){
     local rest="$(( timeout - time * interval ))"
     local i
     for ((i=1; i<=time; ++i)); do
-        "$@" || return 0
         sleep "$interval" || return
+        "$@" || return 0
     done
-    sleep "$rest" || return
-    "$@" || return 0
+    if [ "$rest" -gt 0 ]; then
+        sleep "$rest" || return
+        "$@" || return 0
+    fi
     return 1
 }
 # EndSection
