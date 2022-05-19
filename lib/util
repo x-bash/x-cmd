@@ -285,33 +285,33 @@ ___x_cmd_until_is_int(){
 }
 
 ___x_cmd_until(){
-    local ___x_cmd_until___var_interval=1
-    local ___x_cmd_until___var_timeout=1000000
+    local ___x_cmd_until___local_interval=1
+    local ___x_cmd_until___local_timeout=1000000
     if ___x_cmd_until_is_int "$1" 2>/dev/null; then
-        ___x_cmd_until___var_interval="$1"
+        ___x_cmd_until___local_interval="$1"
         shift
     else
         case "$1" in
             */*)
-                local ___x_cmd_until___var_a="${1%%/*}"
-                local ___x_cmd_until___var_b="${1#*/}"
-                if ___x_cmd_until_is_int "$___x_cmd_until___var_a" && ___x_cmd_until_is_int "$___x_cmd_until___var_b"; then
-                    ___x_cmd_until___var_interval="$___x_cmd_until___var_a"
-                    ___x_cmd_until___var_timeout="$___x_cmd_until___var_b"
+                local ___x_cmd_until___local_a="${1%%/*}"
+                local ___x_cmd_until___local_b="${1#*/}"
+                if ___x_cmd_until_is_int "$___x_cmd_until___local_a" && ___x_cmd_until_is_int "$___x_cmd_until___local_b"; then
+                    ___x_cmd_until___local_interval="$___x_cmd_until___local_a"
+                    ___x_cmd_until___local_timeout="$___x_cmd_until___local_b"
                 fi
                 shift
         esac
     fi
 
-    local ___x_cmd_until___var_time="$(( ___x_cmd_until___var_timeout / ___x_cmd_until___var_interval ))"
-    local ___x_cmd_until___var_rest="$(( ___x_cmd_until___var_timeout - ___x_cmd_until___var_time * ___x_cmd_until___var_interval ))"
-    local ___x_cmd_until___var_i
-    for ((___x_cmd_until___var_i=1; ___x_cmd_until___var_i<=___x_cmd_until___var_time; ++___x_cmd_until___var_i)); do
-        sleep "$___x_cmd_until___var_interval" || return
+    local ___x_cmd_until___local_time="$(( ___x_cmd_until___local_timeout / ___x_cmd_until___local_interval ))"
+    local ___x_cmd_until___local_rest="$(( ___x_cmd_until___local_timeout - ___x_cmd_until___local_time * ___x_cmd_until___local_interval ))"
+    local ___x_cmd_until___local_i
+    for ((___x_cmd_until___local_i=1; ___x_cmd_until___local_i<=___x_cmd_until___local_time; ++___x_cmd_until___local_i)); do
+        sleep "$___x_cmd_until___local_interval" || return
         ! "$@" || return 0
     done
-    if [ "$___x_cmd_until___var_rest" -gt 0 ]; then
-        sleep "$___x_cmd_until___var_rest" || return
+    if [ "$___x_cmd_until___local_rest" -gt 0 ]; then
+        sleep "$___x_cmd_until___local_rest" || return
         ! "$@" || return 0
     fi
     return 1
