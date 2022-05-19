@@ -1,0 +1,49 @@
+___x_cmd_gui(){
+    local subcmd="$1"
+    case "$1" in
+        ok-cancel)      ;;
+        buttons)        ;;
+        notify)         ___x_cmd_gui___notify "$@" ;;
+        text)           ;;
+        file)           ___x_cmd_gui___file "$@" ;;
+        files)          ;;
+        folders)        ;;
+        fromlist)       ;;
+        progress)       ;;
+    esac
+}
+
+case "$(x os name)" in
+
+    darwin)
+
+___x_cmd_gui___notify(){
+    # osascript -e 'display notification "hello world!"'
+    osascript -e '
+    on run(argv)
+        display notification item 1 of argv
+    end' -- "${1:?Provide message}"
+}
+
+___x_cmd_gui___file(){
+    osascript -l javascript -e '
+var app = Application.currentApplication()
+app.includeStandardAdditions = true
+
+var foldersToProcess = app.chooseFolder({
+    withPrompt: "Prompt",
+    multipleSelectionsAllowed: true
+})
+foldersToProcess
+    '
+}
+
+    ;;
+
+    *)
+
+    ;;
+
+esac
+
+
