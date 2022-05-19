@@ -246,7 +246,6 @@ ___x_cmd_varset_without_end(){
 
 # EndSection
 
-
 # Section : utilties in static-build
 
 # _x_xrc_static_run(){
@@ -274,3 +273,35 @@ ___x_cmd_static_build_help(){
     fi
 }
 # EndSection
+
+# Section: until
+# x until 3/12 [ -e "file" ]
+___x_cmd_until(){
+    local interval=1
+    local time=1000000
+    if ___x_cmd_until_is_int "$1" 2>/dev/null; then
+        interval="$1"
+        shift
+    else
+        case "$1" in
+            */*)
+                local a="${1%%/*}"
+                local b="${1#*/}"
+                if ___x_cmd_until_is_int "$a" && ___x_cmd_until_is_int "$b"; then
+                    interval="$a"
+                    time="$(( b / a ))"
+                fi
+                shift
+        esac
+    fi
+
+    local i
+    for ((i=1; i<=time; ++i)); do
+        if "$@"; then
+            return 0
+        fi
+        sleep "$interval" || return
+    done
+}
+# EndSection
+

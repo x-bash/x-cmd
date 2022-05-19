@@ -21,30 +21,4 @@ ___x_cmd_until_is_int(){
     fi 2>/dev/null
 }
 
-# x until [ -e "file" ]
-___x_cmd_until(){
-    local interval=1
-    local time=1000000
-    if ___x_cmd_until_is_int "$1" 2>/dev/null; then
-        interval="$1"
-        shift
-    fi
 
-    case "$1" in
-        */*)
-            local a="${1%%/*}"
-            local b="${1#*/}"
-            if ___x_cmd_until_is_int "$a" && ___x_cmd_until_is_int "$b"; then
-                interval="$a"
-                time="$(( b / a ))"
-            fi
-    esac
-
-    local i
-    for ((i=1; i<=time; ++i)); do
-        if "$@"; then
-            return 0
-        fi
-        sleep "$interval" || return
-    done
-}
