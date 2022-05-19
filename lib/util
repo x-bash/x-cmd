@@ -276,6 +276,13 @@ ___x_cmd_static_build_help(){
 
 # Section: until
 # x until 3/12 [ -e "file" ]
+
+___x_cmd_until_is_int(){
+    if [ "$1" -gt 0 ] || [ "$1" -le 0 ]; then
+        return 0
+    fi 2>/dev/null
+}
+
 ___x_cmd_until(){
     local interval=1
     local time=1000000
