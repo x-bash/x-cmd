@@ -1,0 +1,50 @@
+
+# emit event:
+#   file created
+#   directory created
+#   file deleted
+
+___x_cmd_fmon(){
+    local subcmd="$1"
+    case "$subcmd" in
+        ""|help)    ;;
+    esac
+}
+
+___x_cmd_fmon_check(){
+
+}
+
+___x_cmd_until_is_int(){
+    if [ "$1" -gt 0 ] || [ "$1" -le 0 ]; then
+        return 0
+    fi 2>/dev/null
+}
+
+# x until [ -e "file" ]
+___x_cmd_until(){
+    local interval=1
+    local time=1000000
+    if ___x_cmd_until_is_int "$1" 2>/dev/null; then
+        interval="$1"
+        shift
+    fi
+
+    case "$1" in
+        */*)
+            local a="${1%%/*}"
+            local b="${1#*/}"
+            if ___x_cmd_until_is_int "$a" && ___x_cmd_until_is_int "$b"; then
+                interval="$a"
+                time="$(( b / a ))"
+            fi
+    esac
+
+    local i
+    for ((i=1; i<=time; ++i)); do
+        if "$@"; then
+            return 0
+        fi
+        sleep "$interval" || return
+    done
+}
