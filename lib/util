@@ -303,13 +303,15 @@ ___x_cmd_until(){
     fi
 
     local time="$(( timeout / interval ))"
+    local rest="$(( timeout - time * interval ))"
     local i
     for ((i=1; i<=time; ++i)); do
-        if "$@"; then
-            return 0
-        fi
+        "$@" || return 0
         sleep "$interval" || return
     done
+    sleep rest || return
+    "$@" || return 0
+    return 1
 }
 # EndSection
 
