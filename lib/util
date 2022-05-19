@@ -285,7 +285,7 @@ ___x_cmd_until_is_int(){
 
 ___x_cmd_until(){
     local interval=1
-    local time=1000000
+    local timeout=1000000
     if ___x_cmd_until_is_int "$1" 2>/dev/null; then
         interval="$1"
         shift
@@ -296,12 +296,13 @@ ___x_cmd_until(){
                 local b="${1#*/}"
                 if ___x_cmd_until_is_int "$a" && ___x_cmd_until_is_int "$b"; then
                     interval="$a"
-                    time="$(( b / a ))"
+                    timeout="$b"
                 fi
                 shift
         esac
     fi
 
+    local time="$(( timeout / interval ))"
     local i
     for ((i=1; i<=time; ++i)); do
         if "$@"; then
