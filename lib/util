@@ -309,7 +309,7 @@ ___x_cmd_until(){
         "$@" || return 0
         sleep "$interval" || return
     done
-    sleep rest || return
+    sleep "$rest" || return
     "$@" || return 0
     return 1
 }
