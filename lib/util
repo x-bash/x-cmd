@@ -308,11 +308,11 @@ ___x_cmd_until(){
     local i
     for ((i=1; i<=time; ++i)); do
         sleep "$interval" || return
-        "$@" || return 0
+        ! "$@" || return 0
     done
     if [ "$rest" -gt 0 ]; then
         sleep "$rest" || return
-        "$@" || return 0
+        ! "$@" || return 0
     fi
     return 1
 }
