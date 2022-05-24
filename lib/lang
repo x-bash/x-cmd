@@ -23,6 +23,5 @@ ___x_cmd_definelazyloader ___x_cmd_ts           node/latest
 
 
 ___x_cmd_ll(){
-
-    x pkg xbin path ll  "$(x pkg default_version ll)" -l             "$@"
+    x pkg xbin init exa  -l             "$@"
 }
