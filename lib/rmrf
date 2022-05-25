@@ -26,7 +26,7 @@ ___x_cmd_rmrf(){
     local rule
     local target
     if ! code="$(___x_cmd_rmrf___regex_arr_check "$@")"; then
-        echo "$code"
+        # echo "$code"
         eval "$code"
         x:error "Try to 'rm -rf $target'. Violation of regex_arr: $regex_arr"
         return 1
