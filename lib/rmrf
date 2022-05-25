@@ -80,6 +80,7 @@ ${tmp}"
 
 
 ___x_cmd_rmrf___rule_check(){
+    echo hi
     (
         local IFS="$___X_CMD_UNSEENCHAR_001"
         printf "%s\n" "$@"
