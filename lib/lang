@@ -19,9 +19,3 @@ ___x_cmd_definelazyloader ___x_cmd_npx          node/latest
 ___x_cmd_definelazyloader ___x_cmd_npm          node/latest
 ___x_cmd_definelazyloader ___x_cmd_ts           node/latest
 # EndSection
-
-
-
-___x_cmd_ll(){
-    x pkg xbin init exa  -l             "$@"
-}
