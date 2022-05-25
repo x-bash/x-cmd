@@ -2,10 +2,10 @@
 # Policy Adding
 ___x_cmd_rmrf(){
     case "$1" in
-        "")     ___x_cmd_rmrf_rule_ls; return ;;
-        +)      shift; ___x_cmd_rmrf_rule_add "$@"; return ;;
-        -)      shift; ___x_cmd_rmrf_rule_del "$@"; return ;;
-        --)     ___x_cmd_rmrf_rule_clear; return ;;
+        "")     ___x_cmd_rmrf_regex_arr_ls; return ;;
+        +)      shift; ___x_cmd_rmrf_regex_arr_add "$@"; return ;;
+        -)      shift; ___x_cmd_rmrf_regex_arr_del "$@"; return ;;
+        --)     ___x_cmd_rmrf_regex_arr_clear; return ;;
     esac
 
     local i
@@ -26,22 +26,22 @@ ___x_cmd_rmrf(){
     local code
     local rule
     local target
-    if ! code="$(___x_cmd_rmrf___rule_check "$@")"; then
+    if ! code="$(___x_cmd_rmrf___regex_arr_check "$@")"; then
         echo "$code"
         eval "$code"
-        x:error "Try to 'rm -rf $target'. Violation of rule: $rule"
+        x:error "Try to 'rm -rf $target'. Violation of regex_arr: $regex_arr"
         return 1
     fi
 
     command rm -rf "$@"
 }
 
-# Section: rule
-___x_cmd_rmrf_rule_clear(){
+# Section: regex_arr
+___x_cmd_rmrf_regex_arr_clear(){
     ___X_CMD_RMRF_RULE_LIST=
 }
 
-___x_cmd_rmrf_rule_add(){
+___x_cmd_rmrf_regex_arr_add(){
     local IFS="
 "
     ___X_CMD_RMRF_RULE_LIST="$___X_CMD_RMRF_RULE_LIST
@@ -49,28 +49,28 @@ $*
 "
 }
 
-___x_cmd_rmrf_rule_ls(){
+___x_cmd_rmrf_regex_arr_ls(){
     printf "%s" "$___X_CMD_RMRF_RULE_LIST" | awk '{
         if ($0 == ""){ next; }
         print $0
     }'
 }
 
-___x_cmd_rmrf_rule_del(){
-    local rule
+___x_cmd_rmrf_regex_arr_del(){
+    local regex_arr
     local tmp
-    for rule in "$@"; do
+    for regex_arr in "$@"; do
         tmp="${___X_CMD_RMRF_RULE_LIST#*
-$rule
+$regex_arr
 }"
         if [ "$tmp" != "$___X_CMD_RMRF_RULE_LIST" ]; then
-            x:info "Removing Rule: $rule"
+            x:info "Removing Rule: $regex_arr"
             ___X_CMD_RMRF_RULE_LIST="${___X_CMD_RMRF_RULE_LIST%%
-$rule
+$regex_arr
 *}
 ${tmp}"
         else
-            x:warn "Rule Not found: $rule"
+            x:warn "Rule Not found: $regex_arr"
         fi
 
     done
@@ -79,7 +79,7 @@ ${tmp}"
 # EndSection
 
 
-___x_cmd_rmrf___rule_check(){
+___x_cmd_rmrf___regex_arr_check(){
     (
         local IFS="$___X_CMD_UNSEENCHAR_001"
         printf "%s\n" "$@"
@@ -91,21 +91,24 @@ NR==1{
 }
 
 NR>1{
-    arr[ NR - 1 ] = $0
+    if ( $0 == "" ) next
+    rule_arr[ ++ rule_arrl ] = $0
     r = $0
     gsub(/\*\*/, ".+", r)
     gsub(/\*/, "[^/]+", r)
-    rule[ NR - 1 ] = r
+    regex_arr[ rule_arrl ] = r
+}
+
+function dbg( a ){
+    print a >"/dev/stderr"
 }
 
 END{
-    arrl = NR - 1
-
     for (i=1; i<=patharrl; ++i) {
         p = patharr[ i ]
-        for (j=1; j<=arrl; ++j) {
-            if ( match( p, rule[j] ) ) {
-                printf("rule=%s\n", arr[j])
+        for (j=1; j<=rule_arrl; ++j) {
+            if ( match( p, regex_arr[j] ) ) {
+                printf("regex_arr='\''%s'\''\n", rule_arr[j])
                 printf("target=\"$%s\"", i )
                 exit(1)
             }
