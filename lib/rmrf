@@ -22,9 +22,19 @@ ___x_cmd_rmrf(){
         return 1
     done
 
+    local code
+    local rule
+    local target
+    if ! code="$(___x_cmd_rmrf___rule_check "$@")"; then
+        eval "$code"
+        x:error "Try to 'rm -rf $target'. Violation of rule: $rule"
+        return 1
+    fi
+
     command rm -rf "$@"
 }
 
+# Section: rule
 ___x_cmd_rmrf_rule_clear(){
     ___X_CMD_RMRF_RULE_LIST=
 }
@@ -57,14 +67,41 @@ ${tmp}"
     done
 }
 
+# EndSection
 
 
-___x_cmd_rmrf(){
-    local IFS="
-"
-    printf "%s\n" "$@"
-    printf "%s\n" "---"
-    printf "%s\n" "$___X_CMD_RMRF_RULE_LIST"
+___x_cmd_rmrf___rule_check(){
+    (
+        local IFS="$___X_CMD_UNSEENCHAR_001"
+        printf "%s\n" "$@"
+        printf "%s\n" "$___X_CMD_RMRF_RULE_LIST"
+    ) || (
+        awk '
+NR==1{
+    arrl = split( $1, arr, "\001" )
+    for (i=1; i<=arrl; ++i) {
+        r = arr[i]
+        gsub("**", ".+", r)
+        gsub("*", "[^/]+", r)
+        rule[i] = r
+    }
+}
+
+NR>1{
+    for (i=1; i<=arrl; ++i) {
+        if (match( $0, rule[i]) ) {
+            print "rule=" arr[i]
+            printf("target=\"$%s\"", (NR-1) )
+            exit(1)
+        }
+    }
+}
+
+'
+
+    )
+
+
 }
 
 
