@@ -1,5 +1,12 @@
 
+# Policy Adding
 ___x_cmd_rmrf(){
+    case "$1" in
+        +)      ;;
+        -)      ;;
+        --)     ;;
+    esac
+
     local i
     for i in "$@"; do
         # Using core:debug ...
@@ -17,3 +24,43 @@ ___x_cmd_rmrf(){
 
     command rm -rf "$@"
 }
+
+___x_cmd_rmrf_rule_add(){
+    local IFS="
+"
+    ___X_CMD_RMRF_RULE_LIST="$___X_CMD_RMRF_RULE_LIST
+$*
+"
+}
+
+___x_cmd_rmrf_rule_clear(){
+    ___X_CMD_RMRF_RULE_LIST=
+}
+
+___x_cmd_rmrf(){
+    local IFS="
+"
+    printf "%s\n" "$@"
+    printf "%s\n" "---"
+    printf "%s\n" "$___X_CMD_RMRF_RULE_LIST"
+}
+
+
+# ___x_cmd_rmrf(){
+#     local i
+#     for i in "$@"; do
+#         # Using core:debug ...
+#         case "$i" in
+#             /)          printf "%s" "Try to 'rm -rf $i'" >&2 ;;
+#             /bin)       printf "%s" "Try to 'rm -rf $i'" >&2 ;;
+#             /usr)       printf "%s" "Try to 'rm -rf $i'" >&2 ;;
+#             /home)      printf "%s" "Try to 'rm -rf $i'" >&2 ;;
+#             /var)       printf "%s" "Try to 'rm -rf $i'" >&2 ;;
+#             *//*)       printf "%s" "Path consists of //. Variable expansion might not behave as you want." >&2 ;;
+#             *)          continue
+#         esac
+#         return 1
+#     done
+
+#     command rm -rf "$@"
+# }
