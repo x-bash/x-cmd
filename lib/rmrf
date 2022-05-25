@@ -80,7 +80,6 @@ ${tmp}"
 
 
 ___x_cmd_rmrf___rule_check(){
-    echo hi
     (
         local IFS="$___X_CMD_UNSEENCHAR_001"
         printf "%s\n" "$@"
@@ -88,27 +87,33 @@ ___x_cmd_rmrf___rule_check(){
     ) | (
         awk '
 NR==1{
-    arrl = split( $1, arr, "\001" )
-    for (i=1; i<=arrl; ++i) {
-        r = arr[i]
-        gsub(/\*\*/, ".+", r)
-        gsub(/\*/, "[^/]+", r)
-        rule[i] = r
-    }
+    patharrl = split( $1, patharr, "\001" )
 }
 
 NR>1{
-    for (i=1; i<=arrl; ++i) {
-        print i "\t" $0 "\t" rule[i] >"/dev/stderr"
-        if (match( $0, rule[i]) ) {
-            printf("target=\"$%s\"", (NR-1) )
-            exit(1)
+    arr[ NR - 1 ] = $0
+    r = $0
+    gsub(/\*\*/, ".+", r)
+    gsub(/\*/, "[^/]+", r)
+    rule[ NR - 1 ] = r
+}
+
+END{
+    arrl = NR - 1
+
+    for (i=1; i<=patharrl; ++i) {
+        p = patharr[ i ]
+        for (j=1; j<=arrl; ++j) {
+            if ( match( p, rule[j] ) ) {
+                printf("rule=%s\n", arr[j])
+                printf("target=\"$%s\"", i )
+                exit(1)
+            }
         }
     }
 }
 
 '
-
     )
 
 
