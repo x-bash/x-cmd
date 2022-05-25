@@ -1,5 +1,4 @@
 
-# Policy Adding
 ___x_cmd_rmrf(){
     case "$1" in
         "")     ___x_cmd_rmrf_regex_arr_ls; return ;;
