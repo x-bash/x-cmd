@@ -62,7 +62,7 @@ ___x_cmd_ifelse(){
 }
 
 # x cmd_result=if '[ $a = 1 ]' 1 2
-___x_cmd_eq_ifelse(){
+___x_cmd_eqifelse(){
     local var="${1%=if}"
     if ___x_cmd_eval "$2"; then     eval "$var=\"\$3\""
     else                            eval "$var=\"\$4\""
