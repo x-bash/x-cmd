@@ -1,27 +1,26 @@
 
 # Section: condition
 
-# experiment
 ___x_cmd_case_(){
     local val="${1:?Provide value}"; shift
     local arg
     for arg in "$@"; do
-        ___X_CMD_CASE_RESULT="${arg#$val:}"
-        [ "$___X_CMD_CASE_RESULT" = "$arg" ] || return 0
+        ___X_CMD_CASE_="${arg#$val:}"
+        [ "$___X_CMD_CASE_" = "${arg}" ] || return 0
 
-        ___X_CMD_CASE_RESULT="${arg#$val=}"
-        [ "$___X_CMD_CASE_RESULT" = "$arg" ] || { ___X_CMD_CASE_RESULT="$(eval "$___X_CMD_CASE_RESULT")"; return 0; }
+        ___X_CMD_CASE_="${arg#$val=}"
+        [ "$___X_CMD_CASE_" = "$arg" ] || { ___X_CMD_CASE_="$(eval "$___X_CMD_CASE_")"; return 0; }
     done
+    ___X_CMD_CASE_=
     return 1
 }
 
-# experiment
 ___x_cmd_case(){
-    ___x_cmd_case_ "$@" && printf "%s\n" "$___X_CMD_CASE_RESULT"
+    ___x_cmd_case_ "$@" && printf "%s\n" "$___X_CMD_CASE_"
 }
 
 # x case linux "linux=f" win="> handle " darwin="> do something"
-# x cmd_result=case linux linux=Linux win=Windows darwin=Macos
+# x cmd_result=case linux linux:Linux win:Windows darwin:Macos
 ___x_cmd_eqcase(){
     local var="${1%=case}"
     local val="${2:?Provide value}"; shift 2
