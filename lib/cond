@@ -43,20 +43,20 @@ ___x_cmd_ifelse_(){
     local condition="${1:?Provide function}";
     if eval "$condition"; then
         case "$2" in
-            "="*)     ___X_CMD_IFELSE_RESULT="$(eval "${2#=}")" ;;
-            *)      ___X_CMD_IFELSE_RESULT="$2" ;;
+            "="*)       ___X_CMD_IFELSE_="$(eval "${2#=}")" ;;
+            *)          ___X_CMD_IFELSE_="$2" ;;
         esac
     else
         case "$3" in
-            "="*)     ___X_CMD_IFELSE_RESULT="$(eval "${3#=}")" ;;
-            *)      ___X_CMD_IFELSE_RESULT="$3" ;;
+            "="*)       ___X_CMD_IFELSE_="$(eval "${3#=}")" ;;
+            *)          ___X_CMD_IFELSE_="$3" ;;
         esac
     fi
 }
 
 # experiment
 ___x_cmd_ifelse(){
-    ___x_cmd_ifelse_ "$@" && printf "%s\n" "$___X_CMD_IFELSE_RESULT"
+    ___x_cmd_ifelse_ "$@" && printf "%s\n" "$___X_CMD_IFELSE_"
 }
 
 # x cmd_result=if '[ $a = 1 ]' 1 2
