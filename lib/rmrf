@@ -2,9 +2,9 @@
 # Policy Adding
 ___x_cmd_rmrf(){
     case "$1" in
-        +)      ;;
-        -)      ;;
-        --)     ;;
+        +)      shift; ___x_cmd_rmrf_rule_add "$@" ;;
+        -)      shift; ___x_cmd_rmrf_rule_del "$@" ;;
+        --)     ___x_cmd_rmrf_rule_clear ;;
     esac
 
     local i
@@ -25,6 +25,10 @@ ___x_cmd_rmrf(){
     command rm -rf "$@"
 }
 
+___x_cmd_rmrf_rule_clear(){
+    ___X_CMD_RMRF_RULE_LIST=
+}
+
 ___x_cmd_rmrf_rule_add(){
     local IFS="
 "
@@ -33,9 +37,27 @@ $*
 "
 }
 
-___x_cmd_rmrf_rule_clear(){
-    ___X_CMD_RMRF_RULE_LIST=
+___x_cmd_rmrf_rule_del(){
+    local rule
+    local tmp
+    for rule in "$@"; do
+        tmp="${___X_CMD_RMRF_RULE_LIST#*
+$rule
+}"
+        if [ "$tmp" != "$___X_CMD_RMRF_RULE_LIST" ]; then
+            x:info "Removing Rule: $rule"
+            ___X_CMD_RMRF_RULE_LIST="${___X_CMD_RMRF_RULE_LIST%%
+$rule
+*}
+${tmp}"
+        else
+            x:warn "Rule Not found: $rule"
+        fi
+
+    done
 }
+
+
 
 ___x_cmd_rmrf(){
     local IFS="
