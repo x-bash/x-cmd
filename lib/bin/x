@@ -1,7 +1,6 @@
 #! /bin/sh
 # Author:       Li Junhao   l@x-cmd.com             # xrc
 # shellcheck    shell=sh    disable=SC2006,SC2016,SC1091,SC3043
-
 ___x_cmd___findxrc(){
     local IFS="
 "
@@ -18,21 +17,19 @@ $HOME/.x-cmd
 /usr/bin/.x-cmd
 A
 
-    printf "%s" >&2 '
+    printf "%s\n" >&2 '
 No x-cmd found in this computer.
 Type following cmd to setup:        eval `x init`
-If you need help, type:             x help
-'
+If you need help, type:             x help'
     return 1
 }
 
 ___x_cmd___findxrc || exit 1
 ___x_cmd___init(){
     if [ -t 1 ]; then
-        >&2 printf "%s" '
+        >&2 printf "%s\n" '
 This should be executed by:   eval `x init`
-If you need help, type:       x init help
-'
+If you need help, type:       x init help'
         return 1
     fi
 
@@ -48,4 +45,3 @@ if [ "$1" = init ]; then
 else
     ___x_cmd_main "$@"
 fi
-
