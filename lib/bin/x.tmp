@@ -58,6 +58,5 @@ x(){
         return
     fi
 
-    . "$___X_CMD_ROOT/xrc/latest"
-    x "$@"
+    . "$___X_CMD_ROOT_MOD/xrc/latest" && x "$@"
 }
