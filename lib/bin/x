@@ -9,7 +9,7 @@ ___x_cmd_xbin_findxrc(){
     local folder
     while read -r folder; do
         if [ -f "$folder/xrc/latest" ]; then
-            time . "$folder/xrc/latest"
+            . "$folder/xrc/latest"
             return
         fi
     done <<A
@@ -30,7 +30,7 @@ A
 ___x_cmd_xbin_findxrc || exit 1
 
 # shellcheck disable=SC2016
-___x_cmd_xbin_init(){
+___x_cmd___init(){
     if [ -t 1 ]; then
         >&2 printf "%s\n" '
 This should be executed by:   eval `x init`
@@ -39,12 +39,10 @@ If you need help, type:       eval `x init help`
         return 1
     fi
 
-    if [ -n "$___X_CMD_ROOT_MOD" ]; then
+    if [ -f "$___X_CMD_ROOT/.boot/boot" ]; then
         cat <<A
-. "${___X_CMD_ROOT_MOD}/xrc/latest";
-x boot setup;
+. "$___X_CMD_ROOT/.boot/boot"
 A
-
     else
         printf "%s" "curl https://get.x-cmd.com"
     fi
@@ -52,10 +50,8 @@ A
 
 
 if [ "$1" = init ]; then
-    shift
-    ___x_cmd_xbin_init "$@"
-    exit
+    shift;  ___x_cmd___init "$@"
+else
+    ___x_cmd_main "$@"
 fi
-
-___x_cmd_main "$@"
 
