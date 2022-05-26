@@ -9,7 +9,7 @@ ___x_cmd_xbin_findxrc(){
     local folder
     while read -r folder; do
         if [ -f "$folder/xrc/latest" ]; then
-            . "$folder/xrc/latest"
+            time . "$folder/xrc/latest"
             return
         fi
     done <<A
@@ -29,36 +29,32 @@ A
 
 ___x_cmd_xbin_findxrc || exit 1
 
-# ___x_cmd_xbin_init(){
-#     if [ ! -t 1 ]; then
-#         cat >&2 <<A
-# This should be executed by:   eval `x init`
-# If you need help, type:       eval `x help`
-# A
-#         return 1
-#     fi
-#     if [ -n "$___X_CMD_ROOT_MOD" ]; then
-#         cat <<A
-# # This should be executed by:       eval `x init`
-# # If you need help, type:           eval `x help`
+___x_cmd_xbin_init(){
+    if [ ! -t 1 ]; then
+        cat >&2 <<A
+This should be executed by:   eval "x init"
+If you need help, type:       eval "x init help"
+A
+        return 1
+    fi
 
-# . "${___X_CMD_ROOT_MOD}/xrc/latest";
-# x boot setup;
-# A
+    if [ -n "$___X_CMD_ROOT_MOD" ]; then
+        cat <<A
+. "${___X_CMD_ROOT_MOD}/xrc/latest";
+x boot setup;
+A
 
-#     else
-#         printf "%s" "curl https://get.x-cmd.com"
-#     fi
-# }
+    else
+        printf "%s" "curl https://get.x-cmd.com"
+    fi
+}
 
-# x(){
-#     if [ "$1" = init ]; then
-#         ___x_cmd_xbin_init
-#         return
-#     fi
 
-#     . "$___X_CMD_ROOT_MOD/xrc/latest" && x "$@"
-# }
+if [ "$1" = init ]; then
+    shift
+    ___x_cmd_xbin_init "$@"
+    exit
+fi
 
-# ___x_cmd_main "$@"
+___x_cmd_main "$@"
 
