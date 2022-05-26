@@ -2,7 +2,7 @@
 # shellcheck disable=SC2006,SC1091,SC3043
 
 # Locate the version
-___x_cmd_xbin_findxrc(){
+___x_cmd___findxrc(){
     local IFS="
 "
 
@@ -27,7 +27,7 @@ A
     return 1
 }
 
-___x_cmd_xbin_findxrc || exit 1
+___x_cmd___findxrc || exit 1
 
 # shellcheck disable=SC2016
 ___x_cmd___init(){
