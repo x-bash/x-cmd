@@ -2,7 +2,6 @@
 # Author:       Li Junhao   l@x-cmd.com             # xrc
 # shellcheck    shell=sh    disable=SC2006,SC2016,SC1091,SC3043
 
-# Locate the version
 ___x_cmd___findxrc(){
     local IFS="
 "
@@ -22,7 +21,7 @@ A
     printf "%s" >&2 '
 No x-cmd found in this computer.
 Type following cmd to setup:        eval `x init`
-If you need help, type:             eval `x help`
+If you need help, type:             x help
 '
     return 1
 }
@@ -32,7 +31,7 @@ ___x_cmd___init(){
     if [ -t 1 ]; then
         >&2 printf "%s" '
 This should be executed by:   eval `x init`
-If you need help, type:       eval `x init help`
+If you need help, type:       x init help
 '
         return 1
     fi
@@ -43,7 +42,6 @@ If you need help, type:       eval `x init help`
         printf "%s" "curl https://get.x-cmd.com"
     fi
 }
-
 
 if [ "$1" = init ]; then
     shift;  ___x_cmd___init "$@"
