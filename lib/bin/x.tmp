@@ -1,0 +1,56 @@
+#! /bin/sh
+# shellcheck disable=SC2006,SC1091,SC3043
+
+# Locate the version
+___x_cmd_xbin_findxrc(){
+    local IFS="
+"
+
+    local folder
+    while read -r folder; do
+        if [ -f "$folder/xrc/latest" ]; then
+            . "$folder/xrc/latest"
+            return
+        fi
+    done <<A
+$(pwd)/.x-cmd
+$HOME/.x-cmd
+/var/.x-cmd
+/usr/bin/.x-cmd
+A
+
+    cat >&2 <<A
+No x-cmd found in this computer.
+Type following cmd to setup:        eval `x init`
+If you need help, type:             eval `x help`
+A
+    return 1
+}
+
+___x_cmd_xbin_findxrc || exit 1
+
+# shellcheck disable=SC2016
+___x_cmd___init(){
+    if [ -t 1 ]; then
+        >&2 printf "%s\n" '
+This should be executed by:   eval `x init`
+If you need help, type:       eval `x init help`
+'
+        return 1
+    fi
+
+    if [ -f "$___X_CMD_ROOT/.boot/boot" ]; then
+        cat <<A
+. "$___X_CMD_ROOT/.boot/boot"
+A
+    else
+        printf "%s" "curl https://get.x-cmd.com"
+    fi
+}
+
+if [ "$1" = init ]; then
+    shift;  ___x_cmd___init "$@"
+else
+    ___x_cmd_main "$@"
+fi
+
