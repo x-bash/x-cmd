@@ -51,6 +51,10 @@
         "#desc": "Execute your script use the corresponding shell",
         "#1": "___advise_ls"
     },
+    "md5|sha1|sha2|sha256|sha3|sha384|sha5|sha512": {
+        "#desc": "Calculate the hashsum of file",
+        "#n": "___advise_ls"
+    },
     "nvm": null,
     "pip|npm": null,
     "jar|java|python|js|node|npx|ts|rb|lua": "--- Execute your script use these environments",
