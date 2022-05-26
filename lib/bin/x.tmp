@@ -1,16 +1,17 @@
 #! /bin/sh
 # shellcheck disable=SC2006,SC1091,SC3043
 
-___x_cmd_xbin_setroot(){
-    [ -n "$___X_CMD_ROOT" ] && return
+___x_cmd_xbin_findsrc(){
+    [ -n "$___X_CMD_ROOT_MOD" ] && return
     local IFS="
 "
 
-    while read -r ___X_CMD_ROOT; do
-        if [ -f "$___X_CMD_ROOT/xrc/latest" ]; then
-            break
+    local folder
+    while read -r folder; do
+        if [ -f "$folder/xrc/latest" ]; then
+            . "$folder/xrc/latest"
+            return
         fi
-        ___X_CMD_ROOT=
     done <<A
 $(pwd)/.x-cmd
 $HOME/.x-cmd
@@ -26,37 +27,38 @@ A
     return 1
 }
 
-___x_cmd_xbin_setroot || exit 1
+___x_cmd_xbin_findsrc || exit 1
 
-___X_CMD_XBIN_CODE="$(cat <<A
-# This should be executed by:       eval `x init`
-# If you need help, type:           eval `x help`
+# ___x_cmd_xbin_init(){
+#     if [ ! -t 1 ]; then
+#         cat >&2 <<A
+# This should be executed by:   eval `x init`
+# If you need help, type:       eval `x help`
+# A
+#         return 1
+#     fi
+#     if [ -n "$___X_CMD_ROOT_MOD" ]; then
+#         cat <<A
+# # This should be executed by:       eval `x init`
+# # If you need help, type:           eval `x help`
 
-. "${___X_CMD_ROOT}/xrc/latest";
-x boot setup;
-A
-)"
+# . "${___X_CMD_ROOT_MOD}/xrc/latest";
+# x boot setup;
+# A
 
-___x_cmd_xbin_init(){
-    if [ ! -t 1 ]; then
-        cat >&2 <<A
-This should be executed by:   eval `x init`
-If you need help, type:       eval `x help`
-A
-        return 1
-    fi
-    if [ -n "$___X_CMD_ROOT" ]; then
-        printf "%s" "$___X_CMD_XBIN_CODE"
-    else
-        printf "%s" "curl https://get.x-cmd.com"
-    fi
-}
+#     else
+#         printf "%s" "curl https://get.x-cmd.com"
+#     fi
+# }
 
-x(){
-    if [ "$1" = init ]; then
-        ___x_cmd_xbin_init
-        return
-    fi
+# x(){
+#     if [ "$1" = init ]; then
+#         ___x_cmd_xbin_init
+#         return
+#     fi
 
-    . "$___X_CMD_ROOT_MOD/xrc/latest" && x "$@"
-}
+#     . "$___X_CMD_ROOT_MOD/xrc/latest" && x "$@"
+# }
+
+___x_cmd_main "$@"
+
