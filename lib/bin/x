@@ -19,8 +19,7 @@ A
 
     printf "%s\n" >&2 '
 No x-cmd found in this computer.
-Type following cmd to setup:        eval `x init`
-If you need help, type:             x help'
+Type following cmd to setup:        eval `x init`'
     return 1
 }
 
