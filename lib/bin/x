@@ -1,6 +1,7 @@
 #! /bin/sh
 # Author:       Li Junhao   l@x-cmd.com             # xrc
 # shellcheck    shell=sh    disable=SC2006,SC2016,SC1091,SC3043
+
 ___x_cmd___findxrc(){
     local IFS="
 "
