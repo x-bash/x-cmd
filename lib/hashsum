@@ -1,7 +1,7 @@
 
 # Definition: alias or function or command
 ___x_cmd_runnable(){
-    commamd -v "${1:?Provide command name}" 1>/dev/null
+    command -v "${1:?Provide command name}" 1>/dev/null
 }
 
 ___x_cmd_md5(){
