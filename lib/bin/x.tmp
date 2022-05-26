@@ -29,12 +29,13 @@ A
 
 ___x_cmd_xbin_findxrc || exit 1
 
+# shellcheck disable=SC2016
 ___x_cmd_xbin_init(){
     if [ ! -t 1 ]; then
-        cat >&2 <<A
-This should be executed by:   eval "x init"
-If you need help, type:       eval "x init help"
-A
+        >&2 printf "%s\n" '
+This should be executed by:   eval `x init`
+If you need help, type:       eval `x init help`
+'
         return 1
     fi
 
