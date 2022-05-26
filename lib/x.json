@@ -85,6 +85,18 @@
         "#1": "xrc advise/lib/advise_get && ___x_cmd_advise_get_complete \"$(x advise which ___x_cmd_dev)\" mod ''",
         "#desc": "Execute a file in workspace, usually the .x-cmd directory in the repository"
     },
+    "rmrf": {
+        "+": {
+            "#desc": "Add rule"
+        },
+        "-": {
+            "#desc": "Remove rule"
+        },
+        "--": {
+            "#desc": "Clear all rules"
+        },
+        "#n": "___advise_ls"
+    },
     "#1": [
         "cd --- Change the working directory",
         "hub --- Manage your script file in x-service",
