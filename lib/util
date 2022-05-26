@@ -301,7 +301,7 @@ ___x_cmd_y2j(){
 }
 
 ___x_cmd_json2yml(){
-    x yq -o yaml e -P
+    x yq e -P
 }
 
 ___x_cmd_j2y(){
