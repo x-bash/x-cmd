@@ -1,8 +1,13 @@
 
+# Definition: alias or function or command
+___x_cmd_runnable(){
+    commamd -v "${1:?Provide command name}" 1>/dev/null
+}
+
 ___x_cmd_md5(){
-    if command -v md5 1>/dev/null; then
+    if ___x_cmd_runnable md5; then
         md5 "$@" | awk '{ print $NF; }'
-    elif command -v md5sum; then
+    elif ___x_cmd_runnable md5sum; then
         md5sum "$@" | awk '{ print $1; }'
     else
         x:error "md5/md5sum command NOT found."
@@ -11,9 +16,9 @@ ___x_cmd_md5(){
 }
 
 ___x_cmd_sha1(){
-    if command -v shasum 1>/dev/null; then
+    if ___x_cmd_runnable shasum; then
         shasum -a 1 "$@" | awk '{ print $1; }'
-    elif command -v sha1sum; then
+    elif ___x_cmd_runnable sha1sum;  then
         sha1sum "$@" | awk '{ print $1; }'
     else
         x:error "shasum/sha1sum command NOT found."
@@ -22,9 +27,9 @@ ___x_cmd_sha1(){
 }
 
 ___x_cmd_sha256(){
-    if command -v shasum 1>/dev/null; then
+    if ___x_cmd_runnable shasum; then
         shasum -a 256 "$@" | awk '{ print $1; }'
-    elif command -v sha256sum; then
+    elif ___x_cmd_runnable sha256sum; then
         sha256sum "$@" | awk '{ print $1; }'
     else
         x:error "shasum/sha256sum command NOT found."
@@ -33,9 +38,9 @@ ___x_cmd_sha256(){
 }
 
 ___x_cmd_sha3(){
-    if command -v shasum 1>/dev/null; then
+    if ___x_cmd_runnable shasum; then
         shasum -a 384 "$@" | awk '{ print $1; }'
-    elif command -v sha3sum; then
+    elif ___x_cmd_runnable sha3sum; then
         sha3sum "$@" | awk '{ print $1; }'
     else
         x:error "shasum/sha256sum command NOT found."
@@ -44,9 +49,9 @@ ___x_cmd_sha3(){
 }
 
 ___x_cmd_sha512(){
-    if command -v shasum 1>/dev/null; then
+    if ___x_cmd_runnable shasum; then
         shasum -a 512 "$@" | awk '{ print $1; }'
-    elif command -v sha512sum; then
+    elif ___x_cmd_runnable sha512sum; then
         sha512sum "$@" | awk '{ print $1; }'
     else
         x:error "shasum/sha512sum command NOT found."
