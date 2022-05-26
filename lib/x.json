@@ -55,6 +55,12 @@
         "#desc": "Calculate the hashsum of file",
         "#n": "___advise_ls"
     },
+    "yml2json|y2j": {
+        "#desc": "Yaml from stdin convert to JSON to stdout"
+    },
+    "j2y|json2yml": {
+        "#desc": "JSON from stdin convert to YAML to stdout"
+    },
     "nvm": null,
     "pip|npm": null,
     "jar|java|python|js|node|npx|ts|rb|lua": "--- Execute your script use these environments",
