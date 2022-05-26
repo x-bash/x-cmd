@@ -1,11 +1,11 @@
 #! /bin/sh
-# shellcheck disable=SC2006,SC1091,SC3043
+# Author:       Li Junhao   l@x-cmd.com             # xrc
+# shellcheck    shell=sh    disable=SC2006,SC2016,SC1091,SC3043
 
 # Locate the version
 ___x_cmd___findxrc(){
     local IFS="
 "
-
     local folder
     while read -r folder; do
         if [ -f "$folder/xrc/latest" ]; then
@@ -19,20 +19,18 @@ $HOME/.x-cmd
 /usr/bin/.x-cmd
 A
 
-    cat >&2 <<A
+    printf "%s" >&2 '
 No x-cmd found in this computer.
 Type following cmd to setup:        eval `x init`
 If you need help, type:             eval `x help`
-A
+'
     return 1
 }
 
 ___x_cmd___findxrc || exit 1
-
-# shellcheck disable=SC2016
 ___x_cmd___init(){
     if [ -t 1 ]; then
-        >&2 printf "%s\n" '
+        >&2 printf "%s" '
 This should be executed by:   eval `x init`
 If you need help, type:       eval `x init help`
 '
@@ -40,9 +38,7 @@ If you need help, type:       eval `x init help`
     fi
 
     if [ -f "$___X_CMD_ROOT/.boot/boot" ]; then
-        cat <<A
-. "$___X_CMD_ROOT/.boot/boot"
-A
+        printf ". '%s'" "$___X_CMD_ROOT/.boot/boot"
     else
         printf "%s" "curl https://get.x-cmd.com"
     fi
