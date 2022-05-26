@@ -56,10 +56,12 @@
         "#n": "___advise_ls"
     },
     "yml2json|y2j": {
-        "#desc": "Yaml from stdin convert to JSON to stdout"
+        "#desc": "Yaml from stdin convert to JSON to stdout",
+        "#1": "___advise_ls"
     },
     "j2y|json2yml": {
-        "#desc": "JSON from stdin convert to YAML to stdout"
+        "#desc": "JSON from stdin convert to YAML to stdout",
+        "#1": "___advise_ls"
     },
     "nvm": null,
     "pip|npm": null,
