@@ -1,8 +1,8 @@
 #! /bin/sh
 # shellcheck disable=SC2006,SC1091,SC3043
 
-___x_cmd_xbin_findsrc(){
-    [ -n "$___X_CMD_ROOT_MOD" ] && return
+# Locate the version
+___x_cmd_xbin_findxrc(){
     local IFS="
 "
 
@@ -27,7 +27,7 @@ A
     return 1
 }
 
-___x_cmd_xbin_findsrc || exit 1
+___x_cmd_xbin_findxrc || exit 1
 
 # ___x_cmd_xbin_init(){
 #     if [ ! -t 1 ]; then
@@ -60,5 +60,5 @@ ___x_cmd_xbin_findsrc || exit 1
 #     . "$___X_CMD_ROOT_MOD/xrc/latest" && x "$@"
 # }
 
-___x_cmd_main "$@"
+# ___x_cmd_main "$@"
 
