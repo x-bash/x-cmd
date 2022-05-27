@@ -59,12 +59,12 @@ ___x_cmd_rmrf_regex_arr_del(){
     local tmp
     for regex_arr in "$@"; do
         tmp="${___X_CMD_RMRF_RULE_LIST#*
-$regex_arr
+"$regex_arr"
 }"
         if [ "$tmp" != "$___X_CMD_RMRF_RULE_LIST" ]; then
             x:info "Removing Rule: $regex_arr"
             ___X_CMD_RMRF_RULE_LIST="${___X_CMD_RMRF_RULE_LIST%%
-$regex_arr
+"$regex_arr"
 *}
 ${tmp}"
         else
