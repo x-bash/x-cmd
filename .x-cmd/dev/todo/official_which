@@ -14,7 +14,7 @@ ___x_cmd_official_which(){
         return 1
     fi
 
-    if CACHE="$cache" ___x_cmd_curl_gitx "$target" <<A
+    if CACHE="$cache" ___x_cmd_httpget_gitx "$target" <<A
 $(___x_cmd_mirror)
 A
     then
