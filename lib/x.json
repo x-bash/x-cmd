@@ -108,7 +108,7 @@
     "ncat": null,
     "nping": null,
     "traceroute": null,
-    "sqlite": null-- - ,
+    "sqlite": null,
     "run": {},
     "search_path": {},
     "which": {},
