@@ -114,6 +114,7 @@ if ___x_cmd_is_suitable_advise_env; then
 fi
 
 xi(){
+    # TODO: xi tmux xxx == x tmux @me/xxx
     local name="$1"; shift
     ___x_cmd_main "@me/$name" "$@"
 }
