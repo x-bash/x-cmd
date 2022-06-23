@@ -1,0 +1,3 @@
+cmd(){
+    "$@" | tee /dev/stderr | awk -f ocs52.awk
+}
