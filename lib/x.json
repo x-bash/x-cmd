@@ -64,31 +64,31 @@
     "z|uz|zl": {
         "#desc": "compress and decompress file",
         "#n": {
-            "#exec": "candidate_exec_arr=( $(___x_cmd_advise__ls) )"
+            "#exec": "___x_cmd_advise__ls"
         }
     },
     "sh|bash|zsh|fish|ksh|dash|ash": {
         "#desc": "Execute your script use the corresponding shell",
         "#1": {
-            "#exec": "candidate_exec_arr=( $(___x_cmd_advise__ls) )"
+            "#exec": "___x_cmd_advise__ls"
         }
     },
     "md5|sha1|sha2|sha256|sha3|sha384|sha5|sha512": {
         "#desc": "Calculate the hashsum of file",
         "#n": {
-            "#exec": "candidate_exec_arr=( $(___x_cmd_advise__ls) )"
+            "#exec": "___x_cmd_advise__ls"
         }
     },
     "yml2json|y2j": {
         "#desc": "Yaml from stdin convert to JSON to stdout",
         "#1": {
-            "#exec": "candidate_exec_arr=( $(___x_cmd_advise__ls) )"
+            "#exec": "___x_cmd_advise__ls"
         }
     },
     "j2y|json2yml": {
         "#desc": "JSON from stdin convert to YAML to stdout",
         "#1": {
-            "#exec": "candidate_exec_arr=( $(___x_cmd_advise__ls) )"
+            "#exec": "___x_cmd_advise__ls"
         }
     },
     "nvm": null,
@@ -98,10 +98,10 @@
     },
     "jq|yq": null,
     "cat|du": {
-        "#exec": "candidate_exec_arr=( $(___x_cmd_advise__ls) )"
+        "#exec": "___x_cmd_advise__ls"
     },
     "ls|ll": {
-        "#exec": "candidate_exec_arr=( $(___x_cmd_advise__ls) )"
+        "#exec": "___x_cmd_advise__ls"
     },
     "ps|procs": null,
     "nmap": null,
