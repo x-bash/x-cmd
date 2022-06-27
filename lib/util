@@ -251,7 +251,7 @@ ___x_cmd_varset_without_end(){
 # x until 3/12 [ -e "file" ]
 
 ___x_cmd_until_is_int(){
-    if [ "$1" -gt 0 ] || [ "$1" -le 0 ]; then
+    if [ $# -gt 0 ] && { [ "$1" -gt 0 ] || [ "$1" -le 0 ]; }; then
         return 0
     fi 2>/dev/null
     return 1
