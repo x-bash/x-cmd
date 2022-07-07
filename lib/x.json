@@ -154,12 +154,12 @@
             "proxy --- Setting up mirror sources for various package management",
             "cowsay --- Generates ASCII art pictures of a cow with a message",
             "jo --- Command-line incomplete JSON processor",
-            "npx",
+            "npx --- Run a command from a local or remote npm package",
             "pipx",
             "license"
         ]
     },
     "#n": {
-        "#exec": "___x_cmd_advise__get_result"
+        "#exec": "___x_cmd_advise__offset"
     }
 }
