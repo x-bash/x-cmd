@@ -28,14 +28,14 @@ ___x_cmd_lenv_type_(){
 }
 
 ___x_cmd_lenv_type___is_container(){
-    [ ! -f '/.dockerenv' ]  || return 0
-    [ ! -f '/.dockerinit' ] || return 0
-    [ -z "$container" ]     || return 0
+    [ ! -f '/.dockerenv' ]      ||  return 0
+    [ ! -f '/.dockerinit' ]     ||  return 0
+    [ -z "$container" ]         ||  return 0
     local s
     s="$(cat /proc/1/sched)"
     case "$s" in
-        *docker*)       return 0    ;;
-        */lxc/*)        return 0    ;;
+        *docker*)                   return 0    ;;
+        */lxc/*)                    return 0    ;;
     esac
     return 1
 }
