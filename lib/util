@@ -330,7 +330,7 @@ ___x_cmd_osc52(){
 ___x_cmd_seq(){
     local s="$1";   shift
     local start=1; local end; local sep=1
-    case "$1" in
+    case "$s" in
         *:*:*:*)        ;; # fail
         *:*:*)          start="${s%:*:*}";  end="${s#*:*:}"
                         sep="${s#*:}";      sep="${sep%:*}"
@@ -348,17 +348,16 @@ ___x_cmd_seq(){
 
     local _
     if [ "$start" -lt "$end" ]; then
-        _="$start"
-
         [ "$sep" -gt 0 ] || { printf "%s\n" "Expect sep > 0 but get $sep"; return 1; }
-        while [ "$_" -le "$end" ]; do
+
+        _="$start"; while [ "$_" -le "$end" ]; do
             eval "$@"
             _=$((_ + sep))
         done
     else
         [ "$sep" -lt 0 ] || { printf "%s\n" "Expect sep < 0 but get $sep"; return 1; }
-        _="$start"
-        while [ "$_" -ge "$end" ]; do
+
+        _="$start"; while [ "$_" -ge "$end" ]; do
             eval "$@"
             _=$((_ + sep))
         done
