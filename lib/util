@@ -343,7 +343,7 @@ ___x_cmd_seq(){
     esac
 
     if [ "$#" -eq 0 ]; then
-        set -- echo
+        set -- 'printf "%s\n" "$i"'
     fi
 
     local i
