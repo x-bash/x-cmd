@@ -19,16 +19,25 @@ ___x_cmd_lenv_type(){
 ___x_cmd_lenv_type_(){
     [ -z "$___X_CMD_LENV_TYPE_" ] || return 0
 
+    ___X_CMD_LENV_TYPE_="host"
+
     if [ -n "$SSH_CLIENT" ] && [ -n "$SSH_CONNECTION" ] && [ -n "$SSH_TTY" ]; then
         ___X_CMD_LENV_TYPE_="ssh"
         return
     fi
 
-    if [ "${#HOSTNAME}" -eq 12 ]; then
-        if printf "%x" "0x${HOSTNAME}" 1>/dev/null 2>/dev/null; then
-            ___X_CMD_LENV_TYPE_="container"
-            return
-        fi
-    fi
-    ___X_CMD_LENV_TYPE_="host"
+    ! ___x_cmd_lenv_type___is_container && ___X_CMD_LENV_TYPE_="container"
+}
+
+___x_cmd_lenv_type___is_container(){
+    [ ! -f '/.dockerenv' ]  || return 0
+    [ ! -f '/.dockerinit' ] || return 0
+    [ -z "$container" ]     || return 0
+    local s
+    s="$(cat /proc/1/sched)"
+    case "$s" in
+        *docker*)       return 0    ;;
+        */lxc/*)        return 0    ;;
+    esac
+    return 1
 }
