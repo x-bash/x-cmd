@@ -18,15 +18,13 @@ ___x_cmd_lenv_type(){
 # declare -x SSH_TTY="/dev/pts/0"
 ___x_cmd_lenv_type_(){
     [ -z "$___X_CMD_LENV_TYPE_" ] || return 0
-
-    ___X_CMD_LENV_TYPE_="host"
-
     if [ -n "$SSH_CLIENT" ] && [ -n "$SSH_CONNECTION" ] && [ -n "$SSH_TTY" ]; then
         ___X_CMD_LENV_TYPE_="ssh"
-        return
+    elif ___x_cmd_lenv_type___is_container; then
+        ___X_CMD_LENV_TYPE_="container"
+    else
+        ___X_CMD_LENV_TYPE_="host"
     fi
-
-    ! ___x_cmd_lenv_type___is_container && ___X_CMD_LENV_TYPE_="container"
 }
 
 ___x_cmd_lenv_type___is_container(){
