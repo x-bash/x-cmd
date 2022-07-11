@@ -346,20 +346,18 @@ ___x_cmd_seq(){
         set -- echo
     fi
 
-    local _
+    local i
     if [ "$start" -lt "$end" ]; then
         [ "$sep" -gt 0 ] || { printf "%s\n" "Expect sep > 0 but get $sep"; return 1; }
-
-        _="$start"; while [ "$_" -le "$end" ]; do
+        i="$start"; while [ "$i" -le "$end" ]; do
             eval "$@"
-            _=$((_ + sep))
+            i=$((i + sep))
         done
     else
         [ "$sep" -lt 0 ] || { printf "%s\n" "Expect sep < 0 but get $sep"; return 1; }
-
-        _="$start"; while [ "$_" -ge "$end" ]; do
+        i="$start"; while [ "$i" -ge "$end" ]; do
             eval "$@"
-            _=$((_ + sep))
+            i=$((i + sep))
         done
     fi
 
