@@ -1,0 +1,34 @@
+
+___x_cmd_lenv(){
+    case "$1" in
+        type)       ___x_cmd_lenv_type ;;
+        type_)      ___x_cmd_lenv_type_ ;;
+    esac
+
+}
+
+___x_cmd_lenv_type(){
+    ___x_cmd_lenv_type_
+    printf "%s\n" "$___X_CMD_LENV_TYPE_"
+}
+
+# 58.253.50.66
+# declare -x SSH_CLIENT="58.253.50.66 11647 22"
+# declare -x SSH_CONNECTION="58.253.50.66 11647 172.27.35.101 22"
+# declare -x SSH_TTY="/dev/pts/0"
+___x_cmd_lenv_type_(){
+    [ -z "$___X_CMD_LENV_TYPE_" ] || return 0
+
+    if [ -n "$SSH_CLIENT" ] && [ -n "$SSH_CONNECTION" ] && [ -n "$SSH_TTY" ]; then
+        ___X_CMD_LENV_TYPE_="ssh"
+        return
+    fi
+
+    if [ "${#HOSTNAME}" -eq 12 ]; then
+        if printf "%x" "0x${HOSTNAME}" 1>/dev/null 2>/dev/null; then
+            ___X_CMD_LENV_TYPE_="container"
+            return
+        fi
+    fi
+    ___X_CMD_LENV_TYPE_="host"
+}
