@@ -17,9 +17,9 @@ ___X_CMD_T8="${___X_CMD_TMPL_B}8${___X_CMD_TMPL_E}"
 ___X_CMD_T9="${___X_CMD_TMPL_B}9${___X_CMD_TMPL_E}"
 
 
-x tmpl "${___X_CMD_TX}, ${___X_CMD_TX}" hello world
+# x tmpl "${___X_CMD_TX}, ${___X_CMD_TX}" hello world
 x tmpl "${___X_CMD_T}:abc:, ${___X_CMD_TX}:cde:" :cde:=hello :abc:=world
-x tmpl "${___X_CMD_T}:abc:, ${___X_CMD_TX}:cde:" :cde:  hello
+# x tmpl "${___X_CMD_T}:abc:, ${___X_CMD_TX}:cde:" :cde:  hello
 
 ___x_cmd_tmpl(){
     local ___X_CMD_TMPL_
@@ -46,12 +46,11 @@ ___x_cmd_tmpl_sub_(){
 ___x_cmd_tmpl_sub_eq_(){
     ___X_CMD_TMPL_=
 
-    local arg
     local key
     local val
     local ___X_CMD_STR_REPLACE_
     local code=0
-    for arg in "$@"; do
+    local arg; for arg in "$@"; do
         key="${arg%%=*}"
         val="${arg#"$key"=}"
         ___x_cmd_str_replace_ "$___X_CMD_TMPL_TEMPLATE" "${___X_CMD_TMPL_B}${key}" "$val" || code=1
@@ -61,12 +60,12 @@ ___x_cmd_tmpl_sub_eq_(){
     return "$code"
 }
 
-___x_cmd_tmpl_sub_1by1_(){
+___x_cmd_tmpl_1by1_(){
     ___X_CMD_TMPL_=
 
     local str="$1"; shift
     local ___X_CMD_STR_REPLACE_="$str"
-    for arg in "$@"; do
+    local arg; for arg in "$@"; do
         if ___x_cmd_str_replace_ "$___X_CMD_STR_REPLACE_" "${___X_CMD_TX}" "$arg"; then
             ___X_CMD_TMPL_="$___X_CMD_STR_REPLACE_"
             x:error "Fail to proceed in: $arg"
@@ -89,7 +88,7 @@ ___x_cmd_str_replace_(){
     local tgt="${3:?Target string}"
 
     local rest=${org#*${src}}
-    [ "$rest" != "$org" ] || return 1
+    [ "$rest" != "$org" ] || { ___X_CMD_STR_REPLACE_="$org"; return 1; }
     ___X_CMD_STR_REPLACE_="${rest}${tgt}${org%%${src}*}"
 }
 
