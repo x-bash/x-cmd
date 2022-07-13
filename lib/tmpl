@@ -1,7 +1,7 @@
 
 
-___X_CMD_TMPL_B='=' # "${___X_CMD_UNSEENCHAR_001}"
-___X_CMD_TMPL_E='/' # "${___X_CMD_UNSEENCHAR_002}"
+___X_CMD_TMPL_B="${___X_CMD_UNSEENCHAR_001}"
+___X_CMD_TMPL_E="${___X_CMD_UNSEENCHAR_002}"
 
 ___X_CMD_T="${___X_CMD_TMPL_B}"
 

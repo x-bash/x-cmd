@@ -1,0 +1,8 @@
+
+x assert "hello, world" = "$(x tmpl "${___X_CMD_TX}, ${___X_CMD_TX}" hello world)"
+x assert "hello, world" = "$(x tmpl "${___X_CMD_T}:abc:, ${___X_CMD_T}:cde:" :cde:=world :abc:=hello)"
+
+___X_CMD_TMPL_="${___X_CMD_T}:abc:, ${___X_CMD_T}:cde:"
+x tmpl_ "$___X_CMD_TMPL_" :cde:  world
+x tmpl_ "$___X_CMD_TMPL_" :abc:  hello
+x assert "hello, world" = "$___X_CMD_TMPL_"
