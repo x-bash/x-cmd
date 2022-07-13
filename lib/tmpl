@@ -99,11 +99,11 @@ ___x_cmd_tmpl_name(){
 }
 
 
-x tmpl "${___X_CMD_TX}, ${___X_CMD_TX}" hello world
-x tmpl "${___X_CMD_T}:abc:, ${___X_CMD_T}:cde:" :cde:=world :abc:=hello
+# x tmpl "${___X_CMD_TX}, ${___X_CMD_TX}" hello world
+# x tmpl "${___X_CMD_T}:abc:, ${___X_CMD_T}:cde:" :cde:=world :abc:=hello
 
-___X_CMD_TMPL_="${___X_CMD_T}:abc:, ${___X_CMD_T}:cde:"
-x tmpl_ "$___X_CMD_TMPL_" :cde:  world
-x tmpl_ "$___X_CMD_TMPL_" :abc:  hello
-printf "%s\n" "$___X_CMD_TMPL_"
+# ___X_CMD_TMPL_="${___X_CMD_T}:abc:, ${___X_CMD_T}:cde:"
+# x tmpl_ "$___X_CMD_TMPL_" :cde:  world
+# x tmpl_ "$___X_CMD_TMPL_" :abc:  hello
+# printf "%s\n" "$___X_CMD_TMPL_"
 
