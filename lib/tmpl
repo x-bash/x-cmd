@@ -17,6 +17,8 @@ ___X_CMD_T8="${___X_CMD_TMPL_B}8${___X_CMD_TMPL_E}"
 ___X_CMD_T9="${___X_CMD_TMPL_B}9${___X_CMD_TMPL_E}"
 
 
+# { "a": "${___X_CMD_T}", "b": "${___X_CMD_T}":abc: }
+
 ___x_cmd_tmpl(){
     local ___X_CMD_TMPL_
     ___x_cmd_tmpl_ "$@" || return
@@ -32,11 +34,15 @@ ___x_cmd_tmpl_(){
 }
 
 ___x_cmd_tmpl_sub_(){
-    ___x_cmd_str_replace_ "$___X_CMD_TMPL_STR" "${___X_CMD_TMPL_B}${1:?Provide name}" "${2:?Provide name}"
+    ___X_CMD_TMPL_=
+
+    ___x_cmd_str_replace_ "$___X_CMD_TMPL_STR" "${___X_CMD_TMPL_B}${1:?Provide name}" "${2:?Provide name}" || return 1
     ___X_CMD_TMPL_="$___X_CMD_STR_REPLACE_"
 }
 
 ___x_cmd_tmpl_sub_eq_(){
+    ___X_CMD_TMPL_=
+
     local arg
     local key
     local val
@@ -48,14 +54,23 @@ ___x_cmd_tmpl_sub_eq_(){
         ___x_cmd_str_replace_ "$___X_CMD_TMPL_STR" "${___X_CMD_TMPL_B}${key}" "$val" || code=1
         ___X_CMD_TMPL_STR="$___X_CMD_STR_REPLACE_"
     done
+    ___X_CMD_TMPL_="$___X_CMD_TMPL_STR"
     return "$code"
 }
 
 ___x_cmd_tmpl_sub_1by1_(){
+    ___X_CMD_TMPL_=
+
     local str="$1"; shift
+    local ___X_CMD_STR_REPLACE_="$str"
     for arg in "$@"; do
-        ___x_cmd_str_replace_ "$str" "${___X_CMD_TX}" "$arg"
+        if ___x_cmd_str_replace_ "$___X_CMD_STR_REPLACE_" "${___X_CMD_TX}" "$arg"; then
+            ___X_CMD_TMPL_="$___X_CMD_STR_REPLACE_"
+            x:error "Fail to proceed in: $arg"
+            return 1
+        fi
     done
+    ___X_CMD_TMPL_="$___X_CMD_STR_REPLACE_"
 }
 
 # Move to str
