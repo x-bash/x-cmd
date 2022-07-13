@@ -27,25 +27,13 @@ ___x_cmd_tmpl_(){
     case "$1" in
         :*:)                        ___x_cmd_tmpl_sub_ "$@" ;;
         :*:=*)                      ___x_cmd_tmpl_sub_eq_ "$@" ;;
-        *)                          ___x_cmd_tmpl_1by1 "$@" ;
+        *)                          ___x_cmd_tmpl_1by1_ "$@" ;
     esac
 }
 
 ___x_cmd_tmpl_sub_(){
-    ___x_cmd_str_replace_ "$___X_CMD_TMPL_STR" "${___X_CMD_TMPL_B}${1:?Provide name}" "$2"
+    ___x_cmd_str_replace_ "$___X_CMD_TMPL_STR" "${___X_CMD_TMPL_B}${1:?Provide name}" "${2:?Provide name}"
     ___X_CMD_TMPL_="$___X_CMD_STR_REPLACE_"
-}
-
-___x_cmd_tmpl_sub(){
-    local ___X_CMD_TMPL_
-    ___x_cmd_tmpl_sub_ "$@"
-    printf "%s\n" "$___X_CMD_TMPL_"
-}
-
-___x_cmd_tmpl_sub_eq(){
-    local ___X_CMD_TMPL_
-    ___x_cmd_tmpl_sub_eq_ "$@"
-    printf "%s\n" "$___X_CMD_TMPL_"
 }
 
 ___x_cmd_tmpl_sub_eq_(){
@@ -63,6 +51,12 @@ ___x_cmd_tmpl_sub_eq_(){
     return "$code"
 }
 
+___x_cmd_tmpl_sub_1by1_(){
+    local str="$1"; shift
+    for arg in "$@"; do
+        ___x_cmd_str_replace_ "$str" "${___X_CMD_TX}" "$arg"
+    done
+}
 
 # Move to str
 ___x_cmd_str_replace(){
