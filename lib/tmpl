@@ -28,7 +28,7 @@ ___x_cmd_tmpl(){
 }
 
 ___x_cmd_tmpl_(){
-    local ___X_CMD_TMPL_STR="${1:?Provide source string}";   shift
+    local ___X_CMD_TMPL_TEMPLATE="${1:?Provide template string}";   shift
     case "$1" in
         :*:)                        ___x_cmd_tmpl_sub_ "$@" ;;
         :*:=*)                      ___x_cmd_tmpl_sub_eq_ "$@" ;;
@@ -39,7 +39,7 @@ ___x_cmd_tmpl_(){
 ___x_cmd_tmpl_sub_(){
     ___X_CMD_TMPL_=
 
-    ___x_cmd_str_replace_ "$___X_CMD_TMPL_STR" "${___X_CMD_TMPL_B}${1:?Provide name}" "${2:?Provide name}" || return 1
+    ___x_cmd_str_replace_ "$___X_CMD_TMPL_TEMPLATE" "${___X_CMD_TMPL_B}${1:?Provide name}" "${2:?Provide name}" || return 1
     ___X_CMD_TMPL_="$___X_CMD_STR_REPLACE_"
 }
 
@@ -54,10 +54,10 @@ ___x_cmd_tmpl_sub_eq_(){
     for arg in "$@"; do
         key="${arg%%=*}"
         val="${arg#"$key"=}"
-        ___x_cmd_str_replace_ "$___X_CMD_TMPL_STR" "${___X_CMD_TMPL_B}${key}" "$val" || code=1
-        ___X_CMD_TMPL_STR="$___X_CMD_STR_REPLACE_"
+        ___x_cmd_str_replace_ "$___X_CMD_TMPL_TEMPLATE" "${___X_CMD_TMPL_B}${key}" "$val" || code=1
+        ___X_CMD_TMPL_TEMPLATE="$___X_CMD_STR_REPLACE_"
     done
-    ___X_CMD_TMPL_="$___X_CMD_TMPL_STR"
+    ___X_CMD_TMPL_="$___X_CMD_TMPL_TEMPLATE"
     return "$code"
 }
 
