@@ -17,9 +17,9 @@ ___X_CMD_T8="${___X_CMD_TMPL_B}8${___X_CMD_TMPL_E}"
 ___X_CMD_T9="${___X_CMD_TMPL_B}9${___X_CMD_TMPL_E}"
 
 
-# { "a": "${___X_CMD_T}", "b": "${___X_CMD_T}":abc: }
-
-x tmpl ""
+x tmpl "${___X_CMD_TX}, ${___X_CMD_TX}" hello world
+x tmpl "${___X_CMD_T}:abc:, ${___X_CMD_TX}:cde:" :cde:=hello :abc:=world
+x tmpl "${___X_CMD_T}:abc:, ${___X_CMD_TX}:cde:" :cde:  hello
 
 ___x_cmd_tmpl(){
     local ___X_CMD_TMPL_
