@@ -19,6 +19,8 @@ ___X_CMD_T9="${___X_CMD_TMPL_B}9${___X_CMD_TMPL_E}"
 
 # { "a": "${___X_CMD_T}", "b": "${___X_CMD_T}":abc: }
 
+x tmpl ""
+
 ___x_cmd_tmpl(){
     local ___X_CMD_TMPL_
     ___x_cmd_tmpl_ "$@" || return
@@ -26,6 +28,7 @@ ___x_cmd_tmpl(){
 }
 
 ___x_cmd_tmpl_(){
+    local ___X_CMD_TMPL_STR="${1:?Provide source string}";   shift
     case "$1" in
         :*:)                        ___x_cmd_tmpl_sub_ "$@" ;;
         :*:=*)                      ___x_cmd_tmpl_sub_eq_ "$@" ;;
