@@ -70,3 +70,11 @@ ___x_cmd_eqifelse(){
 }
 
 # EndSection
+
+# Section: varjoin
+
+___x_cmd___varjoin(){
+    :
+}
+
+# EndSection
