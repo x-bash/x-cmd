@@ -360,3 +360,23 @@ ___x_cmd_a(){
     alias "$@"
     # set complete
 }
+
+___x_cmd_mcd(){
+    local dir="$1"
+    if [ ! -e "$dir" ]; then
+        if ! mkdir -p "$dir"; then
+            x:log "Fail to create folder: $dir"
+            return 1
+        fi
+    else
+        if [ ! -d "$dir" ]; then
+            x:log "File existed but not a folder: $dir"
+            return 1
+        fi
+    fi
+
+    if ! cd "$dir"; then
+        x:log "Fail to enter into folder: $dir"
+        return 1
+    fi
+}
