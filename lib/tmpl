@@ -28,6 +28,10 @@ ___x_cmd_tmpl_(){
     case "$1" in
         :*:)                        ___x_cmd_tmpl_sub_ "$@" ;;
         :*:=*)                      ___x_cmd_tmpl_sub_eq_ "$@" ;;
+
+        [*])                        ___x_cmd_tmpl_sub_ "$@" ;;
+        [*]=*)                      ___x_cmd_tmpl_sub_eq_ "$@" ;;
+
         *)                          ___x_cmd_tmpl_1by1_ "$@" ;
     esac
 }
