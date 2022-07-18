@@ -100,6 +100,7 @@ ___x_cmd_tmpl_name(){
 
 
 # x tmpl "${___X_CMD_TX}, ${___X_CMD_TX}" hello world
+
 # x tmpl "${___X_CMD_T}:abc:, ${___X_CMD_T}:cde:" :cde:=world :abc:=hello
 # x tmpl "${___X_CMD_T}[abc], ${___X_CMD_T}[cde]" [cde]=world [abc]=hello
 # x tmpl "${___X_CMD_T}[2], ${___X_CMD_T}[1]" [1]=world [2]=hello
