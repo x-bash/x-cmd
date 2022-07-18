@@ -363,19 +363,19 @@ ___x_cmd_a(){
 
 
 ___x_cmd_mcd(){
-    local dir="${1:?Provide folder path}"
-    if [ ! -d "$dir" ]; then
-        if [ -e "$dir" ]; then
-            x:log "File existed but not a folder: $dir"
+    local folder="${1:?Provide folder path}"
+    if [ ! -d "$folder" ]; then
+        if [ -e "$folder" ]; then
+            x:log "File existed but not a folder: $folder"
             return 1
-        elif ! mkdir -p "$dir"; then
-            x:log "Fail to create folder: $dir"
+        elif ! mkdir -p "$folder"; then
+            x:log "Fail to create folder: $folder"
             return 1
         fi
     fi
 
-    if ! cd "$dir"; then
-        x:log "Fail to enter into folder: $dir"
+    if ! cd "$folder"; then
+        x:log "Fail to enter into folder: $folder"
         return 1
     fi
 }
