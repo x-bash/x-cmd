@@ -361,16 +361,15 @@ ___x_cmd_a(){
     # set complete
 }
 
+
 ___x_cmd_mcd(){
     local dir="$1"
-    if [ ! -e "$dir" ]; then
-        if ! mkdir -p "$dir"; then
-            x:log "Fail to create folder: $dir"
-            return 1
-        fi
-    else
-        if [ ! -d "$dir" ]; then
+    if [ ! -d "$dir" ]; then
+        if [ -e "$dir" ]; then
             x:log "File existed but not a folder: $dir"
+            return 1
+        elif ! mkdir -p "$dir"; then
+            x:log "Fail to create folder: $dir"
             return 1
         fi
     fi
@@ -380,3 +379,4 @@ ___x_cmd_mcd(){
         return 1
     fi
 }
+
