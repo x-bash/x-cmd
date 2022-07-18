@@ -363,7 +363,7 @@ ___x_cmd_a(){
 
 
 ___x_cmd_mcd(){
-    local dir="$1"
+    local dir="${1:?Provide folder path}"
     if [ ! -d "$dir" ]; then
         if [ -e "$dir" ]; then
             x:log "File existed but not a folder: $dir"
