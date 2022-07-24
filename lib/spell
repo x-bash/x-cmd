@@ -1,10 +1,14 @@
 # shellcheck shell=dash
 
 if ___x_cmd_is_interative_tty; then
-    alias ___x_cmd_savelastcmd="___X_CMD_MAIN_SAVELASTCMD=\"\$*\""
+    alias ___x_cmd_lastcmd_save="___X_CMD_MAIN_LASTCMD=\"\$*\""
 else
-    alias ___x_cmd_savelastcmd=': #'
+    alias ___x_cmd_lastcmd_save=': #'
 fi
+
+___x_cmd_lastcmd(){
+    printf "%s\n" "$___X_CMD_MAIN_LASTCMD"
+}
 
 ___x_cmd_spell(){
     :
