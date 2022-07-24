@@ -11,10 +11,11 @@ ___x_cmd_lastcmd(){
 }
 
 ___x_cmd_spell(){
-    :
     # History
 
     # Has SubCmd. Navigate the advise.json to get candidate.
     # Set config for spell
+
+    :
 
 }
