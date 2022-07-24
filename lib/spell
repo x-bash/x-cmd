@@ -1,0 +1,16 @@
+# shellcheck shell=dash
+
+if ___x_cmd_is_interative_tty; then
+    alias ___x_cmd_savelastcmd="___X_CMD_MAIN_SAVELASTCMD=\"\$*\""
+else
+    alias ___x_cmd_savelastcmd=': #'
+fi
+
+___x_cmd_spell(){
+    :
+    # History
+
+    # Has SubCmd. Navigate the advise.json to get candidate.
+    # Set config for spell
+
+}
