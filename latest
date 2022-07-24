@@ -50,8 +50,6 @@ ___x_cmd_alias_init ___x_cmd
 
 ___x_cmd_main(){        # x:trace x     # TODO: will effect x log
 
-    ___x_cmd_lastcmd_save
-
     local subcmd="$1"
     case "$subcmd" in
         log)                                    shift;  ___x_cmd_log "$@" ;;        # For efficiency

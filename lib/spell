@@ -1,7 +1,7 @@
 # shellcheck shell=dash
 
 if ___x_cmd_is_interative_tty; then
-    alias ___x_cmd_lastcmd_save="___X_CMD_MAIN_LASTCMD=\"\$*\""
+    alias ___x_cmd_lastcmd_save="[ \"\$1\" = \"lastcmd\" ] || ___X_CMD_MAIN_LASTCMD=\"\$*\""
 else
     alias ___x_cmd_lastcmd_save=': #'
 fi
