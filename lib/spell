@@ -24,3 +24,19 @@ ___x_cmd_spell(){
     # Set the spell globally, in the cloud, or just in this environment.
 
 }
+
+___x_cmd_spell_set(){
+    :
+}
+
+___x_cmd_spell_set_locally(){
+    :
+}
+
+___x_cmd_spell_set_globally(){
+    :
+}
+
+___x_cmd_spell_set_sync(){
+    :
+}
