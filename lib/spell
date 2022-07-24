@@ -16,6 +16,11 @@ ___x_cmd_spell(){
     # Has SubCmd. Navigate the advise.json to get candidate.
     # Set config for spell
 
-    :
+    printf "Is it a new spell for:"
+    printf "1. No. Typing wrongly."
+    printf "2. Choose the spell"
+    printf "3. Set the spell"
+
+    # Set the spell globally, in the cloud, or just in this environment.
 
 }
