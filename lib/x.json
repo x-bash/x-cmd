@@ -68,7 +68,9 @@
     "upgrade|update": {
         "#desc": "Upgrade or Update x-cmd",
         "#1": {
+            "#default": "x-cmd",
             "#cand": [
+                "x-cmd",
                 "nightly",
                 "dev"
             ]
