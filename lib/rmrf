@@ -16,7 +16,7 @@ ___x_cmd_rmrf(){
             /usr)       x:error "Try to 'rm -rf $i'" ;;
             /home)      x:error "Try to 'rm -rf $i'" ;;
             /var)       x:error "Try to 'rm -rf $i'" ;;
-            *//*)       x:error "Path consists of //. Variable expansion might not behave as you want." ;;
+            *//*)       x:error "Path consists of //. Variable expansion might not behave as you want: $i" ;;
             *)          continue
         esac
         return 1
